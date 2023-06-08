@@ -1,21 +1,54 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/suhcjUE-)
-# Exam #12345: "Exam Title"
-## Student: s123456 LASTNAME FIRSTNAME 
+# Exam #1: "CMSmall"
+## Student: s317842 CAVALLARO SALVATORE 
 
 ## React Client Application Routes
 
-- Route `/`: page content and purpose
-- Route `/something/:param`: page content and purpose, param specification
-- ...
+- Route `/`: pagina principale che mostra il frontoffice
+- Route `/login`: pagina per effettuare il login
+- Route `/backoffice`: pagina che mostra il backoffice
+- Route `*`: per le pagine che non esistono
+
 
 ## API Server
 
-- POST `/api/login`
-  - request parameters and request body content
-  - response body content
-- GET `/api/something`
-  - request parameters
-  - response body content
+### Autenticazione
+
+- POST `/api/session`
+  Descrizione: Crea una nuova sessione a partire dalla credenziali fornite.
+
+  Request body:
+  ```
+  {
+    "username": "salvo@test.com",
+    "password": "pwd"
+  }
+  ```
+
+Response: `200 OK` (success) or `500 Internal Server Error` (generic error).
+
+Response body: _None_
+
+- GET `/api/session/current`
+
+  Descrizione: Verifica se la sessione data è ancora valida e restituisce le informazioni sull'utente connesso. Per ottenere le informazioni sull'utente autenticato nella sessione corrente, è necessario fornire un cookie con un Id di sessione valido
+
+  Request body: _None_ 
+
+  Response: `201 Created` (success) or `401 Unauthorized` (error).
+
+  Response body:
+  ```
+  {
+    "username": "salvo@test.com",
+    "id": 1,
+    "name": "Salvo"
+  }
+  ```
+  ... decidere qui quali informazioni ritornare EVENTUALMENTE oltre alle info dell'utente
+
+### Altre 
+
 - POST `/api/something`
   - request parameters and request body content
   - response body content
