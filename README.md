@@ -6,7 +6,8 @@
 
 - Route `/`: pagina principale che mostra il frontoffice
 - Route `/login`: pagina per effettuare il login
-- Route `/backoffice`: pagina che mostra il backoffice
+- Route `/add`: pagina per aggiungere una nuova pagina
+- Route `/edit/:idPagina`: pagina per editare una pagina esistente
 - Route `*`: per le pagine che non esistono
 
 
@@ -60,10 +61,16 @@ Response body: _None_
 
 ### Altre 
 
--
--
--
--
+ - GET `/api/pages` : Non autenticata, ritorna la lista delle pagine pubblicate
+   (devo stabilire un formato JSON appropriato)
+
+- GET `/api/allpages` : Autenticata, ritorna la lista delle pubblicate e non, sia dell'utente autenticato che degli altri utenti.    Parametri: NESSUNO
+
+- POST `/api/study-plan` : Autenticata, salva il piano di studi corrente (rimpiazza l'eventuale esistente)
+
+- DELETE `/api/study-plan` : Autenticata, cancella il piano di studenti
+
+- GET `/api/courses/num-enrolled` : Non autenticata, ritorna solo il n. di studenti iscritti ai corsi con un max.
 
 
 
@@ -75,10 +82,10 @@ Response body: _None_
 
 ## Database Tables
 
-- Table `utenti` : (id, nome, email, salt, hash, admin: (1=admin))
-- Table `pagine`: (id,titolo,autore,createdate,pubdate)
-- Table `blocchicont`: (id,nome)
-- Table `blocchiapppagine`:(id,idpagina,priorità,contenuto)
+- Table `utenti` : (id, nome, admin: (1=admin), email, salt, hash)
+- Table `pagine`: (id,titolo,autore,datacreazione,datapublicazione)
+- Table `blocchicotenuto`: (id,tipo)
+- Table `blocchiapagine`:(id,idpagina,idblocco,contenuto,priorità)
 
 ## Main React Components
 
