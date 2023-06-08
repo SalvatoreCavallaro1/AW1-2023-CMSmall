@@ -47,7 +47,26 @@ Response body: _None_
   ```
   ... decidere qui quali informazioni ritornare EVENTUALMENTE oltre alle info dell'utente
 
+  -DELETE `/api/session/current`
+
+    Descrizione: Elimina la sessione attualw. è necessario fornire un cookie con un Id di sessione valido.
+
+    Request body: _None_
+
+    Response: `200 OK` (success) or `500 Internal Server Error` (generic error).
+
+    Response body: _None_
+
+
 ### Altre 
+
+-
+-
+-
+-
+
+
+
 
 - POST `/api/something`
   - request parameters and request body content
@@ -56,9 +75,10 @@ Response body: _None_
 
 ## Database Tables
 
-- Table `users` - contains xx yy zz
-- Table `something` - contains ww qq ss
-- ...
+- Table `utenti` : (id, nome, email, salt, hash, admin: (1=admin))
+- Table `pagine`: (id,titolo,autore,createdate,pubdate)
+- Table `blocchicont`: (id,nome)
+- Table `blocchiapppagine`:(id,idpagina,priorità,contenuto)
 
 ## Main React Components
 
@@ -74,6 +94,6 @@ Response body: _None_
 
 ## Users Credentials
 
-- username, password (plus any other requested info)
-- username, password (plus any other requested info)
+- username: salvo@test.com, password:"pwd", usertype:admin
+- username: giuseppe@test.com, password:"pwd", usertype: not admin 
 
