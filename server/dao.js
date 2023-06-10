@@ -13,7 +13,7 @@ const db= new sqlite.Database('cms.db',(err)=>{
 //get delle pagine pubblicate
 exports.listAllPages=()=>{
     return new Promise( (resolve,reject)=>{
-        const sql = `SELECT p.*, u.nome, '[' || GROUP_CONCAT('{"idblocco":' || bp.idblocco || ',"tipo":"' || bc.tipo || '","contenuto":"' || bp.contenuto || '"}') || ']' AS blocchi FROM pagine p INNER JOIN blocchipagine bp ON p.id = bp.idpagina INNER JOIN blocchicontenuto bc ON bp.idblocco = bc.id INNER JOIN utenti u ON p.autore = u.id GROUP BY p.id`;
+        const sql = `SELECT p.*, u.nome, '[' || GROUP_CONCAT('{"idblocco":' || bp.idblocco || ',"tipo":"' || bc.tipo || '","contenuto":"' || bp.contenuto || '","priorita":' || bp.priorità || '}') || ']' AS blocchi FROM pagine p INNER JOIN blocchipagine bp ON p.id = bp.idpagina INNER JOIN blocchicontenuto bc ON bp.idblocco = bc.id INNER JOIN utenti u ON p.autore = u.id GROUP BY p.id;`;
         db.all(sql,[],(err,rows)=>{
             if(err){
                 reject(err);
