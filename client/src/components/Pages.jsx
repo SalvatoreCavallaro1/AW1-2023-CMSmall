@@ -2,7 +2,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Link, useNavigate } from 'react-router-dom';
 import NavHeader from './NavbarComponents';
 import { Container,Alert,Spinner } from 'react-bootstrap';
-import { PageDescription } from './PageComponents';
+import { PageDescription,MainPages } from './PageComponents';
 
 function Loading(props) {
     return (
@@ -10,6 +10,7 @@ function Loading(props) {
     )
   }
 
+  //<PageDescription pages={props.pages} />
 function Pages(props){
     return(
         <>
@@ -19,7 +20,8 @@ function Pages(props){
             {props.errorMsg}</Alert> : null}
             {props.initialLoading ? <Loading /> : 
             <>
-            <PageDescription page={props.pages} />
+            
+            <MainPages pageList={props.pages}/>
             </>
             }
             </Container>

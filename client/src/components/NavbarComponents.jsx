@@ -7,9 +7,18 @@ function NavHeader(props) {
    // const name = props.user && props.user.name;
 const name=null
 return (
-    <Navbar bg='dark' variant='dark'>
+    <Navbar bg="dark" variant="dark">
         <Container fluid>
-            <Navbar.Brand className='fs-2'>MyCMS</Navbar.Brand>
+            <Navbar.Brand>
+                <img
+                alt=""
+                src="/cmslogo.svg"
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+                />{' '}
+                MyCMS
+            </Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
                 { name? <>
