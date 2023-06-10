@@ -1,0 +1,56 @@
+SELECT pagine.id,titolo,autore AS idautore,nome,datacreazione,datapubblicazione,idblocco, tipo AS tipoblocco,contenuto,priorità 
+FROM pagine 
+JOIN blocchipagine ON pagine.id = blocchipagine.idpagina 
+JOIN utenti ON pagine.autore=utenti.id 
+JOIN blocchicontenuto ON idblocco=blocchicontenuto.id
+
+
+
+SELECT
+    p.*,
+    '[' || GROUP_CONCAT('{"idblocco":' || bp.idblocco || ',"tipo":"' || bc.tipo || '"}') || ']' AS blocchi
+FROM
+    pagine p
+    INNER JOIN blocchipagine bp ON p.id = bp.idpagina
+    INNER JOIN blocchicontenuto bc ON bp.idblocco = bc.id
+WHERE
+    p.id = '1'
+GROUP BY
+    p.id;
+
+
+    SELECT
+    p.*,
+    u.nome,
+    '[' || GROUP_CONCAT('{"idblocco":' || bp.idblocco || ',"tipo":"' || bc.tipo || '","contenuto":"' || bp.contenuto || '"}') || ']' AS blocchi
+FROM
+    pagine p
+    INNER JOIN blocchipagine bp ON p.id = bp.idpagina
+    INNER JOIN blocchicontenuto bc ON bp.idblocco = bc.id
+    INNER JOIN utenti u ON p.autore = u.id
+GROUP BY
+    p.id;
+
+    Certamente! Ecco una spiegazione dettagliata della query:
+
+La clausola SELECT specifica i campi che desideri selezionare dalla query. In questo caso, stiamo selezionando tutti i campi dalla tabella "pagine" (p.*), il campo "nome" dalla tabella "utenti" (u.nome) e stiamo creando il campo "blocchi" che rappresenta gli oggetti JSON concatenati ('[' || ... || ']' AS blocchi).
+
+La clausola FROM indica da quali tabelle prelevare i dati. Stiamo prelevando dati dalla tabella "pagine" (pagine p), la tabella "blocchipagine" (blocchipagine bp), la tabella "blocchicontenuto" (blocchicontenuto bc) e la tabella "utenti" (utenti u).
+
+Le clausole INNER JOIN sono utilizzate per collegare le tabelle tra loro. Stiamo collegando la tabella "pagine" con la tabella "blocchipagine" in base all'ID della pagina (p.id = bp.idpagina), la tabella "blocchipagine" con la tabella "blocchicontenuto" in base all'ID del blocco (bp.idblocco = bc.id) e la tabella "pagine" con la tabella "utenti" in base all'ID dell'autore della pagina (p.autore = u.id).
+
+La clausola WHERE viene utilizzata per specificare una condizione di filtraggio dei dati. In questo caso, stiamo filtrando i risultati in base all'ID della pagina (p.id = 'id_pagina'). Assicurati di sostituire 'id_pagina' con l'ID effettivo della pagina di interesse.
+
+La clausola GROUP BY viene utilizzata per raggruppare i risultati in base a una colonna specificata. In questo caso, stiamo raggruppando i risultati in base all'ID della pagina (p.id).
+
+Nel campo "blocchi", utilizziamo l'operatore di concatenazione specifico del tuo database (ad esempio, ||) per combinare le stringhe e creare una rappresentazione JSON per ciascun blocco. Utilizziamo la funzione GROUP_CONCAT per concatenare le stringhe degli oggetti JSON dei blocchi correlati, e utilizziamo la sintassi CONCAT per combinare i valori dei campi.
+
+Infine, la query restituirà una riga per ogni pagina che soddisfa la condizione specificata nel WHERE. Il campo "blocchi" conterrà una stringa che rappresenta un elenco di oggetti JSON concatenati, contenenti i dettagli dell'id del blocco, del tipo di blocco e del contenuto del blocco.
+
+In SQL, l'utilizzo di p.* e u.nome si riferisce alla selezione di colonne specifiche da una tabella.
+
+p.* è un'espressione che rappresenta tutte le colonne nella tabella pagine. Quindi, quando viene utilizzata nella clausola SELECT, seleziona tutti i campi della tabella pagine.
+
+u.nome seleziona il campo "nome" dalla tabella utenti. Qui, u è l'alias assegnato alla tabella utenti nella clausola FROM, mentre nome è il nome del campo desiderato all'interno della tabella.
+
+In sostanza, p.* seleziona tutti i campi della tabella pagine, mentre u.nome seleziona solo il campo "nome" dalla tabella utenti. Utilizzando questa sintassi, puoi specificare le colonne esatte da selezionare in una query, anziché dover elencare ogni singola colonna manualmente.

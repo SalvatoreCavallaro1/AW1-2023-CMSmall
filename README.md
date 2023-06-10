@@ -104,3 +104,6 @@ Response body: _None_
 - username: salvo@test.com, password:"pwd", usertype:admin
 - username: giuseppe@test.com, password:"pwd", usertype: not admin 
 
+
+
+
