@@ -18,7 +18,7 @@ return new Promise((resolve, reject) => {
         resolve({error: 'Utente non trovato'});
         else {
         // by default, the local strategy looks for "username": not to create confusion in server.js, we can create an object with that property
-        const user = {id: row.id, username: row.email, name: row.nome}
+        const user = {id: row.id, username: row.email, name: row.nome, admin: row.admin}
         resolve(user);
         }
     });
@@ -32,7 +32,7 @@ exports.getUser = (email, password) => {
         if (err) { reject(err); }
         else if (row === undefined) { resolve(false); }
         else {
-        const user = {id: row.id, username: row.email, name: row.nome};
+        const user = {id: row.id, username: row.email, name: row.nome, admin: row.admin};
         
         const salt = row.salt;
         crypto.scrypt(password, salt, 32, (err, hashedPassword) => {
