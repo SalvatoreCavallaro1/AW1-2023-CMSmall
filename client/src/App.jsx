@@ -2,10 +2,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState,useEffect} from 'react'
 import API from './API';
 import { Container } from 'react-bootstrap';
-
+import { LoginForm } from './components/LoginComponent';
 //import './App.css'
 
-import { BrowserRouter, Routes, Route,Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route,Link,Navigate } from 'react-router-dom';
 import Pages from './components/Pages';
 
 function DefaultRoute() {
@@ -24,6 +24,8 @@ function App() {
   const [errorMsg, setErrorMsg] = useState('');
   const [dirty, setDirty] = useState(true);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [user, setUser] = useState(undefined);
+  const [loggedIn, setLoggedIn] = useState(false);
 
 
 
@@ -42,6 +44,21 @@ function App() {
     setTimeout(()=>setDirty(true), 2000);  // Fetch correct version from server, after a while
   }
 
+  useEffect(()=> {
+    const checkAuth = async() => {
+      try {
+        // se l'utente è già loggato salvo le informazioni dell'utente
+        const user = await API.getUserInfo();
+        setLoggedIn(true);
+        setUser(user);
+      } catch(err) {
+        // L'utente non è ancora autenticato non devo svolgere nessuna azione
+        //handleError(err);
+      }
+    };
+    checkAuth();
+  }, []);
+
   useEffect( () => {
   if(dirty){
     API.getAllPages()
@@ -53,12 +70,28 @@ function App() {
   }
   }, [dirty]);
 
+  const doLogOut = async () => {
+    await API.logOut();
+    setLoggedIn(false);
+    setUser(undefined);
+    /* set state to empty if appropriate */
+  }
+  
+
+  const loginSuccessful = (user) => {
+    setUser(user);
+    setLoggedIn(true);
+    setDirty(true);  // load latest version of data, if appropriate
+  }
+
+
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Pages pages={pages} errorMsg={errorMsg} resetErrorMsg={()=>setErrorMsg('')} initialLoading={initialLoading}/>}/>
+          <Route path="/" element={<Pages user={user} logout={doLogOut} pages={pages} errorMsg={errorMsg} resetErrorMsg={()=>setErrorMsg('')} initialLoading={initialLoading}/>}/>
+          <Route path='/login' element={loggedIn? <Navigate replace to='/' />:  <LoginForm loginSuccessful={loginSuccessful} />} />
           <Route path='/*' element={<DefaultRoute />} />
         </Routes>
       </BrowserRouter>

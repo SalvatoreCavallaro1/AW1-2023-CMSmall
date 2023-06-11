@@ -2,7 +2,7 @@ BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS "utenti" (
 	"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
 	"email"	TEXT,
-	"name"	TEXT,
+	"nome"	TEXT,
     "admin" INTEGER,
 	"salt"	TEXT,
     "hash"	TEXT

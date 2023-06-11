@@ -14,7 +14,7 @@ function Loading(props) {
 function Pages(props){
     return(
         <>
-            <NavHeader/>
+            <NavHeader user={props.user} logout={props.logout}/>
             <Container fluid>
             {props.errorMsg? <Alert variant='danger' dismissible className='my-2' onClose={props.resetErrorMsg}>
             {props.errorMsg}</Alert> : null}

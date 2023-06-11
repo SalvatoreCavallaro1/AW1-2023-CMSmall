@@ -120,11 +120,12 @@ function MainPages(props) {
                 </Accordion>
             </Col>
         </Row>
+        <Link className="btn btn-dark btn-lg fixed-right-bottom" to="/add"> &#43; </Link>
         
       </>
     )
   }
-
+//<Link className="btn btn-primary btn-lg fixed-right-bottom" to="/add" state={{nextpage: location.pathname}}> &#43; </Link>
 //<Button variant='success' onClick={()=>navigate('/add')} disabled={props.user?.id? false : true}>Add answer</Button>
 
 export { PageDescription, PageRow,MainPages };

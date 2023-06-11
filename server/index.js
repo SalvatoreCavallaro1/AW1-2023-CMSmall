@@ -7,8 +7,40 @@ const dao = require('./dao'); // module for accessing the DB
 const passport = require('passport'); // auth middleware
 const LocalStrategy = require('passport-local').Strategy; // username and password for login
 const session = require('express-session'); // enable sessions
-//const userDao = require('./user-dao'); // module for accessing the user info in the DB
+const userDao = require('./user-dao'); // module for accessing the user info in the DB
 const cors = require('cors');
+
+
+/* Setup di Passport*/
+//si usano username che corrisponde alla mail e password come dati di login
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    userDao.getUser(username, password).then((user) => {
+      if (!user)
+        return done(null, false, { message: 'Username  o password errati' });
+        
+      return done(null, user);
+    })
+  }
+));
+
+// serialize e de-serialize dell'utente (user object <-> session)
+// serializzo l'id dell'utente e lo serializzo nella sessione: in questo modo la sessione è molto piccola, occupa poco spazio
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+// a partire dai dati nella sessione si estrae il loggen-in user corrente
+passport.deserializeUser((id, done) => {
+  userDao.getUserById(id)
+    .then(user => {
+      done(null, user); // questo sarà disponibile in req.user
+    }).catch(err => {
+      done(err, null);
+    });
+});
+
+
 
 // init express
 const app = new express();
@@ -25,6 +57,27 @@ app.use(cors(corsOptions));
 
 const answerDelay = 300;
 
+//middleware per identare se una request arriva da un utente autenticato
+const isLoggedIn = (req, res, next) => {
+  if(req.isAuthenticated())
+    return next();
+  
+  return res.status(401).json({ error: 'Utente non autenticato'});
+}
+
+// set up the della sessione
+app.use(session({
+  // by default, Passport uses a MemoryStore to keep track of the sessions
+  secret: 'ijk8k157lqu84oldip',   //personalize this random string, should be a secret value
+  resave: false,
+  saveUninitialized: false 
+}));
+
+// inizializzazione di passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 /*API*/
 
 // GET /api/questions
@@ -35,6 +88,53 @@ app.get('/api/pages', (req, res) => {
 });
 
 
+/*API utente*/ 
+
+
+// POST /sessions 
+// login
+app.post('/api/sessions', function(req, res, next) {
+  passport.authenticate('local', (err, user, info) => {
+    if (err)
+      return next(err);
+      if (!user) {
+        // display wrong login messages
+        return res.status(401).json(info);
+      }
+      // success, perform the login
+      req.login(user, (err) => {
+        if (err)
+          return next(err);
+        
+        // req.user contains the authenticated user, we send all the user info back
+        // this is coming from userDao.getUser()
+        return res.json(req.user);
+      });
+  })(req, res, next);
+});
+
+// ALTERNATIVE: if we are not interested in sending error messages...
+/*
+app.post('/api/sessions', passport.authenticate('local'), (req,res) => {
+  // If this function gets called, authentication was successful.
+  // `req.user` contains the authenticated user.
+  res.json(req.user);
+});
+*/
+
+// DELETE /sessions/current 
+// logout
+app.delete('/api/sessions/current', (req, res) => {
+  req.logout( ()=> { res.end(); } );
+});
+
+// GET /sessions/current
+// check whether the user is logged in or not
+app.get('/api/sessions/current', (req, res) => {  if(req.isAuthenticated()) {
+    res.status(200).json(req.user);}
+  else
+    res.status(401).json({error: 'Utente non autenicato!'});;
+});
 
 
 // activate the server
