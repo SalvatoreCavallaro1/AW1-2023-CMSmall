@@ -1,5 +1,5 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { Row, Col, Button, Table, Accordion, Badge } from 'react-bootstrap';
+import { Row, Col, Button, Table, Accordion, Badge,OverlayTrigger,Tooltip} from 'react-bootstrap';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -60,10 +60,31 @@ function PageRow(props) {
                 <h6 className='fs-6'>Data Pubblicazione: {e.datapubblicazione.format("YYYY-MM-DD")}</h6>
                 </Col>
             
-                <Button variant='secondary' className='mx-2' 
+                <OverlayTrigger  placement="bottom" overlay={(props.user?.id  && props.user?.name===e.nomeautore)?  
+                <Tooltip id="tooltip-enabled"> Edita la pagina</Tooltip>
+                : (props.user?.id  && props.user?.name!==e.nomeautore)?
+                <Tooltip id="tooltip-disabled"> La pagina non è di tua proprietà non puoi editarla</Tooltip>
+                :
+                <Tooltip id="tooltip-disabled"> Effettua il login per editare la pagina</Tooltip>
+                }>
+                  <span className="d-inline-block">
+                <Button variant='warning' disabled={ (props.user?.id && props.user?.name===e.nomeautore) || props.user?.admin===1? false : true} className='mx-2' 
                     ><i className='bi bi-pencil-square' /></Button>
-                <Button variant="danger"  >
+                    </span>
+                </OverlayTrigger>
+
+                <OverlayTrigger  placement="bottom" overlay={(props.user?.id  && props.user?.name===e.nomeautore)?
+                <Tooltip id="tooltip-enabled"> Elimina la pagina</Tooltip>
+                : (props.user?.id  && props.user?.name!==e.nomeautore)?
+                <Tooltip id="tooltip-disabled"> La pagina non è di tua proprietà non puoi eliminarla</Tooltip>
+                :
+                <Tooltip id="tooltip-disabled"> Efettua il login per eliminare la pagina</Tooltip>
+                }>
+                <span className="d-inline-block">
+                <Button variant="danger" disabled={(props.user?.id && props.user?.name===e.nomeautore) || props.user?.admin===1 ? false : true} >
                     <i className='bi bi-trash' /></Button>
+                </span>
+                </OverlayTrigger>
            
             <Col>
                 {blocchi.map((e) =>
@@ -78,6 +99,7 @@ function PageRow(props) {
 
 function MainPages(props) {
   
+    //const user=props.user;
     const navigate = useNavigate();
   
     const [objToEdit, setObjToEdit] = useState(undefined);  // state to keep the info about the object to edit
@@ -115,12 +137,23 @@ function MainPages(props) {
             <Col>
                 <Accordion>
                 {sortedPages.map((e) =>
-                  <PageRow e={e}  key={e.id}  />)
+                  <PageRow e={e}  key={e.id} user={props.user}  />)
                 }
                 </Accordion>
             </Col>
         </Row>
-        <Link className="btn btn-dark btn-lg fixed-right-bottom" to="/add"> &#43; </Link>
+        
+         <OverlayTrigger  placement="bottom" overlay={props.user?.id?  
+          <Tooltip id="tooltip-enabled"> Aggiungi una nuova pagina</Tooltip>
+          :
+          <Tooltip id="tooltip-disabled"> Effettua il login per creare una pagina</Tooltip>
+          }
+          > 
+          <span className="d-inline-block">
+          <Button className="btn btn-dark btn-lg fixed-right-bottom" onClick={()=>navigate('/add')} disabled={props.user?.id? false : true} > &#43; </Button>
+          </span>
+        </OverlayTrigger>
+        
         
       </>
     )

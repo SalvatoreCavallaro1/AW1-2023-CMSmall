@@ -1,4 +1,4 @@
-import { Navbar, Container, Button } from "react-bootstrap";
+import { Navbar, Container, Button,OverlayTrigger,Tooltip } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 
@@ -18,7 +18,24 @@ return (
                 height="30"
                 className="d-inline-block align-top"
                 />{' '}
+                 {
+                 (props.user?.id && props.user?.admin===1)?
+                 <>
+                 MyCMS
+                 <OverlayTrigger  placement="bottom" overlay={  
+                <Tooltip id="tooltip-enabled"> Edita il nome del sito</Tooltip>
+                }>
+                 <span className="d-inline-block">
+                <Button variant='primary'  className='mx-2' 
+                    ><i className='bi bi-pencil-square' /></Button>
+                    </span>
+                    </OverlayTrigger>
+                </>
+                :
+                <>
                 MyCMS
+                </>
+                }
             </Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
