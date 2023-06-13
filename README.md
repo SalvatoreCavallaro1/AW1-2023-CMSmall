@@ -64,13 +64,39 @@ Response body: _None_
  - GET `/api/pages` : Non autenticata, ritorna la lista delle pagine pubblicate
    (devo stabilire un formato JSON appropriato)
 
-- GET `/api/allpages` : Autenticata, ritorna la lista delle pubblicate e non, sia dell'utente autenticato che degli altri utenti.    Parametri: NESSUNO
+- GET `/api/allpages` : Autenticata, ritorna la lista delle pubblicate e nonz, sia dell'utente autenticato che degli altri utenti.    Parametri: NESSUNO ????????????????
 
-- POST `/api/study-plan` : Autenticata, salva il piano di studi corrente (rimpiazza l'eventuale esistente)
+- POST `/api/pages` : Autenticata, salva la pagina creata (rimpiazza l'eventuale esistente)
+ Request body:
+  ```
+  {
+    "titolo": "Una nuova pagina",
+    "id": 1,
+    "name": "Salvo",
+    "datacreazione": "2023-09-08",   
+    "datacreazione": "2023-09-08"
+    [
+      {
+        "idpagina":3,
+        "idblocco":1,
+        "contentuto":"il dell xps 15"
+        "priorità":1
+      },
+      {
+        "idpagina":3,
+        "idblocco":2,
+        "contentuto":"il dell xps 15 è bello"
+        "priorità":2
+      }
+    ]
 
-- DELETE `/api/study-plan` : Autenticata, cancella il piano di studenti
 
-- GET `/api/courses/num-enrolled` : Non autenticata, ritorna solo il n. di studenti iscritti ai corsi con un max.
+  }
+  ```
+
+- DELETE `/api/pages` : Autenticata, cancella la pagina
+
+
 
 
 

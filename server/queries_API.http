@@ -1,2 +1,26 @@
 GET http://localhost:3001/api/pages HTTP/1.1
 ###
+POST http://localhost:3001/api/pages HTTP/1.1
+Content-Type: application/json
+
+{
+  "titolo": "Il gran baloon",
+  "autore": 2,
+  "datacreazione": "2023-09-08",   
+  "datapubblicazione": "2023-09-08",
+  "blocchi":[
+    {
+      "idblocco":1,
+      "contenuto":"10 cose che puoi comprare al gran baloon",
+      "priorità":1
+    },
+    {
+      "idblocco":2,
+      "contenuto":"1: bici 2:vestiti",
+      "priorità":2
+    }
+  ]
+}
+
+
+###

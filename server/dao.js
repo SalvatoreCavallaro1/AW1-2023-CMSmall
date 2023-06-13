@@ -25,3 +25,32 @@ exports.listAllPages=()=>{
     });
 };
 
+
+// add a new page
+exports.createPage = (pagina) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'INSERT INTO pagine(titolo,autore,datacreazione,datapubblicazione) VALUES(?, ?, DATE(?), DATE(?))';
+      db.run(sql, [pagina.titolo, pagina.autore, pagina.datacreazione, pagina.datapubblicazione], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(this.lastID);
+      });
+    });
+  };
+  // blocchipagina update
+  exports.createBlocks = (blocchi) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'INSERT INTO blocchipagine(idpagina,idblocco,contenuto,priorità) VALUES(?, ?, ?, ?)';
+      db.run(sql, [blocchi.idpagina, blocchi.idblocco, blocchi.contenuto, blocchi.priorità], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(this.lastID);
+      });
+    });
+  };
+  
+

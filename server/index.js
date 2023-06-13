@@ -88,6 +88,65 @@ app.get('/api/pages', (req, res) => {
 });
 
 
+//, isLoggedIn,
+// POST /api/answers
+app.post('/api/pages', [
+  check('autore').isInt(),
+  check('titolo').isLength({min: 1}),   // no more needed: the user creating the answer is taken from the session
+  check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
+  check('datapubblicazione').isDate({format: 'YYYY-MM-DD', strictMode: true})
+]
+ ,async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({errors: errors.array()});
+  }
+
+  //const questionId = req.body.questionId;
+  //const resultQuestion = await dao.getQuestion(questionId);  // needed to ensure db consistency
+  //if (resultQuestion.error)
+   // res.status(404).json(resultQuestion);   // questionId does not exist, please insert the question before the answer
+  //else {
+    const page = {
+      titolo: req.body.titolo,
+      autore: req.body.autore, //req.user.id
+      datacreazione: req.body.datacreazione,
+      datapubblicazione: req.body.datapubblicazione,
+      //respondentId: req.user.id,    // It is WRONG to use something different from req.user.id, DO NOT SEND it from client!
+    };
+    const blocchi=req.body.blocchi;
+    //console.log("answer to add: "+JSON.stringify(answer));
+//PageId
+    try {
+      const PageId = await dao.createPage(page);
+     // if(PageId){
+        for (const e of blocchi){
+        //let blocco=[...req.body.blocchi[i]];
+        let block ={
+          idpagina: PageId,
+          idblocco: e.idblocco,
+          contenuto:e.contenuto,
+          priorità:e.priorità,
+        }
+        let idBlocco= await dao.createBlocks(block);
+      }
+   // }
+        // Return the newly created id of the page to the caller. 
+      // A more complex object can also be returned (e.g., the original one with the newly created id)
+      setTimeout(()=>res.status(201).json(PageId), answerDelay);
+    }
+      
+     catch (err) {
+      console.log(err);
+      res.status(503).json({ error: `Database error during the creation of page ${page.titolo} by ${page.autore}.` });
+    }
+  //}
+});
+
+
+
+
+
 /*API utente*/ 
 
 
