@@ -33,6 +33,12 @@ function BodyAccordion(props)
             <p>{props.e.contenuto}</p>
         )
     }
+    else if (props.e.tipo=="immagine")
+    {
+      return(
+        <img src={props.e.contenuto}/>
+      )
+    }
 
 }
 

@@ -47,6 +47,7 @@ const app = new express();
 const port = 3001;
 
 //set-up del middleware
+app.use(express.static('./public'));
 app.use(morgan('dev'));
 app.use(express.json());
 const corsOptions = {
@@ -93,8 +94,8 @@ app.get('/api/pages', (req, res) => {
 app.post('/api/pages', [
   check('autore').isInt(),
   check('titolo').isLength({min: 1}),   // no more needed: the user creating the answer is taken from the session
-  check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
-  check('datapubblicazione').isDate({format: 'YYYY-MM-DD', strictMode: true})
+  check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true})
+  //check('datapubblicazione').isDate({format: 'YYYY-MM-DD', strictMode: true})
 ]
  ,async (req, res) => {
   const errors = validationResult(req);

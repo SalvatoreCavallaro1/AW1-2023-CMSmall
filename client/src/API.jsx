@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 
 const URL = 'http://localhost:3001/api';
 
+
+
 async function getAllPages() {
     // call  /api/pages
     const response = await fetch(URL+'/pages');
@@ -60,11 +62,38 @@ async function getUserInfo() {
 }
 
 
+function addPage(page) {
+  // call  POST /api/pages
+  return new Promise((resolve, reject) => {
+    fetch(URL+`/pages`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(Object.assign({}, page, {datacreazione: page.datacreazione.format("YYYY-MM-DD"),datapubblicazione: (page.datapubblicazione)? page.datapubblicazione.format("YYYY-MM-DD") : null})),   
+    }).then((response) => {
+      if (response.ok) {
+        response.json()
+          .then((id) => resolve(id))
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+      } else {
+        // analyze the cause of error
+        response.json()
+          .then((message) => { reject(message); }) // error message in the response body
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+      }
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+  });
+}
+
+
 
 const API = {
     getAllPages,
     logIn,
     logOut,
-    getUserInfo
+    getUserInfo,
+    addPage
   };
   export default API;
