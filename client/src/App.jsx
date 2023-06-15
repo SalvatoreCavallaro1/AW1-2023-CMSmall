@@ -93,7 +93,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Pages user={user} logout={doLogOut} pages={pages} errorMsg={errorMsg} resetErrorMsg={()=>setErrorMsg('')} initialLoading={initialLoading}/>}/>
           <Route path='/login' element={loggedIn? <Navigate replace to='/' />:  <LoginForm loginSuccessful={loginSuccessful} />} />
-          <Route path='/add' element={loggedIn? <PageForm loginSuccessful={loginSuccessful}/>:  <Navigate replace to='/' /> } />
+          <Route path='/add' element={loggedIn? <PageForm user={user} logout={doLogOut}/>:  <Navigate replace to='/' /> } />
           <Route path='/*' element={<DefaultRoute />} />
         </Routes>
       </BrowserRouter>
