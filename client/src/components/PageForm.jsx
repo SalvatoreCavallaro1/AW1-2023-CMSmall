@@ -15,7 +15,7 @@ function PageForm(props){
         <>
             <NavHeader user={props.user} logout={props.logout}/>
             <Container fluid>
-            <TheForm/>
+            <TheForm user={props.user}/>
 
             </Container>
         </>
@@ -27,11 +27,14 @@ function TheForm(props){
     const {pageId}=useParams();
     const objToEdit= pageId /// && props.answerList.find(e => e.id === parseInt(answerId));
     //console.log('objToEdit: '+JSON.stringify(objToEdit));
-    const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.date.format('YYYY-MM-DD') : null);  //string: dayjs object is created only on submit
+    const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.date.format('YYYY-MM-DD') : '');  //string: dayjs object is created only on submit
+    const [datacreazione,setDatacreazione]=useState(objToEdit ? objToEdit.date.format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD'));
     const [titolo, setTitolo] = useState(objToEdit ? objToEdit.titolo : '');
-    const [header, setHeader] = useState(objToEdit ? objToEdit.header : '');
-    const [paragrafo, setParagrafo] = useState(objToEdit ? objToEdit.paragrafo : '');
-    //const [respondent, setRespondent] = useState(objToEdit ? objToEdit.respondent : '');
+    const [header, setHeader] = useState(objToEdit ? objToEdit.header : {});
+    const [paragrafo, setParagrafo] = useState(objToEdit ? objToEdit.paragrafo : {});
+    const [image, setImage] = useState(objToEdit  ? objToEdit.image : {});
+    const [blocchi,setBlocchi]=useState(objToEdit ? objToEdit.blocchi : []);
+    const [autore, setAutore] = useState(objToEdit ? objToEdit.autore : props.user.id);
     //const [score, setScore] = useState(objToEdit ? objToEdit.score : 0); 
     const [errorMsg,setErrorMsg]=useState('');
     
@@ -52,11 +55,34 @@ function TheForm(props){
         else {
             const e = {
                 titolo: titolo,
-                //respondent: respondent,
+                autore: autore,
+                datacreazione: datacreazione,
+                datapubblicazione: dayjs(datapubblicazione),
+                blocchi: [
+                    (header) ?
+                        {
+                            idblocco: header.idblocco,
+                            contenuto: header.contenuto,
+                            priorità: header.priorità
+                        } : null,
+                    (paragrafo) ?
+                        {
+                            idblocco: paragrafo.idblocco,
+                            contenuto: paragrafo.contenuto,
+                            priorità: paragrafo.priorità
+                        } : null,
+                    (image) ?
+                        {
+                            idblocco: image.idblocco,
+                            contenuto: image.contenuto,
+                            priorità: image.priorità
+                        } : null
+
+                ]
                 //score: parseInt(score),
-                datapubblicazione: dayjs(datapubblicazione)
+
             }
-            //console.log(e);
+            console.log(e);
 
           /*  if (objToEdit) {  // decide if this is an edit or an add
                 e.id = objToEdit.id;
@@ -64,14 +90,21 @@ function TheForm(props){
             } else {
                 props.addAnswer(e);
             }*/
-            navigate('/');
+           // navigate('/');
         }
     }
+
+    //mettere ogni blocco in un singolo componente, mettere un stato che parte da 0 e può solo essre incrementato
+    //ad ogni blocco viene aggiunto un  id, questo id sarà usato dentro il vettore/oggetto dei blocchi per poterlo modificare o aggiugnere
+    //fare funzioni handleHeader, handleParagrafo,handleImg, dove all'interno si setta il contenuto dentro il vettore dei blocchi
+    // usare stati di singoli per poi settare il vettore? settare direttamente il vettore?
+    //usare il vettore per settare i blocchi nell'oggetto e dentro la funzione handle submit
 
         return(
             <>
                 {errorMsg? <Alert variant='danger' onClose={()=>setErrorMsg('')} dismissible>{errorMsg}</Alert> : false }
                 <Form onSubmit={handleSubmit}>
+
                     <Form.Group className='mb-3'>
                         <Form.Label>Titolo</Form.Label>
                         <Form.Control type="text" name="titolo" value={titolo} onChange={ev => setTitolo(ev.target.value)} />
@@ -79,12 +112,12 @@ function TheForm(props){
 
                     <Form.Group className='mb-3'>
                         <Form.Label>Header</Form.Label>
-                        <Form.Control type="text" name="header" value={header} onChange={ev => setHeader(ev.target.value)} />
+                        <Form.Control type="text" name="header" value={header.contenuto} onChange={ev => setHeader({idblocco:1,contenuto: ev.target.value,priorità:1})} as="textarea" rows={3}/>
                     </Form.Group>
 
                     <Form.Group className='mb-3'>
                         <Form.Label>Paragrafo</Form.Label>
-                        <Form.Control type="text" name="paragrafo" value={paragrafo} onChange={ev => setParagrafo(ev.target.value)} as="textarea" rows={3}/>
+                        <Form.Control type="text" name="paragrafo" value={paragrafo.contenuto} onChange={ev => setParagrafo({idblocco:2,contenuto: ev.target.value,priorità:2})} as="textarea" rows={3}/>
                     </Form.Group>
 
                     <Form.Group className='mb-3'>
@@ -107,9 +140,11 @@ function TheForm(props){
                                     Il gran Baloon.
                                 </Figure.Caption>
                             </Figure>}
+                            onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
+                            value="http://localhost:3001/images/baloon.jpg"
                             name="group1"
-                            type='checkbox'
-                            id={`inline-'checkbox'-1`}
+                            type='radio'
+                            id={`inline-radio-1`}
                         />
                         <Form.Check 
                             label={<Figure>
@@ -124,9 +159,11 @@ function TheForm(props){
                                     Il monte dei capuccini.
                                 </Figure.Caption>
                             </Figure>}
+                            onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
+                            value="http://localhost:3001/images/torino1.jpeg"
                             name="group1"
-                            type='checkbox'
-                            id={`inline-'checkbox'-2`}
+                            type='radio'
+                            id={`inline-radio-2`}
                         />
                         <Form.Check
                             label={<Figure>
@@ -141,9 +178,11 @@ function TheForm(props){
                                     Il gran Baloon.
                                 </Figure.Caption>
                             </Figure>}
+                            onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
+                            value="http://localhost:3001/images/baloon.jpg"
                             name="group1"
-                            type='checkbox'
-                            id={`inline-'checkbox'-3`}
+                            type='radio'
+                            id={`inline-radio-3`}
                         />
                         <Form.Check
                             label={<Figure>
@@ -158,9 +197,11 @@ function TheForm(props){
                                     Il gran Baloon.
                                 </Figure.Caption>
                             </Figure>}
+                            onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
+                            value="http://localhost:3001/images/baloon.jpg"
                             name="group1"
-                            type='checkbox'
-                            id={`inline-'checkbox'-4`}
+                            type='radio'
+                            id={`inline-radio-4`}
                         />
                     </Form.Group>
 
