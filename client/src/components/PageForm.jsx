@@ -33,35 +33,45 @@ function TheForm(props){
     const [header, setHeader] = useState(objToEdit ? objToEdit.header : {});
     const [paragrafo, setParagrafo] = useState(objToEdit ? objToEdit.paragrafo : {});
     const [image, setImage] = useState(objToEdit  ? objToEdit.image : {});
-    const [blocchi,setBlocchi]=useState(objToEdit ? objToEdit.blocchi : []);
+    const [blocchi,setBlocchi]=useState([]);
     const [autore, setAutore] = useState(objToEdit ? objToEdit.autore : props.user.id);
     //const [score, setScore] = useState(objToEdit ? objToEdit.score : 0); 
     const [errorMsg,setErrorMsg]=useState('');
-    const [idTemp,setIdTemp]=useState(0);
+    const [idTemp,setIdTemp]=useState(1);
 
     function handleBlocco(blocco){
         //blocco.id
+        console.log(blocchi);
+        let arrayblocchi=[...blocchi]
+        console.log(blocco);
         let newblocco={}
         let idblocco=0;
         switch(blocco.name)
         {
             case "header":
                 idblocco=1;
+               // setHeader(blocco.contenuto);
                 break;
             case "paragrafo":
                 idblocco=2;
+               // setParagrafo(blocco.contenuto)
                 break;
             case "img":
                 idblocco=3;
+               //setImage(blocco.img);
                 break;
             default:
                 break;
         }
 
-        let id= blocchi.find(block=>block.Tempid===blocco.id);
-        if(id)
+        
+        let el= arrayblocchi.find(block=>block.Tempid==blocco.id);
+        console.log(el);
+        if(el)
         {
-            console.log("si"); ///?????
+           // console.log("si"); ///?????
+          // el.contenuto=blocco.contenuto;
+           console.log(el);
         }
         else
         {
@@ -70,12 +80,15 @@ function TheForm(props){
                 newblocco,
                 {Tempid:blocco.id,idblocco:1,contenuto: blocco.contenuto,priorità:blocco.priorità}
             );*/
-            newblocco={Tempid:blocco.id,idblocco:idblocco,contenuto: blocco.contenuto,priorità:blocco.priorità};
-            setBlocchi(blocchi.push(newblocco));
+            newblocco={Tempid:parseInt(blocco.id),idblocco:idblocco,contenuto: blocco.contenuto,priorità:blocco.priorità};
+            //let arrayblocchi=[...blocchi]
+            arrayblocchi.push(newblocco);
+            setBlocchi(arrayblocchi);
+            console.log(blocchi);
             //let newblocco={Tempid:blocco.id,idblocco:idblocco,contenuto: blocco.contenuto,priorità:blocco.priorità};
         }
 
-
+           // return id.Tempid;
         
         
 
@@ -101,7 +114,7 @@ function TheForm(props){
                 autore: autore,
                 datacreazione: datacreazione,
                 datapubblicazione: dayjs(datapubblicazione),
-                blocchi: [
+               /* blocchi: [
                     (header) ?
                         {
                             idblocco: header.idblocco,
@@ -121,7 +134,7 @@ function TheForm(props){
                             priorità: image.priorità
                         } : null
 
-                ]
+                ]*/
                 //score: parseInt(score),
 
             }
@@ -155,7 +168,7 @@ function TheForm(props){
 
                     <Form.Group className='mb-3'>
                         <Form.Label>Header</Form.Label>
-                        <Form.Control type="text" name="header" id={(idTemp===0)? idTemp : idTemp+1} value={header.contenuto} onChange={ev => handleBlocco({id:ev.target.id,name:ev.target.name,contenuto: ev.target.value,priorità:1})} as="textarea" rows={3}/>
+                        <Form.Control type="text" name="header" id={idTemp} value={header.contenuto} onChange={ev => {handleBlocco({id:ev.target.id,name:ev.target.name,contenuto: ev.target.value,priorità:1}),setHeader(ev.target.value) } } as="textarea" rows={3}/>
                     </Form.Group>
 
                     <Form.Group className='mb-3'>
