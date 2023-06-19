@@ -37,6 +37,49 @@ function TheForm(props){
     const [autore, setAutore] = useState(objToEdit ? objToEdit.autore : props.user.id);
     //const [score, setScore] = useState(objToEdit ? objToEdit.score : 0); 
     const [errorMsg,setErrorMsg]=useState('');
+    const [idTemp,setIdTemp]=useState(0);
+
+    function handleBlocco(blocco){
+        //blocco.id
+        let newblocco={}
+        let idblocco=0;
+        switch(blocco.name)
+        {
+            case "header":
+                idblocco=1;
+                break;
+            case "paragrafo":
+                idblocco=2;
+                break;
+            case "img":
+                idblocco=3;
+                break;
+            default:
+                break;
+        }
+
+        let id= blocchi.find(block=>block.Tempid===blocco.id);
+        if(id)
+        {
+            console.log("si"); ///?????
+        }
+        else
+        {
+           //let newblocco={...blocco} ;
+            /*Object.assign(
+                newblocco,
+                {Tempid:blocco.id,idblocco:1,contenuto: blocco.contenuto,priorità:blocco.priorità}
+            );*/
+            newblocco={Tempid:blocco.id,idblocco:idblocco,contenuto: blocco.contenuto,priorità:blocco.priorità};
+            setBlocchi(blocchi.push(newblocco));
+            //let newblocco={Tempid:blocco.id,idblocco:idblocco,contenuto: blocco.contenuto,priorità:blocco.priorità};
+        }
+
+
+        
+        
+
+    }
     
 
     function handleSubmit(event) {
@@ -94,7 +137,7 @@ function TheForm(props){
         }
     }
 
-    //mettere ogni blocco in un singolo componente, mettere un stato che parte da 0 e può solo essre incrementato
+    //mettere ogni blocco in un singolo componente, mettere un stato che parte da 0 e può solo essere incrementato
     //ad ogni blocco viene aggiunto un  id, questo id sarà usato dentro il vettore/oggetto dei blocchi per poterlo modificare o aggiugnere
     //fare funzioni handleHeader, handleParagrafo,handleImg, dove all'interno si setta il contenuto dentro il vettore dei blocchi
     // usare stati di singoli per poi settare il vettore? settare direttamente il vettore?
@@ -112,12 +155,12 @@ function TheForm(props){
 
                     <Form.Group className='mb-3'>
                         <Form.Label>Header</Form.Label>
-                        <Form.Control type="text" name="header" value={header.contenuto} onChange={ev => setHeader({idblocco:1,contenuto: ev.target.value,priorità:1})} as="textarea" rows={3}/>
+                        <Form.Control type="text" name="header" id={(idTemp===0)? idTemp : idTemp+1} value={header.contenuto} onChange={ev => handleBlocco({id:ev.target.id,name:ev.target.name,contenuto: ev.target.value,priorità:1})} as="textarea" rows={3}/>
                     </Form.Group>
 
                     <Form.Group className='mb-3'>
                         <Form.Label>Paragrafo</Form.Label>
-                        <Form.Control type="text" name="paragrafo" value={paragrafo.contenuto} onChange={ev => setParagrafo({idblocco:2,contenuto: ev.target.value,priorità:2})} as="textarea" rows={3}/>
+                        <Form.Control type="text" name="paragrafo" id={(idTemp===0)? idTemp : idTemp+1} value={paragrafo.contenuto} onChange={ev => handleBlocco({id:ev.target.id,name:ev.target.name,contenuto: ev.target.value,priorità:2})} as="textarea" rows={3}/>
                     </Form.Group>
 
                     <Form.Group className='mb-3'>
@@ -125,7 +168,7 @@ function TheForm(props){
                         <Form.Control type="date" name="datapubblicazione" value={datapubblicazione} onChange={ev => setDatapubblicazione(ev.target.value)} />
                     </Form.Group>
 
-                    <Form.Group className='mb-3'>
+                    <Form.Group className='mb-3' idTemporary={(idTemp===0)? idTemp : idTemp+1}>
                         <Form.Label>Seleziona un immagine fra quella disponibili</Form.Label>
                         <Form.Check
                             label={<Figure>
@@ -140,11 +183,13 @@ function TheForm(props){
                                     Il gran Baloon.
                                 </Figure.Caption>
                             </Figure>}
-                            onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
                             value="http://localhost:3001/images/baloon.jpg"
                             name="group1"
+                            nome="img"
                             type='radio'
+                            //idTemporary={(idTemp===0)? idTemp : idTemp+1}
                             id={`inline-radio-1`}
+                            onChange={(ev) =>handleBlocco({id:ev.target.parentNode.idTemporary,name:ev.target.nome,contenuto: ev.target.value,priorità:3})}
                         />
                         <Form.Check 
                             label={<Figure>
@@ -159,11 +204,13 @@ function TheForm(props){
                                     Il monte dei capuccini.
                                 </Figure.Caption>
                             </Figure>}
-                            onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
+                            //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
                             value="http://localhost:3001/images/torino1.jpeg"
                             name="group1"
+                            nome="img"
                             type='radio'
                             id={`inline-radio-2`}
+                            onChange={(ev) =>handleBlocco({id:ev.target.parentNode.idTemporary,name:ev.target.nome,contenuto: ev.target.value,priorità:3})}
                         />
                         <Form.Check
                             label={<Figure>
@@ -178,11 +225,14 @@ function TheForm(props){
                                     Il gran Baloon.
                                 </Figure.Caption>
                             </Figure>}
-                            onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
+                            //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
                             value="http://localhost:3001/images/baloon.jpg"
                             name="group1"
+                            nome="img"
                             type='radio'
                             id={`inline-radio-3`}
+                            onChange={(ev) =>handleBlocco({id:ev.target.parentNode.idTemporary,name:ev.target.nome,contenuto: ev.target.value,priorità:3})}
+
                         />
                         <Form.Check
                             label={<Figure>
@@ -197,11 +247,14 @@ function TheForm(props){
                                     Il gran Baloon.
                                 </Figure.Caption>
                             </Figure>}
-                            onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
+                            //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
                             value="http://localhost:3001/images/baloon.jpg"
                             name="group1"
                             type='radio'
+                            nome="img"
                             id={`inline-radio-4`}
+                            onChange={(ev) =>handleBlocco({id:ev.target.parentNode.idTemporary,name:ev.target.nome,contenuto: ev.target.value,priorità:3})}
+
                         />
                     </Form.Group>
 
