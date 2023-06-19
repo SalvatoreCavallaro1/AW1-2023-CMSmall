@@ -40,7 +40,7 @@ function TheForm(props){
     const [idTemp,setIdTemp]=useState(1);
 
     function handleBlocco(blocco){
-        //blocco.id
+        console.log(blocco);
         console.log(blocchi);
         let arrayblocchi=[...blocchi]
         console.log(blocco);
@@ -67,11 +67,15 @@ function TheForm(props){
         
         let el= arrayblocchi.find(block=>block.Tempid==blocco.id);
         console.log(el);
+        
         if(el)
         {
+            let index=arrayblocchi.indexOf(el)
+            console.log(index);
            // console.log("si"); ///?????
           // el.contenuto=blocco.contenuto;
-           console.log(el);
+            arrayblocchi[index].contenuto=blocco.contenuto;
+
         }
         else
         {
@@ -80,11 +84,12 @@ function TheForm(props){
                 newblocco,
                 {Tempid:blocco.id,idblocco:1,contenuto: blocco.contenuto,priorità:blocco.priorità}
             );*/
-            newblocco={Tempid:parseInt(blocco.id),idblocco:idblocco,contenuto: blocco.contenuto,priorità:blocco.priorità};
+            newblocco={Tempid:blocco.id,idblocco:idblocco,contenuto: blocco.contenuto,priorità:blocco.priorità};
             //let arrayblocchi=[...blocchi]
             arrayblocchi.push(newblocco);
             setBlocchi(arrayblocchi);
             console.log(blocchi);
+            setIdTemp(idTemp+1);
             //let newblocco={Tempid:blocco.id,idblocco:idblocco,contenuto: blocco.contenuto,priorità:blocco.priorità};
         }
 
@@ -168,12 +173,12 @@ function TheForm(props){
 
                     <Form.Group className='mb-3'>
                         <Form.Label>Header</Form.Label>
-                        <Form.Control type="text" name="header" id={idTemp} value={header.contenuto} onChange={ev => {handleBlocco({id:ev.target.id,name:ev.target.name,contenuto: ev.target.value,priorità:1}),setHeader(ev.target.value) } } as="textarea" rows={3}/>
+                        <Form.Control type="text" name="header" id="1" value={header.contenuto} onChange={ev => {handleBlocco({id:parseInt(ev.target.id),name:ev.target.name,contenuto: ev.target.value,priorità:1}),setHeader(ev.target.value) } } as="textarea" rows={3}/>
                     </Form.Group>
 
                     <Form.Group className='mb-3'>
                         <Form.Label>Paragrafo</Form.Label>
-                        <Form.Control type="text" name="paragrafo" id={(idTemp===0)? idTemp : idTemp+1} value={paragrafo.contenuto} onChange={ev => handleBlocco({id:ev.target.id,name:ev.target.name,contenuto: ev.target.value,priorità:2})} as="textarea" rows={3}/>
+                        <Form.Control type="text" name="paragrafo" id="2" value={paragrafo.contenuto} onChange={ev => {handleBlocco({id:parseInt(ev.target.id),name:ev.target.name,contenuto: ev.target.value,priorità:2}),setParagrafo(ev.target.value)  }} as="textarea" rows={3}/>
                     </Form.Group>
 
                     <Form.Group className='mb-3'>
