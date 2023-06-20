@@ -64,6 +64,7 @@ async function getUserInfo() {
 
 function addPage(page) {
   // call  POST /api/pages
+  console.log(page);
   return new Promise((resolve, reject) => {
     fetch(URL+`/pages`, {
       method: 'POST',
@@ -71,7 +72,9 @@ function addPage(page) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(Object.assign({}, page, {datacreazione: page.datacreazione.format("YYYY-MM-DD"),datapubblicazione: (page.datapubblicazione)? page.datapubblicazione.format("YYYY-MM-DD") : null})),   
+     // body: JSON.stringify(Object.assign({}, page, {datacreazione: page.datacreazione.format("YYYY-MM-DD"),datapubblicazione: (page.datapubblicazione)? page.datapubblicazione.format("YYYY-MM-DD") : null})),   
+        body: JSON.stringify(Object.assign({}, page, {datacreazione: page.datacreazione,datapubblicazione: (page.datapubblicazione)? page.datapubblicazione: null})),   
+
     }).then((response) => {
       if (response.ok) {
         response.json()

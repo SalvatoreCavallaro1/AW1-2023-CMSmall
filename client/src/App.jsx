@@ -85,6 +85,28 @@ function App() {
     setDirty(true);  // load latest version of data, if appropriate
   }
 
+  const addPage = (e) => {
+    // REMEMBER to add questionId
+   // e.questionId = question.id;
+    //e.respondent = user.name;   // respondentId will be taken by server from the session
+
+   // setAnswerList((oldList) => {
+      // Create a new temporary id, waiting for a truly unique id that can only be supplied by the server
+      // This temporary id will be replaced when the server will provide its id.
+
+      // NB: Math.max: do not forget ... (spread), max does not take an array as parameter
+     // const newTempId = Math.max(...oldList.map((e) => e.id)) + 1;
+     // e.id = newTempId;
+     // e.status = 'added';
+      //return [...oldList, e];
+    //}
+    //);
+    console.log(e);
+    API.addPage(e)
+      .then(() => setDirty(true))
+      .catch((err) => handleError(err));
+  }
+
 
 
   return (
@@ -93,7 +115,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Pages user={user} logout={doLogOut} pages={pages} errorMsg={errorMsg} resetErrorMsg={()=>setErrorMsg('')} initialLoading={initialLoading}/>}/>
           <Route path='/login' element={loggedIn? <Navigate replace to='/' />:  <LoginForm loginSuccessful={loginSuccessful} />} />
-          <Route path='/add' element={loggedIn? <PageForm user={user} logout={doLogOut}/>:  <Navigate replace to='/' /> } />
+          <Route path='/add' element={loggedIn? <PageForm user={user} logout={doLogOut} addPage={addPage}/>:  <Navigate replace to='/' /> } />
           <Route path='/*' element={<DefaultRoute />} />
         </Routes>
       </BrowserRouter>

@@ -15,7 +15,7 @@ function PageForm(props){
         <>
             <NavHeader user={props.user} logout={props.logout}/>
             <Container fluid>
-            <TheForm user={props.user}/>
+            <TheForm user={props.user} addPage={props.addPage}/>
 
             </Container>
         </>
@@ -40,10 +40,10 @@ function TheForm(props){
     const [idTemp,setIdTemp]=useState(1);
 
     function handleBlocco(blocco){
-        console.log(blocco);
-        console.log(blocchi);
+        //console.log(blocco);
+        //console.log(blocchi);
         let arrayblocchi=[...blocchi]
-        console.log(blocco);
+        //console.log(blocco);
         let newblocco={}
         let idblocco=0;
         switch(blocco.name)
@@ -66,15 +66,16 @@ function TheForm(props){
 
         
         let el= arrayblocchi.find(block=>block.Tempid==blocco.id);
-        console.log(el);
+        //console.log(el);
         
         if(el)
         {
             let index=arrayblocchi.indexOf(el)
-            console.log(index);
+            //console.log(index);
            // console.log("si"); ///?????
           // el.contenuto=blocco.contenuto;
             arrayblocchi[index].contenuto=blocco.contenuto;
+            //console.log(blocchi);
 
         }
         else
@@ -88,7 +89,7 @@ function TheForm(props){
             //let arrayblocchi=[...blocchi]
             arrayblocchi.push(newblocco);
             setBlocchi(arrayblocchi);
-            console.log(blocchi);
+            //console.log(blocchi);
             setIdTemp(idTemp+1);
             //let newblocco={Tempid:blocco.id,idblocco:idblocco,contenuto: blocco.contenuto,priorità:blocco.priorità};
         }
@@ -118,7 +119,8 @@ function TheForm(props){
                 titolo: titolo,
                 autore: autore,
                 datacreazione: datacreazione,
-                datapubblicazione: dayjs(datapubblicazione),
+                datapubblicazione: dayjs(datapubblicazione).format('YYYY-MM-DD'),
+                blocchi:blocchi
                /* blocchi: [
                     (header) ?
                         {
@@ -143,6 +145,7 @@ function TheForm(props){
                 //score: parseInt(score),
 
             }
+            props.addPage(e);
             console.log(e);
 
           /*  if (objToEdit) {  // decide if this is an edit or an add
@@ -186,7 +189,7 @@ function TheForm(props){
                         <Form.Control type="date" name="datapubblicazione" value={datapubblicazione} onChange={ev => setDatapubblicazione(ev.target.value)} />
                     </Form.Group>
 
-                    <Form.Group className='mb-3' idTemporary={(idTemp===0)? idTemp : idTemp+1}>
+                    <Form.Group className='mb-3'>
                         <Form.Label>Seleziona un immagine fra quella disponibili</Form.Label>
                         <Form.Check
                             label={<Figure>
@@ -202,12 +205,13 @@ function TheForm(props){
                                 </Figure.Caption>
                             </Figure>}
                             value="http://localhost:3001/images/baloon.jpg"
-                            name="group1"
-                            nome="img"
+                            name="img"
+                            
                             type='radio'
                             //idTemporary={(idTemp===0)? idTemp : idTemp+1}
-                            id={`inline-radio-1`}
-                            onChange={(ev) =>handleBlocco({id:ev.target.parentNode.idTemporary,name:ev.target.nome,contenuto: ev.target.value,priorità:3})}
+                            id="{`inline-radio-1`}"
+                            data-id="4"
+                            onChange={(ev) =>handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
                         />
                         <Form.Check 
                             label={<Figure>
@@ -224,11 +228,12 @@ function TheForm(props){
                             </Figure>}
                             //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
                             value="http://localhost:3001/images/torino1.jpeg"
-                            name="group1"
-                            nome="img"
+                            //name="group1"
+                            name="img"
                             type='radio'
                             id={`inline-radio-2`}
-                            onChange={(ev) =>handleBlocco({id:ev.target.parentNode.idTemporary,name:ev.target.nome,contenuto: ev.target.value,priorità:3})}
+                            data-id="4"
+                            onChange={(ev) =>handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
                         />
                         <Form.Check
                             label={<Figure>
@@ -245,11 +250,12 @@ function TheForm(props){
                             </Figure>}
                             //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
                             value="http://localhost:3001/images/baloon.jpg"
-                            name="group1"
-                            nome="img"
+                            //name="group1"
+                            name="img"
                             type='radio'
                             id={`inline-radio-3`}
-                            onChange={(ev) =>handleBlocco({id:ev.target.parentNode.idTemporary,name:ev.target.nome,contenuto: ev.target.value,priorità:3})}
+                            data-id="4"
+                            onChange={(ev) =>handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
 
                         />
                         <Form.Check
@@ -267,11 +273,12 @@ function TheForm(props){
                             </Figure>}
                             //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
                             value="http://localhost:3001/images/baloon.jpg"
-                            name="group1"
+                            //name="group1"
                             type='radio'
-                            nome="img"
+                            name="img"
                             id={`inline-radio-4`}
-                            onChange={(ev) =>handleBlocco({id:ev.target.parentNode.idTemporary,name:ev.target.nome,contenuto: ev.target.value,priorità:3})}
+                            data-id="4"
+                            onChange={(ev) =>handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
 
                         />
                     </Form.Group>
