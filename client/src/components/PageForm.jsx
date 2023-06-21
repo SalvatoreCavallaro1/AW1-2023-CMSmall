@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import API from '../API';
 import dayjs from 'dayjs';
 import NavHeader from './NavbarComponents';
-import { Container,Form,Button,Alert,Col,Image,Figure } from 'react-bootstrap';
+import { Container,Form,Button,Alert,Col,Image,Figure, FormSelect } from 'react-bootstrap';
 import { useNavigate, useParams,Link } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -231,6 +231,7 @@ function TheForm(props){
     //const [score, setScore] = useState(objToEdit ? objToEdit.score : 0); 
     const [errorMsg,setErrorMsg]=useState('');
     const [idTemp,setIdTemp]=useState(1);
+    const [formFields,setFormFields]=useState([{tipo:"Header",priorità:1},{tipo:"Paragrafo",priorità:2},{tipo:"Immagini",priorità:3}]);
 
     function handleBlocco(blocco){
         //console.log(blocco);
@@ -351,6 +352,31 @@ function TheForm(props){
         }
     }
 
+    function displayEl(el)
+    {
+        
+     //   for(let el of formFields){
+            if (el.tipo=="Header")
+            return(
+                <TheHeader header={header} handleBlocco={handleBlocco} setHeader={setHeader}/>
+                
+
+            );
+            else if (el.tipo=="Paragrafo")
+            return(
+                <Paragrafo paragrafo={paragrafo} handleBlocco={handleBlocco} setParagrafo={setParagrafo}/> 
+
+            );
+            else if (el.tipo=="Immagini")
+            return(
+                <Immagini handleBlocco={handleBlocco}/>
+
+            );
+       // }
+    
+    }
+
+   
     //mettere ogni blocco in un singolo componente, mettere un stato che parte da 0 e può solo essere incrementato
     //ad ogni blocco viene aggiunto un  id, questo id sarà usato dentro il vettore/oggetto dei blocchi per poterlo modificare o aggiugnere
     //fare funzioni handleHeader, handleParagrafo,handleImg, dove all'interno si setta il contenuto dentro il vettore dei blocchi
@@ -372,12 +398,22 @@ function TheForm(props){
                         <Form.Control type="date" name="datapubblicazione" value={datapubblicazione} onChange={ev => setDatapubblicazione(ev.target.value)} />
                     </Form.Group>
 
-                    <TheHeader header={header} handleBlocco={handleBlocco} setHeader={setHeader}/>
-                    <Paragrafo paragrafo={paragrafo} handleBlocco={handleBlocco} setParagrafo={setParagrafo}/> 
-                    <Immagini handleBlocco={handleBlocco}/>
+                    
+                    {
+                   // blocchi.map((e) =>
+                  //<BodyAccordion e={e}  key={e.idblocco}  />)
+                }
+             
 
                     
-
+                    {
+                        //formFields.map(displayEl(e){<Form.Group className='mb-3'>
+                        //    {e}
+                        //</Form.Group>)
+                   // }
+                       
+                        
+                    }
                     
 
                     
