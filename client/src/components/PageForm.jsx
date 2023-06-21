@@ -22,6 +22,199 @@ function PageForm(props){
     );
 }
 
+
+function TheHeader(props){
+return(
+    <Form.Group className='mb-3'>
+        <div className="d-flex align-items-center">
+            <div>
+                <Button variant='primary' className='mx-2'
+                //onClick={() => moveFieldUp(fieldIndex)}
+                // disabled={fieldIndex === 0} // Disable button if the field is already at the top
+                >
+                    &#8593;
+                </Button>
+                <Button
+                    variant='primary'
+                    className='mx-2'
+                //onClick={() => moveFieldDown(fieldIndex)}
+                //disabled={fieldIndex === fields.length - 1} // Disable button if the field is already at the bottom
+                >
+                    &#8595;
+                </Button>
+            </div>
+            <div className="flex-grow-1">
+                <Form.Label>Header</Form.Label>
+                <Form.Control type="text" name="header" id="1" value={props.header.contenuto} onChange={ev => { props.handleBlocco({ id: parseInt(ev.target.id), name: ev.target.name, contenuto: ev.target.value, priorità: 1 }), props.setHeader(ev.target.value) }} as="textarea" rows={3} />
+            </div>
+            <div>
+                <Button variant="danger" >
+                    <i className='bi bi-trash' /></Button>
+            </div>
+        </div>
+    </Form.Group>
+);
+    
+
+
+}
+
+function Paragrafo(props){
+return(
+    <Form.Group className='mb-3'>
+        <div className="d-flex align-items-center">
+            <div>
+                <Button variant='primary' className='mx-2'
+                //onClick={() => moveFieldUp(fieldIndex)}
+                // disabled={fieldIndex === 0} // Disable button if the field is already at the top
+                >
+                    &#8593;
+                </Button>
+                <Button
+                    variant='primary'
+                    className='mx-2'
+                //onClick={() => moveFieldDown(fieldIndex)}
+                //disabled={fieldIndex === fields.length - 1} // Disable button if the field is already at the bottom
+                >
+                    &#8595;
+                </Button>
+            </div>
+            <div className="flex-grow-1">
+                <Form.Label>Paragrafo</Form.Label>
+                <Form.Control type="text" name="paragrafo" id="2" value={props.paragrafo.contenuto} onChange={ev => { props.handleBlocco({ id: parseInt(ev.target.id), name: ev.target.name, contenuto: ev.target.value, priorità: 2 }), props.setParagrafo(ev.target.value) }} as="textarea" rows={3} />
+            </div>
+            <div>
+                <Button variant="danger" >
+                    <i className='bi bi-trash' /></Button>
+            </div>
+        </div>
+
+    </Form.Group>
+    );
+}
+
+function Immagini(props){
+return(
+    <Form.Group className='mb-3'>
+                    <div className="d-flex align-items-center">
+                    <div>
+                    <Button variant='primary' className='mx-2'
+                        //onClick={() => moveFieldUp(fieldIndex)}
+                        // disabled={fieldIndex === 0} // Disable button if the field is already at the top
+                        >
+                            &#8593;
+                        </Button>
+                        <Button
+                            variant='primary'
+                            className='mx-2'
+                        //onClick={() => moveFieldDown(fieldIndex)}
+                        //disabled={fieldIndex === fields.length - 1} // Disable button if the field is already at the bottom
+                        >
+                            &#8595;
+                        </Button>
+                        </div>
+                        <div className="flex-grow-1">
+                        <Form.Label>Seleziona un immagine fra quella disponibili</Form.Label>
+                        <Form.Check
+                            label={<Figure>
+                                <Figure.Image
+                                    width={171}
+                                    height={180}
+                                    alt="171x180"
+                                    src="http://localhost:3001/images/baloon.jpg"
+                                    rounded
+                                />
+                                <Figure.Caption>
+                                    Il gran Baloon.
+                                </Figure.Caption>
+                            </Figure>}
+                            value="http://localhost:3001/images/baloon.jpg"
+                            name="img"
+                            
+                            type='radio'
+                            //idTemporary={(idTemp===0)? idTemp : idTemp+1}
+                            id="{`inline-radio-1`}"
+                            data-id="4"
+                            onChange={(ev) =>props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
+                        />
+                        <Form.Check 
+                            label={<Figure>
+                                <Figure.Image
+                                    width={171}
+                                    height={180}
+                                    alt="171x180"
+                                    src="http://localhost:3001/images/torino1.jpeg"
+                                    rounded
+                                />
+                                <Figure.Caption>
+                                    Il monte dei capuccini.
+                                </Figure.Caption>
+                            </Figure>}
+                            //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
+                            value="http://localhost:3001/images/torino1.jpeg"
+                            //name="group1"
+                            name="img"
+                            type='radio'
+                            id={`inline-radio-2`}
+                            data-id="4"
+                            onChange={(ev) =>props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
+                        />
+                        <Form.Check
+                            label={<Figure>
+                                <Figure.Image
+                                    width={171}
+                                    height={180}
+                                    alt="171x180"
+                                    src="http://localhost:3001/images/baloon.jpg"
+                                    rounded
+                                />
+                                <Figure.Caption>
+                                    Il gran Baloon.
+                                </Figure.Caption>
+                            </Figure>}
+                            //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
+                            value="http://localhost:3001/images/baloon.jpg"
+                            //name="group1"
+                            name="img"
+                            type='radio'
+                            id={`inline-radio-3`}
+                            data-id="4"
+                            onChange={(ev) =>props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
+
+                        />
+                        <Form.Check
+                            label={<Figure>
+                                <Figure.Image
+                                    width={171}
+                                    height={180}
+                                    alt="171x180"
+                                    src="http://localhost:3001/images/baloon.jpg"
+                                    rounded
+                                />
+                                <Figure.Caption>
+                                    Il gran Baloon.
+                                </Figure.Caption>
+                            </Figure>}
+                            //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
+                            value="http://localhost:3001/images/baloon.jpg"
+                            //name="group1"
+                            type='radio'
+                            name="img"
+                            id={`inline-radio-4`}
+                            data-id="4"
+                            onChange={(ev) =>props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
+
+                        />
+                        </div>
+                        <div>
+                        <Button variant="danger" >
+                        <i className='bi bi-trash' /></Button>
+                        </div>
+                        </div>
+                    </Form.Group>
+);
+}
+
 function TheForm(props){
     const navigate=useNavigate();
     const {pageId}=useParams();
@@ -169,119 +362,23 @@ function TheForm(props){
                 {errorMsg? <Alert variant='danger' onClose={()=>setErrorMsg('')} dismissible>{errorMsg}</Alert> : false }
                 <Form onSubmit={handleSubmit}>
 
-                    <Form.Group className='mb-3'>
-                        <Form.Label>Titolo</Form.Label>
-                        <Form.Control type="text" name="titolo" value={titolo} onChange={ev => setTitolo(ev.target.value)} />
+                    <Form.Group className='mb-3'>                            
+                                <Form.Label>Titolo</Form.Label>
+                                <Form.Control type="text" name="titolo" value={titolo} onChange={ev => setTitolo(ev.target.value)} />
                     </Form.Group>
-
-                    <Form.Group className='mb-3'>
-                        <Form.Label>Header</Form.Label>
-                        <Form.Control type="text" name="header" id="1" value={header.contenuto} onChange={ev => {handleBlocco({id:parseInt(ev.target.id),name:ev.target.name,contenuto: ev.target.value,priorità:1}),setHeader(ev.target.value) } } as="textarea" rows={3}/>
-                    </Form.Group>
-
-                    <Form.Group className='mb-3'>
-                        <Form.Label>Paragrafo</Form.Label>
-                        <Form.Control type="text" name="paragrafo" id="2" value={paragrafo.contenuto} onChange={ev => {handleBlocco({id:parseInt(ev.target.id),name:ev.target.name,contenuto: ev.target.value,priorità:2}),setParagrafo(ev.target.value)  }} as="textarea" rows={3}/>
-                    </Form.Group>
-
+                   
                     <Form.Group className='mb-3'>
                         <Form.Label>Data Pubblicazione</Form.Label>
                         <Form.Control type="date" name="datapubblicazione" value={datapubblicazione} onChange={ev => setDatapubblicazione(ev.target.value)} />
                     </Form.Group>
 
-                    <Form.Group className='mb-3'>
-                        <Form.Label>Seleziona un immagine fra quella disponibili</Form.Label>
-                        <Form.Check
-                            label={<Figure>
-                                <Figure.Image
-                                    width={171}
-                                    height={180}
-                                    alt="171x180"
-                                    src="http://localhost:3001/images/baloon.jpg"
-                                    rounded
-                                />
-                                <Figure.Caption>
-                                    Il gran Baloon.
-                                </Figure.Caption>
-                            </Figure>}
-                            value="http://localhost:3001/images/baloon.jpg"
-                            name="img"
-                            
-                            type='radio'
-                            //idTemporary={(idTemp===0)? idTemp : idTemp+1}
-                            id="{`inline-radio-1`}"
-                            data-id="4"
-                            onChange={(ev) =>handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
-                        />
-                        <Form.Check 
-                            label={<Figure>
-                                <Figure.Image
-                                    width={171}
-                                    height={180}
-                                    alt="171x180"
-                                    src="http://localhost:3001/images/torino1.jpeg"
-                                    rounded
-                                />
-                                <Figure.Caption>
-                                    Il monte dei capuccini.
-                                </Figure.Caption>
-                            </Figure>}
-                            //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
-                            value="http://localhost:3001/images/torino1.jpeg"
-                            //name="group1"
-                            name="img"
-                            type='radio'
-                            id={`inline-radio-2`}
-                            data-id="4"
-                            onChange={(ev) =>handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
-                        />
-                        <Form.Check
-                            label={<Figure>
-                                <Figure.Image
-                                    width={171}
-                                    height={180}
-                                    alt="171x180"
-                                    src="http://localhost:3001/images/baloon.jpg"
-                                    rounded
-                                />
-                                <Figure.Caption>
-                                    Il gran Baloon.
-                                </Figure.Caption>
-                            </Figure>}
-                            //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
-                            value="http://localhost:3001/images/baloon.jpg"
-                            //name="group1"
-                            name="img"
-                            type='radio'
-                            id={`inline-radio-3`}
-                            data-id="4"
-                            onChange={(ev) =>handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
+                    <TheHeader header={header} handleBlocco={handleBlocco} setHeader={setHeader}/>
+                    <Paragrafo paragrafo={paragrafo} handleBlocco={handleBlocco} setParagrafo={setParagrafo}/> 
+                    <Immagini handleBlocco={handleBlocco}/>
 
-                        />
-                        <Form.Check
-                            label={<Figure>
-                                <Figure.Image
-                                    width={171}
-                                    height={180}
-                                    alt="171x180"
-                                    src="http://localhost:3001/images/baloon.jpg"
-                                    rounded
-                                />
-                                <Figure.Caption>
-                                    Il gran Baloon.
-                                </Figure.Caption>
-                            </Figure>}
-                            //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
-                            value="http://localhost:3001/images/baloon.jpg"
-                            //name="group1"
-                            type='radio'
-                            name="img"
-                            id={`inline-radio-4`}
-                            data-id="4"
-                            onChange={(ev) =>handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:3})}
+                    
 
-                        />
-                    </Form.Group>
+                    
 
                     
 
