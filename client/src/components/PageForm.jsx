@@ -48,7 +48,7 @@ return(
                 <Form.Control type="text" name="header" id={props.id} value={props.header.contenuto} onChange={ev => { props.handleBlocco({ id: parseInt(ev.target.id), name: ev.target.name, contenuto: ev.target.value, priorità: props.priorità }), props.setHeader(ev.target.value) }} as="textarea" rows={3} />
             </div>
             <div>
-                <Button variant="danger" >
+                <Button variant="danger" onClick={()=>props.deleteField(props.id)} >
                     <i className='bi bi-trash' /></Button>
             </div>
         </div>
@@ -84,7 +84,7 @@ return(
                 <Form.Control type="text" name="paragrafo" id={props.id} value={props.paragrafo.contenuto} onChange={ev => { props.handleBlocco({ id: parseInt(ev.target.id), name: ev.target.name, contenuto: ev.target.value, priorità: props.priorità }), props.setParagrafo(ev.target.value) }} as="textarea" rows={3} />
             </div>
             <div>
-                <Button variant="danger" >
+                <Button variant="danger" onClick={()=>props.deleteField(props.id)}>
                     <i className='bi bi-trash' /></Button>
             </div>
         </div>
@@ -207,7 +207,7 @@ return(
                         />
                         </div>
                         <div>
-                        <Button variant="danger" >
+                        <Button variant="danger" onClick={()=>props.deleteField(props.id)} >
                         <i className='bi bi-trash' /></Button>
                         </div>
                         </div>
@@ -231,8 +231,8 @@ function TheForm(props){
     //const [score, setScore] = useState(objToEdit ? objToEdit.score : 0); 
     const [errorMsg,setErrorMsg]=useState('');
    // const [idTemp,setIdTemp]=useState(1);
-    const [formFields,setFormFields]=useState([{tipo:"Header",priorità:0 ,key:1},{tipo:"Paragrafo",priorità:1,key:2},{tipo:"Immagini",priorità:2,key:3}]);
-    const [fieldKey,setFieldKey]=useState(formFields.length+1);
+    const [formFields,setFormFields]=useState([{tipo:"Header",priorità:0 ,key:0},{tipo:"Paragrafo",priorità:1,key:1},{tipo:"Immagini",priorità:2,key:2}]);
+    const [fieldKey,setFieldKey]=useState(formFields.length);
 
     function handleBlocco(blocco){
         //console.log(blocco);
@@ -301,14 +301,54 @@ function TheForm(props){
         //console.log('premuto submit');
 
         // Form validation
-        if (datapubblicazione === '')
-        {
-            setErrorMsg('Data non valida');
+       // if (datapubblicazione === '')
+       // {
+           // setErrorMsg('Data non valida');
         /*else if (isNaN(parseInt(score)))
             setErrorMsg('Score non valido');
         else if (parseInt(score)<0) {
             setErrorMsg('Score negativo non valido');*/
+        //}
+        if(titolo==='')
+        {
+            setErrorMsg("Devi inserire il titolo")
         }
+        else if(formFields.length===0)
+        {
+            setErrorMsg('Devi inserire almeno un Header e un paragrafo o un immagine');
+
+        }
+        else if(formFields.length===1)
+        {
+            if(formFields[0].tipo==="Header")
+            {
+                setErrorMsg("Devi inserire almeno un Paragrafo o un Immagine")
+            }
+            else if(formFields[0].tipo==="Paragrafo" || formFields[0].tipo==="Immagine")
+            {
+                setErrorMsg("Devi inserire almeno un Header")
+            }
+        }
+        //else if(header)
+        //controllare se c'è del testo negli header e nei parafrafi e se l'immagine e selezionata
+        else if(blocchi.length===0)
+        {
+            setErrorMsg("Devi riempire il contenuto di ogni campo");
+        }
+        else if (blocchi.length>0)
+        {
+           // console.log(blocchi);
+        for(let el of blocchi)
+        {
+            console.log(el)
+            if(el.contentuto===''){
+                setErrorMsg("devi riempire tutti i campi che hai inserito e seleionare l'immagine se presente")
+                
+            }
+        }
+    }
+        
+        
         else {
             const e = {
                 titolo: titolo,
@@ -355,22 +395,22 @@ function TheForm(props){
 
     function displayEl(el)
     {
-        
+        console.log(formFields);
      //   for(let el of formFields){
             if (el.tipo=="Header")
             return(
-                <TheHeader formFields={formFields}  key={el.key} id={el.key} header={header} handleBlocco={handleBlocco} setHeader={setHeader} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
+                <TheHeader deleteField={deleteField} formFields={formFields}  key={el.key} id={el.key} header={header} handleBlocco={handleBlocco} setHeader={setHeader} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
                 
 
             );
             else if (el.tipo=="Paragrafo")
             return(
-                <Paragrafo formFields={formFields} key={el.key} id={el.key} paragrafo={paragrafo} handleBlocco={handleBlocco} setParagrafo={setParagrafo} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/> 
+                <Paragrafo deleteField={deleteField} formFields={formFields} key={el.key} id={el.key} paragrafo={paragrafo} handleBlocco={handleBlocco} setParagrafo={setParagrafo} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/> 
 
             );
             else if (el.tipo=="Immagini")
             return(
-                <Immagini formFields={formFields} key={el.key} id={el.key} handleBlocco={handleBlocco} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
+                <Immagini deleteField={deleteField} formFields={formFields} key={el.key} id={el.key} handleBlocco={handleBlocco} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
 
             );
        // }
@@ -402,7 +442,7 @@ function TheForm(props){
     }
 
     function HandleMoveDown(props){
-        if (props.priorità < formFields.length - 1) {
+        if (props.priorità < formFields.length) {
             const newformFields = [...formFields];
 
 
@@ -453,6 +493,38 @@ function TheForm(props){
 
    }
    
+   function deleteField(id)
+   {
+    console.log(id)
+    let newFields=[...formFields];
+   // for(let field of newFields ){
+    for( let i = 0; i < newFields.length; i++){
+        if(newFields[i].key==id)
+        {  
+            
+            newFields.splice(i, 1);
+            for (let j = 0; j < newFields.length; j++) {
+                newFields[j].key = j;
+                
+              }
+            if(newFields.length>1)
+            {
+            if (newFields[newFields.length-1].priorità==newFields.length){
+                newFields[newFields.length-1].priorità=newFields[newFields.length-1].priorità-1;
+            }
+        }
+            setFormFields(newFields);
+            console.log(formFields);
+            break;
+            
+        }
+    }
+
+    
+
+    
+    
+   }
 
         return(
             <>
@@ -474,7 +546,7 @@ function TheForm(props){
                    { 
                    
                    formFields.map((e)=>displayEl(e))
-
+                    
                    }
                     <Form.Group className='mb-3'>    
                     
