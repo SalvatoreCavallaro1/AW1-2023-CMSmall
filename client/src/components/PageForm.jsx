@@ -66,7 +66,7 @@ return(
             <div>
                 <Button variant='primary' className='mx-2'
                 onClick={() => props.moveUp(props)}
-                disabled={props.priorità === 0} // Disable button if the field is already at the top
+                disabled={props.priorità === 0} 
                 >
                     &#8593;
                 </Button>
@@ -100,7 +100,7 @@ return(
                     <div>
                     <Button variant='primary' className='mx-2'
                         onClick={() => props.moveUp(props)}
-                        disabled={props.priorità === 0} // Disable button if the field is already at the top
+                        disabled={props.priorità === 0} 
                         >
                             &#8593;
                         </Button>
@@ -232,6 +232,7 @@ function TheForm(props){
     const [errorMsg,setErrorMsg]=useState('');
    // const [idTemp,setIdTemp]=useState(1);
     const [formFields,setFormFields]=useState([{tipo:"Header",priorità:0 ,key:1},{tipo:"Paragrafo",priorità:1,key:2},{tipo:"Immagini",priorità:2,key:3}]);
+    const [fieldKey,setFieldKey]=useState(formFields.length+1);
 
     function handleBlocco(blocco){
         //console.log(blocco);
@@ -424,7 +425,33 @@ function TheForm(props){
 
     }
 
-   
+   function addField(n){
+    let newField={};
+    let newFields=[...formFields];
+    let lastpriorità=newFields.length
+    let key=newFields.length+1
+
+    switch (n){
+        case 1:
+            newField={tipo:"Header",priorità: lastpriorità ,key:key};
+            newFields.push(newField);
+            setFormFields(newFields);
+            break;
+        case 2:
+            newField={tipo:"Paragrafo",priorità: lastpriorità ,key:key};
+            newFields.push(newField);
+            setFormFields(newFields);
+            break;
+        case 3:
+            newField={tipo:"Immagini",priorità: lastpriorità ,key:key};
+            newFields.push(newField);
+            setFormFields(newFields);
+            break;
+    default:
+        break;
+    }
+
+   }
    
 
         return(
@@ -449,13 +476,26 @@ function TheForm(props){
                    formFields.map((e)=>displayEl(e))
 
                    }
+                    <Form.Group className='mb-3'>    
                     
+                        <Button className='mx-2' variant='warning' onClick={() => addField(1)}
+                        >Aggiungi Header</Button>
 
-                    <Button type='submit' variant="primary">{objToEdit? 'Save' : 'Add'}</Button> 
+                        <Button className='mx-2' variant='success' onClick={() => addField(2)}
+                         >Aggiungi Paragrafo</Button>
+
+                        <Button className='mx-2' variant='info' onClick={() => addField(3)}
+                        >Aggiungi Immagine</Button>
+
+                    </Form.Group>
+                    
+                    
+                    
+                    <Button type='submit' variant="primary">{objToEdit? 'Salva Modifiche' : 'Aggiungi Pagina'}</Button> 
                     {/* alternative
                     <Button className='mx-2' variant='danger' onClick={()=>navigate('/')}>Cancel</Button> */}
                     <Link to='/'>
-                        <Button className='mx-2' variant='danger'>Cancel</Button>
+                        <Button className='mx-2' variant='danger'>Annulla</Button>
                     </Link>
                 </Form>
             </>
