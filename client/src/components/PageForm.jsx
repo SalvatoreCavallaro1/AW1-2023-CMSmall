@@ -431,18 +431,18 @@ function TheForm(props){
      //   for(let el of formFields){
             if (el.tipo=="Header")
             return(
-                <TheHeader deleteField={deleteField} formFields={formFields}  key={el.key} id={el.key+1} header={header} handleBlocco={handleBlocco} setHeader={setHeader} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
+                <TheHeader deleteField={deleteField} formFields={formFields}  key={el.key} idmove={el.key} id={el.key+1} header={header} handleBlocco={handleBlocco} setHeader={setHeader} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
                 
 
             );
             else if (el.tipo=="Paragrafo")
             return(
-                <Paragrafo deleteField={deleteField} formFields={formFields} key={el.key} id={el.key+1} paragrafo={paragrafo} handleBlocco={handleBlocco} setParagrafo={setParagrafo} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/> 
+                <Paragrafo deleteField={deleteField} formFields={formFields} key={el.key} idmove={el.key} id={el.key+1} paragrafo={paragrafo} handleBlocco={handleBlocco} setParagrafo={setParagrafo} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/> 
 
             );
             else if (el.tipo=="Immagini")
             return(
-                <Immagini deleteField={deleteField} formFields={formFields} key={el.key} id={el.key+1} handleBlocco={handleBlocco}  setImmagine={setImage} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
+                <Immagini deleteField={deleteField} formFields={formFields} key={el.key} idmove={el.key} id={el.key+1} handleBlocco={handleBlocco}  setImmagine={setImage} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
 
             );
        // }
@@ -454,7 +454,7 @@ function TheForm(props){
             const newformFields = [...formFields];
 
 
-            let el = newformFields.find(field => field.key == props.id);
+            let el = newformFields.find(field => field.key == props.idmove);
             //console.log(el);
 
             if (el) {
@@ -469,7 +469,7 @@ function TheForm(props){
             }
             let sortedFields = newformFields.sort((f1, f2) => (f1.priorità > f2.priorità) ? 1 : (f1.priorità < f2.priorità) ? -1 : 0);
             setFormFields(sortedFields);
-           // console.log(formFields);
+            console.log(formFields);
           }
 
     }
@@ -479,7 +479,7 @@ function TheForm(props){
             const newformFields = [...formFields];
 
 
-            let el = newformFields.find(field => field.key == props.id);
+            let el = newformFields.find(field => field.key == props.idmove);
             //console.log(el);
 
             if (el) {
@@ -494,7 +494,7 @@ function TheForm(props){
             }
             let sortedFields = newformFields.sort((f1, f2) => (f1.priorità > f2.priorità) ? 1 : (f1.priorità < f2.priorità) ? -1 : 0);
             setFormFields(sortedFields);
-            //console.log(formFields);
+            console.log(formFields);
           }
 
     }
