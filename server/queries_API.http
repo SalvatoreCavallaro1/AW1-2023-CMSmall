@@ -1,5 +1,8 @@
 GET http://localhost:3001/api/pages HTTP/1.1
 ###
+
+GET http://localhost:3001/api/titolo HTTP/1.1
+###
 POST http://localhost:3001/api/pages HTTP/1.1
 Content-Type: application/json
 

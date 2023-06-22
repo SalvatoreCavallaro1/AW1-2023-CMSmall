@@ -81,10 +81,18 @@ app.use(passport.session());
 
 /*API*/
 
-// GET /api/questions
+// GET /api/pages
 app.get('/api/pages', (req, res) => {
   dao.listAllPages()
     .then(pagine => setTimeout(()=>res.json(pagine), answerDelay))
+    .catch((err) => {console.log(err); res.status(500).end()});
+});
+
+
+// GET /api/pages
+app.get('/api/titolo', (req, res) => {
+  dao.getTitolo()
+    .then(titolo => setTimeout(()=>res.json(titolo),answerDelay))
     .catch((err) => {console.log(err); res.status(500).end()});
 });
 

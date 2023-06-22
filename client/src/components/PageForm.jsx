@@ -2,10 +2,23 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import API from '../API';
 import dayjs from 'dayjs';
 import NavHeader from './NavbarComponents';
-import { Container,Form,Button,Alert,Col,Image,Figure, FormSelect } from 'react-bootstrap';
+import { Container,Form,Button,Alert,Col,Image,Figure, FormSelect,Spinner } from 'react-bootstrap';
 import { useNavigate, useParams,Link } from 'react-router-dom';
 import { useState } from 'react';
 
+/*
+function TitleForm(props)
+{
+    return(
+        <>
+            <NavHeader  user={props.user} logout={props.logout}/>
+            <Container fluid>
+            
+
+            </Container>
+        </>
+    );
+}*/
 
 
 
@@ -13,7 +26,7 @@ function PageForm(props){
 
     return(
         <>
-            <NavHeader user={props.user} logout={props.logout}/>
+            <NavHeader loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
             <Container fluid>
             <TheForm user={props.user} addPage={props.addPage}/>
 
@@ -421,7 +434,7 @@ function TheForm(props){
             } else {
                 props.addAnswer(e);
             }*/
-           // navigate('/');
+           navigate('/');
         }
     }
 

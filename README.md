@@ -8,6 +8,7 @@
 - Route `/login`: pagina per effettuare il login
 - Route `/add`: pagina per aggiungere una nuova pagina
 - Route `/edit/:idPagina`: pagina per editare una pagina esistente
+- Route `/edit/:idTitolo`: pagina per editare il titolo del sito web
 - Route `*`: per le pagine che non esistono
 
 
@@ -65,6 +66,8 @@ Response body: _None_
    (devo stabilire un formato JSON appropriato)
 
 - GET `/api/allpages` : Autenticata, ritorna la lista delle pubblicate e nonz, sia dell'utente autenticato che degli altri utenti.    Parametri: NESSUNO ????????????????
+
+- GET `/api/title` : Non autenticata, ritorna il titolo del sito webS    Parametri: NESSUNO ????????????????
 
 - POST `/api/pages` : Autenticata, salva la pagina creata (rimpiazza l'eventuale esistente)
  Request body:

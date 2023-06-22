@@ -25,6 +25,19 @@ exports.listAllPages=()=>{
     });
 };
 
+exports.getTitolo=()=>{
+  return new Promise( (resolve,reject)=>{
+      const sql = `SELECT * FROM titolo`;
+      db.all(sql,[],(err,rows)=>{
+          if(err){
+              reject(err);
+              return;
+          }
+          const titolo=rows.map((e)=>({id:e.id, titolo: e.titolo}));
+          resolve(titolo);
+      });
+  });
+};
 
 // add a new page
 exports.createPage = (pagina) => {

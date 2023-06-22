@@ -21,6 +21,20 @@ async function getAllPages() {
 
 
 
+async function getTitolo() {
+  // call  /api/titolo
+  const response = await fetch(URL+'/titolo');
+  const titolo = await response.json();
+  //console.log(titolo);
+  if (response.ok) {
+    return titolo[0]//.map((e) => ({id:e.id, titolo: e.titolo}) )
+  } else {
+    throw titolo;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+  }
+}
+
+
+
 
 // login logout session
 
@@ -97,6 +111,7 @@ const API = {
     logIn,
     logOut,
     getUserInfo,
-    addPage
+    addPage,
+    getTitolo
   };
   export default API;
