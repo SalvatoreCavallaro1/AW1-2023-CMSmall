@@ -30,7 +30,7 @@ return(
             <div>
                 <Button variant='primary' className='mx-2'
                 onClick={() => props.moveUp(props)}
-                disabled={props.priorità === 0} // Disable button if the field is already at the top
+                disabled={props.priorità === 0}
                 >
                     &#8593;
                 </Button>
@@ -38,7 +38,7 @@ return(
                     variant='primary'
                     className='mx-2'
                 onClick={() => props.moveDown(props)}
-                disabled={props.priorità === props.formFields.length - 1} // Disable button if the field is already at the bottom
+                disabled={props.priorità === props.formFields.length - 1} 
                 >
                     &#8595;
                 </Button>
