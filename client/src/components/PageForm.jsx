@@ -151,7 +151,7 @@ return(
                             //idTemporary={(idTemp===0)? idTemp : idTemp+1}
                             id="{`inline-radio-1`}"
                             data-id={props.id}
-                            checked={(props.contenuto && props.contenuto==target.value)? true : false}
+                            checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/baloon.jpg")? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità}),props.setImmagine(ev.target.value)}}
                         />
                         <Form.Check 
@@ -174,7 +174,7 @@ return(
                             type='radio'
                             id={`inline-radio-2`}
                             data-id={props.id}
-                            checked={(props.contenuto && props.contenuto==target.value)? true : false}
+                            checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/torino1.jpeg")? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità}),props.setImmagine(ev.target.value)}}
                         />
                         <Form.Check
@@ -197,7 +197,7 @@ return(
                             type='radio'
                             id={`inline-radio-3`}
                             data-id={props.id}
-                            checked={(props.contenuto && props.contenuto==target.value)? true : false}
+                            checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/baloon.jpg")? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità}),props.setImmagine(ev.target.value)}}
 
                         />
@@ -221,7 +221,7 @@ return(
                             name="img"
                             id={`inline-radio-4`}
                             data-id={props.id}
-                            checked={(props.contenuto && props.contenuto==target.value)? true : false}
+                            checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/baloon.jpg")? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità}),props.setImmagine(ev.target.value)}}
 
                         />
@@ -238,12 +238,12 @@ return(
 function TheForm(props){
     const navigate=useNavigate();
     const {PageId}=useParams();
-    console.log("PageId:",PageId);
+    //console.log("PageId:",PageId);
     //console.log(props.pageList);
     
-    const objToEdit= PageId && props.pageList.find(e => e.id === parseInt(1));
+    const objToEdit= PageId && props.pageList.find(e => e.id === parseInt(PageId));
    //console.log(objToEdit);
-    console.log('objToEdit: '+JSON.stringify(objToEdit));
+    //console.log('objToEdit: '+JSON.stringify(objToEdit));
     const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.datapubblicazion?.format('YYYY-MM-DD') : '');  //string: dayjs object is created only on submit
     const [datacreazione,setDatacreazione]=useState(objToEdit ? objToEdit.datacreazione?.format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD'));
     const [titolo, setTitolo] = useState(objToEdit ? objToEdit.titolo : '');
@@ -255,15 +255,20 @@ function TheForm(props){
     //const [score, setScore] = useState(objToEdit ? objToEdit.score : 0); 
     const [errorMsg,setErrorMsg]=useState('');
    // const [idTemp,setIdTemp]=useState(1);
-    const [formFields,setFormFields]=useState(objToEdit? [] : [{tipo:"Header",priorità:0 ,key:0},{tipo:"Paragrafo",priorità:1,key:1},{tipo:"Immagini",priorità:2,key:2}]);
+    const [formFields,setFormFields]=useState(objToEdit? [] : [{tipo:"Header",priorità:0 ,key:0,contenuto:''},{tipo:"Paragrafo",priorità:1,key:1},{tipo:"Immagini",priorità:2,key:2,contenuto:''}]);
     const [fieldKey,setFieldKey]=useState(formFields?.length);
     const [firstInit,setFirstInit]=useState(true);
+    const [nDisplay,setnDisplay]=useState(0)
+    const [valorProps,setValOrProps]=useState(true);
 
-    if(objToEdit && firstInit)
+
+    useEffect(() => {
     {
+    if(objToEdit)
     setFieldstoEdit(blocchi);
-    setFirstInit(false);
+    //setFirstInit(false);
     }
+    },[]);
 
     /*useEffect(() => {
         if (formFields===[] && objToEdit && firstInit) {
@@ -320,6 +325,7 @@ function TheForm(props){
            // console.log("si"); ///?????
           // el.contenuto=blocco.contenuto;
             arrayblocchi[index].contenuto=blocco.contenuto;
+            setBlocchi(arrayblocchi);
             //console.log(blocchi);
 
         }
@@ -476,22 +482,41 @@ function TheForm(props){
     {
        // console.log(formFields);
      //   for(let el of formFields){
+          /* if(nDisplay<formFields.length)
+            {
+               
+                setnDisplay(nDisplay+1);
+                console.log(nDisplay);
+               if(nDisplay==formFields.length)
+                {
+                    setValOrProps(false);
+                }
+
+
+            }*/
+            
             if (el.tipo=="Header")
+            {
+               
+
             return(
-                <TheHeader contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={formFields}  key={el.key} idmove={el.key} id={el.key+1} header={header} handleBlocco={handleBlocco} setHeader={setHeader} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
+                <TheHeader   contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={formFields}  key={el.key} idmove={el.key} id={el.key+1} header={header} handleBlocco={handleBlocco} setHeader={setHeader} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
                 
 
             );
+            }
             else if (el.tipo=="Paragrafo")
             return(
-                <Paragrafo contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={formFields} key={el.key} idmove={el.key} id={el.key+1} paragrafo={paragrafo} handleBlocco={handleBlocco} setParagrafo={setParagrafo} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/> 
+                <Paragrafo  contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={formFields} key={el.key} idmove={el.key} id={el.key+1} paragrafo={paragrafo} handleBlocco={handleBlocco} setParagrafo={setParagrafo} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/> 
 
             );
             else if (el.tipo=="Immagini")
             return(
-                <Immagini contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={formFields} key={el.key} idmove={el.key} id={el.key+1} handleBlocco={handleBlocco}  setImmagine={setImage} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
+                <Immagini  contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={formFields} key={el.key} idmove={el.key} id={el.key+1} handleBlocco={handleBlocco}  setImmagine={setImage} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
 
             );
+            
+            
        // }
     
     }
@@ -610,24 +635,26 @@ function TheForm(props){
 
    function setFieldstoEdit(blocchi){
     const fieldsToEdit=[];
+    let i=0;
     for(let el of blocchi)
     {
-        console.log(el);
+        //console.log(el);
         if(el.idblocco==1)
         {
-        let newField={tipo:"Header",priorità: el.priorita ,key:el.Dbid,contenuto:el.contenuto};
+        let newField={tipo:"Header",priorità: el.priorita ,key:i,contenuto:el.contenuto};
         fieldsToEdit.push(newField);
         }
         if(el.idblocco==2)
         {
-        let newField={tipo:"Paragrafo",priorità: el.priorita ,key:el.Dbid,contenuto:el.contenuto};
+        let newField={tipo:"Paragrafo",priorità: el.priorita ,key:i,contenuto:el.contenuto};
         fieldsToEdit.push(newField);
         }
         if(el.idblocco==3)
         {
-        let newField={tipo:"Immagini",priorità: el.priorita ,key:el.Dbid,contenuto:el.contenuto};
+        let newField={tipo:"Immagini",priorità: el.priorita ,key:i,contenuto:el.contenuto};
         fieldsToEdit.push(newField);
         }
+        i++;
     }
     /*setFormFields(formFields=>{
         return[fieldsToEdit,...formFields]
@@ -660,6 +687,7 @@ function TheForm(props){
                    { 
                    
                    formFields.map((e)=>displayEl(e))
+                   
                     
                    }
                     <Form.Group className='mb-3'>    
