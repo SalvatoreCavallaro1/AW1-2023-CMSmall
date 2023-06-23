@@ -157,12 +157,13 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Pages titolo={titolo} user={user} logout={doLogOut} pages={pages} errorMsg={errorMsg} resetErrorMsg={() => setErrorMsg('')} initialLoading={initialLoading} />} />
+          <Route path="/" element={<Pages titolo={titolo} user={user} logout={doLogOut} pages={pages} errorMsg={errorMsg} resetErrorMsg={() => setErrorMsg('')} initialLoading={initialLoading}
+          editPage={editPage}/>} />
           <Route path='/login' element={loggedIn ? <Navigate replace to='/' /> : <LoginForm loginSuccessful={loginSuccessful} />} />
           <Route path='/add' element={loggedIn ? <PageForm titolo={titolo} user={user} logout={doLogOut} addPage={addPage} initialLoading={initialLoading} /> : <Navigate replace to='/' />} />
           <Route path='/edit/:PageId' element={loggedIn ? <PageForm titolo={titolo} user={user} logout={doLogOut} initialLoading={initialLoading}
           pageList={pages}
-          addPage={addPage} editAnswer={editPage} /> :  <Navigate replace to='/' />} /> 
+          addPage={addPage} editPage={editPage} /> :  <Navigate replace to='/' />} /> 
           <Route path='/*' element={<DefaultRoute />} />
         </Routes>
       </BrowserRouter>

@@ -28,7 +28,7 @@ function PageForm(props){
         <>
             <NavHeader loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
             <Container fluid>
-            <TheForm pageList={props.pageList} user={props.user} addPage={props.addPage}/>
+            <TheForm pageList={props.pageList} user={props.user} addPage={props.addPage} editPage={props.editPage}/>
 
             </Container>
         </>
@@ -237,11 +237,11 @@ return(
 
 function TheForm(props){
     const navigate=useNavigate();
-    const {pageId}=useParams();
-    //console.log(pageId);
+    const {PageId}=useParams();
+    console.log("PageId:",PageId);
     //console.log(props.pageList);
     
-    const objToEdit= 1 && props.pageList.find(e => e.id === parseInt(1));
+    const objToEdit= PageId && props.pageList.find(e => e.id === parseInt(1));
    //console.log(objToEdit);
     console.log('objToEdit: '+JSON.stringify(objToEdit));
     const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.datapubblicazion?.format('YYYY-MM-DD') : '');  //string: dayjs object is created only on submit
@@ -255,17 +255,34 @@ function TheForm(props){
     //const [score, setScore] = useState(objToEdit ? objToEdit.score : 0); 
     const [errorMsg,setErrorMsg]=useState('');
    // const [idTemp,setIdTemp]=useState(1);
-    const [formFields,setFormFields]=useState(objToEdit? setFieldstoEdit(objToEdit.blocchi) : [{tipo:"Header",priorità:0 ,key:0},{tipo:"Paragrafo",priorità:1,key:1},{tipo:"Immagini",priorità:2,key:2}]);
+    const [formFields,setFormFields]=useState(objToEdit? [] : [{tipo:"Header",priorità:0 ,key:0},{tipo:"Paragrafo",priorità:1,key:1},{tipo:"Immagini",priorità:2,key:2}]);
     const [fieldKey,setFieldKey]=useState(formFields?.length);
     const [firstInit,setFirstInit]=useState(true);
 
+    if(objToEdit && firstInit)
+    {
+    setFieldstoEdit(blocchi);
+    setFirstInit(false);
+    }
+
     /*useEffect(() => {
         if (formFields===[] && objToEdit && firstInit) {
-            setFieldstoEdit(objToEdit.blocchi)
+            setFieldstoEdit(blocchi)
+    }
             console.log(formFields);
             setFirstInit(false)
-        }
-      },[formFields,objToEdit]);*/
+      },[formFields,objToEdit,blocchi]);*/
+      /*useEffect(() => {
+        
+            if(objToEdit)
+            {
+            setFormFields(formFields=>{
+               return[blocchi,...formFields]
+            })   
+            }
+            console.log(formFields);
+        
+      },[]);*/
 
     function handleBlocco(blocco){
         //console.log(blocco);
@@ -595,23 +612,29 @@ function TheForm(props){
     const fieldsToEdit=[];
     for(let el of blocchi)
     {
+        console.log(el);
         if(el.idblocco==1)
         {
-        let newField={tipo:"Header",priorità: el.priorità ,key:el.Dbid,contenuto:el.contenuto};
+        let newField={tipo:"Header",priorità: el.priorita ,key:el.Dbid,contenuto:el.contenuto};
         fieldsToEdit.push(newField);
         }
         if(el.idblocco==2)
         {
-        let newField={tipo:"Paragrafo",priorità: el.priorità ,key:el.Dbid,contenuto:el.contenuto};
+        let newField={tipo:"Paragrafo",priorità: el.priorita ,key:el.Dbid,contenuto:el.contenuto};
         fieldsToEdit.push(newField);
         }
         if(el.idblocco==3)
         {
-        let newField={tipo:"Immagini",priorità: el.priorità ,key:el.Dbid,contenuto:el.contenuto};
+        let newField={tipo:"Immagini",priorità: el.priorita ,key:el.Dbid,contenuto:el.contenuto};
         fieldsToEdit.push(newField);
         }
     }
+    /*setFormFields(formFields=>{
+        return[fieldsToEdit,...formFields]
+     
+ })*/
     setFormFields(fieldsToEdit);
+    //setFormFields(fieldsToEdit);
    /* let newField={tipo:"Header",priorità: lastpriorità ,key:key};
     newFields.push(newField);*/
 
