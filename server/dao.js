@@ -39,6 +39,21 @@ exports.getTitolo=()=>{
   });
 };
 
+exports.updateTitolo = (titolo)=> {
+  //console.log('updatePage: '+JSON.stringify(page));
+  return new Promise((resolve, reject) => {
+    const sql = 'UPDATE titolo SET titolo=? WHERE id = ?';  
+    
+    db.run(sql, [titolo.titolo, titolo.id], function (err) {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(this.changes);
+    });
+  });
+};
+
 // add a new page
 exports.createPage = (pagina) => {
     return new Promise((resolve, reject) => {
@@ -69,7 +84,7 @@ exports.createPage = (pagina) => {
 
 
 
-  exports.updatePage = (page,userId) => {
+  exports.updatePage = (pagina,userId) => {
     //console.log('updatePage: '+JSON.stringify(page));
     return new Promise((resolve, reject) => {
       const sql = 'UPDATE pagine SET titolo=?, autore=?,datapubblicazione=DATE(?) WHERE id = ? AND autore = ?';  

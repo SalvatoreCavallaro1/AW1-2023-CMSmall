@@ -231,6 +231,45 @@ app.put('/api/answers/:id', isLoggedIn, [
 });
 
 
+// PUT /api/titolo/<id>
+app.put('/api/titolo/:id', isLoggedIn, [
+  //check('autore').isInt(),
+  check('titolo').isLength({min: 1}),   
+  //check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
+  check('id').isInt()
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({errors: errors.array()});
+  }
+
+  const titolo = {
+    id: req.body.id,
+    titolo: req.body.titolo, //req.user.id
+    //datapubblicazione: req.body.datapubblicazione,
+    //respondentId: req.user.id,    // It is WRONG to use something different from req.user.id, DO NOT SEND it from client!
+  };
+  
+  
+  // you can also check here if the id passed in the URL matches with the id in req.body,
+  // and decide which one must prevail, or return an error
+  //page.id = req.params.id;
+
+  try {
+    const numRowChanges = await dao.updateTitolo(titolo);  // It is WRONG to use something different from req.user.id, do not send it from client!
+    // NB: the query in the DB will check if the answer belongs to the authenticated user and not another, using WHERE respondentId=...
+    
+    setTimeout(()=>res.json(numRowChanges), answerDelay);
+    //res.status(200).end();
+  } catch(err) {
+    console.log(err);
+    res.status(503).json({error: `Database error during the update of answer ${req.params.id}.`});
+  }
+
+});
+
+
+
 
 
 // DELETE /api/answers/<id>
