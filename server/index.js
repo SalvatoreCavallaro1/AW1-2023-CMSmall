@@ -197,7 +197,7 @@ app.put('/api/answers/:id', isLoggedIn, [
           contenuto: e.contenuto,
           priorità: e.priorità
         }
-        await dao.createBlocks(Modblock);
+        await dao.updateBlocks(Modblock);
         
       }
       else if(!e.Dbid || e.Dbid==null || e.Dbid=='')
@@ -234,9 +234,9 @@ app.put('/api/answers/:id', isLoggedIn, [
 
 
 // DELETE /api/answers/<id>
-app.delete('/api/answers/:id', isLoggedIn, async (req, res) => {
+app.delete('/api/pages/:id', isLoggedIn, async (req, res) => {
   try {
-    const numRowChanges = await dao.deleteAnswer(req.params.id, req.user.id); // It is WRONG to use something different from req.user.id
+    const numRowChanges = await dao.deletePage(req.params.id, req.user.id); // It is WRONG to use something different from req.user.id
     // number of changed rows is sent to client as an indicator of success
     setTimeout(()=>res.json(numRowChanges), answerDelay);
   } catch(err) {
@@ -247,9 +247,9 @@ app.delete('/api/answers/:id', isLoggedIn, async (req, res) => {
 
 
 // DELETE /api/answers/<id>
-app.delete('/api/answers/:id', isLoggedIn, async (req, res) => {
+app.delete('/api/blocks/:id', isLoggedIn, async (req, res) => {
   try {
-    const numRowChanges = await dao.deleteAnswer(req.params.id, req.user.id); // It is WRONG to use something different from req.user.id
+    const numRowChanges = await dao.deleteAnswer(req.params.id); // It is WRONG to use something different from req.user.id
     // number of changed rows is sent to client as an indicator of success
     setTimeout(()=>res.json(numRowChanges), answerDelay);
   } catch(err) {

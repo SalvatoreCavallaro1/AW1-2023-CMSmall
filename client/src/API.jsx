@@ -34,6 +34,94 @@ async function getTitolo() {
 }
 
 
+function deletePage(id) {
+  // call  DELETE /api/pages/<id>
+  return new Promise((resolve, reject) => {
+    fetch(URL+`/pages/${id}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    }).then((response) => {
+      if (response.ok) {
+        resolve(null);
+      } else {
+        // analyze the cause of error
+        response.json()
+          .then((message) => { reject(message); }) // error message in the response body
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+      }
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+  });
+}
+
+function deleteBlock(id) {
+  // call  DELETE /api/blocks/<id>
+  return new Promise((resolve, reject) => {
+    fetch(URL+`/blocks/${id}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    }).then((response) => {
+      if (response.ok) {
+        resolve(null);
+      } else {
+        // analyze the cause of error
+        response.json()
+          .then((message) => { reject(message); }) // error message in the response body
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+      }
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+  });
+}
+
+function updateAnswer(answer) {
+  // call  PUT /api/answers/<id>
+  return new Promise((resolve, reject) => {
+    fetch(URL+`/answers/${answer.id}`, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(Object.assign({}, answer, {date: answer.date.format("YYYY-MM-DD")})),
+    }).then((response) => {
+      if (response.ok) {
+        resolve(null);
+      } else {
+        // analyze the cause of error
+        response.json()
+          .then((message) => { reject(message); }) // error message in the response body
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+      }
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+  });
+}
+
+function addPage(page) {
+  // call  POST /api/pages
+  console.log(page);
+  return new Promise((resolve, reject) => {
+    fetch(URL+`/pages`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+     // body: JSON.stringify(Object.assign({}, page, {datacreazione: page.datacreazione.format("YYYY-MM-DD"),datapubblicazione: (page.datapubblicazione)? page.datapubblicazione.format("YYYY-MM-DD") : null})),   
+        body: JSON.stringify(Object.assign({}, page, {datacreazione: page.datacreazione,datapubblicazione: (page.datapubblicazione)? page.datapubblicazione: null})),   
+
+    }).then((response) => {
+      if (response.ok) {
+        response.json()
+          .then((id) => resolve(id))
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+      } else {
+        // analyze the cause of error
+        response.json()
+          .then((message) => { reject(message); }) // error message in the response body
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+      }
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+  });
+}
 
 
 // login logout session
@@ -76,33 +164,7 @@ async function getUserInfo() {
 }
 
 
-function addPage(page) {
-  // call  POST /api/pages
-  console.log(page);
-  return new Promise((resolve, reject) => {
-    fetch(URL+`/pages`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-     // body: JSON.stringify(Object.assign({}, page, {datacreazione: page.datacreazione.format("YYYY-MM-DD"),datapubblicazione: (page.datapubblicazione)? page.datapubblicazione.format("YYYY-MM-DD") : null})),   
-        body: JSON.stringify(Object.assign({}, page, {datacreazione: page.datacreazione,datapubblicazione: (page.datapubblicazione)? page.datapubblicazione: null})),   
 
-    }).then((response) => {
-      if (response.ok) {
-        response.json()
-          .then((id) => resolve(id))
-          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
-      } else {
-        // analyze the cause of error
-        response.json()
-          .then((message) => { reject(message); }) // error message in the response body
-          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
-      }
-    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
-  });
-}
 
 
 
@@ -112,6 +174,9 @@ const API = {
     logOut,
     getUserInfo,
     addPage,
-    getTitolo
+    getTitolo,
+    updateAnswer,
+    deleteBlock,
+    deletePage
   };
   export default API;

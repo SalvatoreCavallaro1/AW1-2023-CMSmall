@@ -47,7 +47,7 @@ function PageRow(props) {
     const { e } = props;
     const blocchi=[...e.blocchi];
     blocchi.sort((a,b) => a.priorita - b.priorita);
-    console.log(blocchi);
+    //console.log(blocchi);
     
     return (
         <Accordion.Item eventKey={e.id}>
@@ -76,7 +76,7 @@ function PageRow(props) {
                 }>
                   <span className="d-inline-block">
                 <Button variant='warning' disabled={ (props.user?.id && props.user?.name===e.nomeautore) || props.user?.admin===1? false : true} className='mx-2' 
-                    ><i className='bi bi-pencil-square' /></Button>
+                    onClick={()=>{navigate(`/edit/${e.id}`)}}><i className='bi bi-pencil-square' /></Button>
                     </span>
                 </OverlayTrigger>
 
@@ -144,7 +144,7 @@ function MainPages(props) {
             <Col>
                 <Accordion>
                 {sortedPages.map((e) =>
-                  <PageRow e={e}  key={e.id} user={props.user}  />)
+                  <PageRow e={e}  key={e.id} user={props.user} editAnswer={() =>setObjToEdit(e)}   />)
                 }
                 </Accordion>
             </Col>

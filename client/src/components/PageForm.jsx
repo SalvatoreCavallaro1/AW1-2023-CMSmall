@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import NavHeader from './NavbarComponents';
 import { Container,Form,Button,Alert,Col,Image,Figure, FormSelect,Spinner } from 'react-bootstrap';
 import { useNavigate, useParams,Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 /*
 function TitleForm(props)
@@ -28,7 +28,7 @@ function PageForm(props){
         <>
             <NavHeader loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
             <Container fluid>
-            <TheForm user={props.user} addPage={props.addPage}/>
+            <TheForm pageList={props.pageList} user={props.user} addPage={props.addPage}/>
 
             </Container>
         </>
@@ -58,13 +58,13 @@ return(
             </div>
             <div className="flex-grow-1">
                 <Form.Label>Header</Form.Label>
-                <Form.Control type="text" name="header" id={props.id} value={props.header.contenuto} onChange={ev => { props.handleBlocco({ id: parseInt(ev.target.id), name: ev.target.name, contenuto: ev.target.value, priorità: props.priorità }), props.setHeader(ev.target.value) }} as="textarea" rows={3} />
+                <Form.Control type="text" name="header" id={props.id} value={props.contenuto? props.contenuto : props.header.contenuto} onChange={ev => { props.handleBlocco({ id: parseInt(ev.target.id), name: ev.target.name, contenuto: ev.target.value, priorità: props.priorità }), props.setHeader(ev.target.value) }} as="textarea" rows={3} />
 
                 {/*errorMsg? <Alert variant='danger' onClose={()=>setErrorMsg('')} dismissible>{errorMsg}</Alert> : false*/ }
 
             </div>
             <div>
-                <Button variant="danger" onClick={()=>props.deleteField(props.id)} >
+                <Button variant="danger" onClick={()=>props.deleteField(props.id-1)} >
                     <i className='bi bi-trash' /></Button>
             </div>
         </div>
@@ -97,10 +97,10 @@ return(
             </div>
             <div className="flex-grow-1">
                 <Form.Label>Paragrafo</Form.Label>
-                <Form.Control type="text" name="paragrafo" id={props.id} value={props.paragrafo.contenuto} onChange={ev => { props.handleBlocco({ id: parseInt(ev.target.id), name: ev.target.name, contenuto: ev.target.value, priorità: props.priorità }), props.setParagrafo(ev.target.value) }} as="textarea" rows={3} />
+                <Form.Control type="text" name="paragrafo" id={props.id} value={props.contenuto? props.contenuto : props.paragrafo.contenuto} onChange={ev => { props.handleBlocco({ id: parseInt(ev.target.id), name: ev.target.name, contenuto: ev.target.value, priorità: props.priorità }), props.setParagrafo(ev.target.value) }} as="textarea" rows={3} />
             </div>
             <div>
-                <Button variant="danger" onClick={()=>props.deleteField(props.id)}>
+                <Button variant="danger" onClick={()=>props.deleteField(props.id-1)}>
                     <i className='bi bi-trash' /></Button>
             </div>
         </div>
@@ -151,6 +151,7 @@ return(
                             //idTemporary={(idTemp===0)? idTemp : idTemp+1}
                             id="{`inline-radio-1`}"
                             data-id={props.id}
+                            checked={(props.contenuto && props.contenuto==target.value)? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità}),props.setImmagine(ev.target.value)}}
                         />
                         <Form.Check 
@@ -173,6 +174,7 @@ return(
                             type='radio'
                             id={`inline-radio-2`}
                             data-id={props.id}
+                            checked={(props.contenuto && props.contenuto==target.value)? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità}),props.setImmagine(ev.target.value)}}
                         />
                         <Form.Check
@@ -195,6 +197,7 @@ return(
                             type='radio'
                             id={`inline-radio-3`}
                             data-id={props.id}
+                            checked={(props.contenuto && props.contenuto==target.value)? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità}),props.setImmagine(ev.target.value)}}
 
                         />
@@ -218,12 +221,13 @@ return(
                             name="img"
                             id={`inline-radio-4`}
                             data-id={props.id}
+                            checked={(props.contenuto && props.contenuto==target.value)? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id),name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità}),props.setImmagine(ev.target.value)}}
 
                         />
                         </div>
                         <div>
-                        <Button variant="danger" onClick={()=>props.deleteField(props.id)} >
+                        <Button variant="danger" onClick={()=>props.deleteField(props.id-1)} >
                         <i className='bi bi-trash' /></Button>
                         </div>
                         </div>
@@ -234,21 +238,34 @@ return(
 function TheForm(props){
     const navigate=useNavigate();
     const {pageId}=useParams();
-    const objToEdit= pageId /// && props.answerList.find(e => e.id === parseInt(answerId));
-    //console.log('objToEdit: '+JSON.stringify(objToEdit));
-    const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.date.format('YYYY-MM-DD') : '');  //string: dayjs object is created only on submit
-    const [datacreazione,setDatacreazione]=useState(objToEdit ? objToEdit.date.format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD'));
+    //console.log(pageId);
+    //console.log(props.pageList);
+    
+    const objToEdit= 1 && props.pageList.find(e => e.id === parseInt(1));
+   //console.log(objToEdit);
+    console.log('objToEdit: '+JSON.stringify(objToEdit));
+    const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.datapubblicazion?.format('YYYY-MM-DD') : '');  //string: dayjs object is created only on submit
+    const [datacreazione,setDatacreazione]=useState(objToEdit ? objToEdit.datacreazione?.format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD'));
     const [titolo, setTitolo] = useState(objToEdit ? objToEdit.titolo : '');
-    const [header, setHeader] = useState(objToEdit ? objToEdit.header : '');
-    const [paragrafo, setParagrafo] = useState(objToEdit ? objToEdit.paragrafo : '');
-    const [image, setImage] = useState(objToEdit  ? objToEdit.image : '');
-    const [blocchi,setBlocchi]=useState([]);
+    const [header, setHeader] = useState('');
+    const [paragrafo, setParagrafo] = useState('');
+    const [image, setImage] = useState('');
+    const [blocchi,setBlocchi]=useState(objToEdit? objToEdit.blocchi :[]);
     const [autore, setAutore] = useState(objToEdit ? objToEdit.autore : props.user.id);
     //const [score, setScore] = useState(objToEdit ? objToEdit.score : 0); 
     const [errorMsg,setErrorMsg]=useState('');
    // const [idTemp,setIdTemp]=useState(1);
-    const [formFields,setFormFields]=useState([{tipo:"Header",priorità:0 ,key:0},{tipo:"Paragrafo",priorità:1,key:1},{tipo:"Immagini",priorità:2,key:2}]);
-    const [fieldKey,setFieldKey]=useState(formFields.length);
+    const [formFields,setFormFields]=useState(objToEdit? setFieldstoEdit(objToEdit.blocchi) : [{tipo:"Header",priorità:0 ,key:0},{tipo:"Paragrafo",priorità:1,key:1},{tipo:"Immagini",priorità:2,key:2}]);
+    const [fieldKey,setFieldKey]=useState(formFields?.length);
+    const [firstInit,setFirstInit]=useState(true);
+
+    /*useEffect(() => {
+        if (formFields===[] && objToEdit && firstInit) {
+            setFieldstoEdit(objToEdit.blocchi)
+            console.log(formFields);
+            setFirstInit(false)
+        }
+      },[formFields,objToEdit]);*/
 
     function handleBlocco(blocco){
         //console.log(blocco);
@@ -444,18 +461,18 @@ function TheForm(props){
      //   for(let el of formFields){
             if (el.tipo=="Header")
             return(
-                <TheHeader deleteField={deleteField} formFields={formFields}  key={el.key} idmove={el.key} id={el.key+1} header={header} handleBlocco={handleBlocco} setHeader={setHeader} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
+                <TheHeader contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={formFields}  key={el.key} idmove={el.key} id={el.key+1} header={header} handleBlocco={handleBlocco} setHeader={setHeader} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
                 
 
             );
             else if (el.tipo=="Paragrafo")
             return(
-                <Paragrafo deleteField={deleteField} formFields={formFields} key={el.key} idmove={el.key} id={el.key+1} paragrafo={paragrafo} handleBlocco={handleBlocco} setParagrafo={setParagrafo} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/> 
+                <Paragrafo contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={formFields} key={el.key} idmove={el.key} id={el.key+1} paragrafo={paragrafo} handleBlocco={handleBlocco} setParagrafo={setParagrafo} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/> 
 
             );
             else if (el.tipo=="Immagini")
             return(
-                <Immagini deleteField={deleteField} formFields={formFields} key={el.key} idmove={el.key} id={el.key+1} handleBlocco={handleBlocco}  setImmagine={setImage} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
+                <Immagini contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={formFields} key={el.key} idmove={el.key} id={el.key+1} handleBlocco={handleBlocco}  setImmagine={setImage} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
 
             );
        // }
@@ -570,11 +587,35 @@ function TheForm(props){
         }
     }
 
-    
-
-    
-    
+  
    }
+
+
+   function setFieldstoEdit(blocchi){
+    const fieldsToEdit=[];
+    for(let el of blocchi)
+    {
+        if(el.idblocco==1)
+        {
+        let newField={tipo:"Header",priorità: el.priorità ,key:el.Dbid,contenuto:el.contenuto};
+        fieldsToEdit.push(newField);
+        }
+        if(el.idblocco==2)
+        {
+        let newField={tipo:"Paragrafo",priorità: el.priorità ,key:el.Dbid,contenuto:el.contenuto};
+        fieldsToEdit.push(newField);
+        }
+        if(el.idblocco==3)
+        {
+        let newField={tipo:"Immagini",priorità: el.priorità ,key:el.Dbid,contenuto:el.contenuto};
+        fieldsToEdit.push(newField);
+        }
+    }
+    setFormFields(fieldsToEdit);
+   /* let newField={tipo:"Header",priorità: lastpriorità ,key:key};
+    newFields.push(newField);*/
+
+}
 
         return(
             <>
