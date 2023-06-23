@@ -56,7 +56,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions)); 
 
-const answerDelay = 300;
+const answerDelay = 1;
 
 //middleware per identare se una request arriva da un utente autenticato
 const isLoggedIn = (req, res, next) => {
@@ -101,7 +101,7 @@ app.get('/api/titolo', (req, res) => {
 // POST /api/answers
 app.post('/api/pages', [
   check('autore').isInt(),
-  check('titolo').isLength({min: 1}),   // no more needed: the user creating the answer is taken from the session
+  check('titolo').isLength({min: 1}),   
   check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true})
   //check('datapubblicazione').isDate({format: 'YYYY-MM-DD', strictMode: true})
 ]
@@ -150,6 +150,112 @@ app.post('/api/pages', [
       res.status(503).json({ error: `Database error during the creation of page ${page.titolo} by ${page.autore}.` });
     }
   //}
+});
+
+
+// PUT /api/pages/<id>
+app.put('/api/answers/:id', isLoggedIn, [
+  check('autore').isInt(),
+  check('titolo').isLength({min: 1}),   
+  check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
+  check('id').isInt()
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({errors: errors.array()});
+  }
+
+  const page = {
+    titolo: req.body.titolo,
+    autore: req.body.autore, //req.user.id
+    datapubblicazione: req.body.datapubblicazione,
+    //respondentId: req.user.id,    // It is WRONG to use something different from req.user.id, DO NOT SEND it from client!
+  };
+  const blocchi=req.body.blocchi;
+  const blocchiInDB= dao.getBlocchi()
+  .then(blocks => setTimeout(()=>res.json(blocks), answerDelay))
+  .catch((err) => {console.log(err); res.status(500).end()});
+  // you can also check here if the id passed in the URL matches with the id in req.body,
+  // and decide which one must prevail, or return an error
+  page.id = req.params.id;
+
+  try {
+    const numRowChanges = await dao.updatePage(page, req.user.id);  // It is WRONG to use something different from req.user.id, do not send it from client!
+    // NB: the query in the DB will check if the answer belongs to the authenticated user and not another, using WHERE respondentId=...
+    let trovato=0;
+    for (let e of blocchi){
+      for(let e2 of blocchiInDB )
+
+    {
+      //let blocco=[...req.body.blocchi[i]];
+      if(e.Dbid==e2.id)
+      {
+
+        let Modblock ={
+          id:e.Dbid,
+          idpagina: e.idpagina,
+          contenuto: e.contenuto,
+          priorità: e.priorità
+        }
+        await dao.createBlocks(Modblock);
+        
+      }
+      else if(!e.Dbid || e.Dbid==null || e.Dbid=='')
+      {
+        let block ={
+          idpagina: e.idpagina,
+          idblocco: e.idblocco,
+          contenuto:e.contenuto,
+          priorità:e.priorità,
+        }
+        let idBlocco= await dao.createBlocks(block);
+      }
+
+
+
+      
+      //let idBlocco= await dao.createBlocks(block);
+
+
+
+    }
+      
+    }
+    setTimeout(()=>res.json(numRowChanges), answerDelay);
+    //res.status(200).end();
+  } catch(err) {
+    console.log(err);
+    res.status(503).json({error: `Database error during the update of answer ${req.params.id}.`});
+  }
+
+});
+
+
+
+
+// DELETE /api/answers/<id>
+app.delete('/api/answers/:id', isLoggedIn, async (req, res) => {
+  try {
+    const numRowChanges = await dao.deleteAnswer(req.params.id, req.user.id); // It is WRONG to use something different from req.user.id
+    // number of changed rows is sent to client as an indicator of success
+    setTimeout(()=>res.json(numRowChanges), answerDelay);
+  } catch(err) {
+    console.log(err);
+    res.status(503).json({ error: `Database error during the deletion of answer ${req.params.id}.`});
+  }
+});
+
+
+// DELETE /api/answers/<id>
+app.delete('/api/answers/:id', isLoggedIn, async (req, res) => {
+  try {
+    const numRowChanges = await dao.deleteAnswer(req.params.id, req.user.id); // It is WRONG to use something different from req.user.id
+    // number of changed rows is sent to client as an indicator of success
+    setTimeout(()=>res.json(numRowChanges), answerDelay);
+  } catch(err) {
+    console.log(err);
+    res.status(503).json({ error: `Database error during the deletion of answer ${req.params.id}.`});
+  }
 });
 
 

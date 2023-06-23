@@ -47,6 +47,7 @@ function PageRow(props) {
     const { e } = props;
     const blocchi=[...e.blocchi];
     blocchi.sort((a,b) => a.priorita - b.priorita);
+    console.log(blocchi);
     
     return (
         <Accordion.Item eventKey={e.id}>
