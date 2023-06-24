@@ -300,18 +300,20 @@ function TheForm(props){
     const {PageId}=useParams();
     //console.log("PageId:",PageId);
     //console.log(props.pageList);
+    //console.log(props.pageList);
     
     const objToEdit= PageId && props.pageList.find(e => e.id === parseInt(PageId));
+   // console.log(objToEdit);
    //console.log(objToEdit);
     //console.log('objToEdit: '+JSON.stringify(objToEdit));
-    const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.datapubblicazion?.format('YYYY-MM-DD') : '');  //string: dayjs object is created only on submit
+    const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.datapubblicazione?.format('YYYY-MM-DD'): '');  //string: dayjs object is created only on submit
     const [datacreazione,setDatacreazione]=useState(objToEdit ? objToEdit.datacreazione?.format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD'));
     const [titolo, setTitolo] = useState(objToEdit ? objToEdit.titolo : '');
     const [header, setHeader] = useState('');
     const [paragrafo, setParagrafo] = useState('');
     const [image, setImage] = useState('');
     const [blocchi,setBlocchi]=useState(objToEdit? objToEdit.blocchi :[]);
-    const [autore, setAutore] = useState(objToEdit ? objToEdit.autore : props.user.id);
+    const [autore, setAutore] = useState(objToEdit ? objToEdit.idautore : props.user.id);
     //const [score, setScore] = useState(objToEdit ? objToEdit.score : 0); 
     const [errorMsg,setErrorMsg]=useState('');
    // const [idTemp,setIdTemp]=useState(1);
@@ -374,10 +376,10 @@ function TheForm(props){
                 break;
         }
 
-        console.log(blocco)
+        //console.log(blocco)
         let el= arrayblocchi.find(block=>block.key==blocco.id);
         
-        console.log(el);
+        //console.log(el);
         
         if(el)
         {
@@ -504,8 +506,8 @@ function TheForm(props){
             const e = {
                 titolo: titolo,
                 autore: autore,
-                datacreazione: datacreazione,
-                datapubblicazione: dayjs(datapubblicazione).format('YYYY-MM-DD'),
+                datacreazione: dayjs(datacreazione),
+                datapubblicazione: dayjs(datapubblicazione),
                 blocchi:blocchi
                /* blocchi: [
                     (header) ?
@@ -531,8 +533,17 @@ function TheForm(props){
                 //score: parseInt(score),
 
             }
-            props.addPage(e);
-           // console.log(e);
+
+
+            if (objToEdit) {  // decide if this is an edit or an add
+                e.id = objToEdit.id;
+                props.editPage(e);
+            } else {
+                props.addPage(e);
+            }
+
+          /*  props.addPage(e);
+            console.log(e);*/
 
           /*  if (objToEdit) {  // decide if this is an edit or an add
                 e.id = objToEdit.id;
@@ -719,22 +730,23 @@ function TheForm(props){
    function setFieldstoEdit(blocchi){
     const fieldsToEdit=[];
     let i=0;
+    //console.log(blocchi)
     for(let el of blocchi)
     {
         //console.log(el);
         if(el.idblocco==1)
         {
-        let newField={tipo:"Header",priorità: el.priorita ,key:i,contenuto:el.contenuto};
+        let newField={Dbid:el.key, tipo:"Header",priorità: el.priorita ,key:i,contenuto:el.contenuto, idblocco:el.idblocco};
         fieldsToEdit.push(newField);
         }
         if(el.idblocco==2)
         {
-        let newField={tipo:"Paragrafo",priorità: el.priorita ,key:i,contenuto:el.contenuto};
+        let newField={Dbid:el.key,tipo:"Paragrafo",priorità: el.priorita ,key:i,contenuto:el.contenuto,idblocco:el.idblocco};
         fieldsToEdit.push(newField);
         }
         if(el.idblocco==3)
         {
-        let newField={tipo:"Immagini",priorità: el.priorita ,key:i,contenuto:el.contenuto};
+        let newField={Dbid:el.key,tipo:"Immagini",priorità: el.priorita ,key:i,contenuto:el.contenuto,idblocco:el.idblocco};
         fieldsToEdit.push(newField);
         }
         i++;

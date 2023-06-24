@@ -157,7 +157,7 @@ app.post('/api/pages', [
 app.put('/api/pages/:id', isLoggedIn, [
   check('autore').isInt(),
   check('titolo').isLength({min: 1}),   
-  check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
+  //check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
   check('id').isInt()
 ], async (req, res) => {
   const errors = validationResult(req);
@@ -166,11 +166,13 @@ app.put('/api/pages/:id', isLoggedIn, [
   }
 
   const page = {
+    id:req.params.id,
     titolo: req.body.titolo,
     autore: req.body.autore, //req.user.id
     datapubblicazione: req.body.datapubblicazione,
     //respondentId: req.user.id,    // It is WRONG to use something different from req.user.id, DO NOT SEND it from client!
   };
+  console.log(page);
   const blocchi=req.body.blocchi;
   const blocchiInDB= dao.getBlocchi()
   .then(blocks => setTimeout(()=>res.json(blocks), answerDelay))
@@ -184,7 +186,29 @@ app.put('/api/pages/:id', isLoggedIn, [
     // NB: the query in the DB will check if the answer belongs to the authenticated user and not another, using WHERE respondentId=...
     let trovato=0;
     for (let e of blocchi){
-      for(let e2 of blocchiInDB )
+      if(e.Dbid)
+      {
+        let Modblock ={
+          id:e.Dbid,
+          //idpagina: e.idpagina,
+          idpagina: req.params.id,
+          contenuto: e.contenuto,
+          priorità: e.priorità
+        }
+        await dao.updateBlocks(Modblock);
+      }
+      else
+      {
+        let block ={
+          //idpagina: e.idpagina,
+          idpagina: req.params.id,
+          idblocco: e.idblocco,
+          contenuto:e.contenuto,
+          priorità:e.priorità,
+        }
+        let idBlocco= await dao.createBlocks(block);
+      }
+     /* for(let e2 of blocchiInDB )
 
     {
       //let blocco=[...req.body.blocchi[i]];
@@ -193,7 +217,8 @@ app.put('/api/pages/:id', isLoggedIn, [
 
         let Modblock ={
           id:e.Dbid,
-          idpagina: e.idpagina,
+          //idpagina: e.idpagina,
+          idpagina: req.params.id,
           contenuto: e.contenuto,
           priorità: e.priorità
         }
@@ -203,7 +228,8 @@ app.put('/api/pages/:id', isLoggedIn, [
       else if(!e.Dbid || e.Dbid==null || e.Dbid=='')
       {
         let block ={
-          idpagina: e.idpagina,
+          //idpagina: e.idpagina,
+          idpagina: req.params.id,
           idblocco: e.idblocco,
           contenuto:e.contenuto,
           priorità:e.priorità,
@@ -218,7 +244,7 @@ app.put('/api/pages/:id', isLoggedIn, [
 
 
 
-    }
+    }*/
       
     }
     setTimeout(()=>res.json(numRowChanges), answerDelay);
