@@ -7,7 +7,7 @@ import { LoginForm } from './components/LoginComponent';
 
 import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Pages from './components/Pages';
-import PageForm from './components/PageForm';
+import { PageForm, TitleForm } from './components/PageForm';
 
 function DefaultRoute() {
   return (
@@ -146,10 +146,16 @@ function App() {
         return e;
       }
     }));
-    API.updateAnswer(newPage)
+    API.updatePage(newPage)
     .then(() => setDirty(true))
     .catch((err) => handleError(err));
 
+  }
+
+  const editTitle=(e)=>{
+    API.updateTitolo(e)
+      .then(()=> setDirty(true))
+      .catch((err)=>handleError(err));
   }
 
 
@@ -164,6 +170,8 @@ function App() {
           <Route path='/edit/:PageId' element={loggedIn ? <PageForm titolo={titolo} user={user} logout={doLogOut} initialLoading={initialLoading}
           pageList={pages}
           addPage={addPage} editPage={editPage} /> :  <Navigate replace to='/' />} /> 
+          <Route path='/titolo/:IdTitolo' element={loggedIn ? <TitleForm titolo={titolo} user={user} logout={doLogOut} initialLoading={initialLoading}
+          editTitle={editTitle} /> :  <Navigate replace to='/' />}/>
           <Route path='/*' element={<DefaultRoute />} />
         </Routes>
       </BrowserRouter>

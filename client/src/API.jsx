@@ -33,6 +33,29 @@ async function getTitolo() {
   }
 }
 
+function updateTitolo(titolo) {
+  // call  PUT /api/titolo/<id>
+  return new Promise((resolve, reject) => {
+    fetch(URL+`/titolo/${titolo.id}`, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(Object.assign({}, titolo)),
+    }).then((response) => {
+      if (response.ok) {
+        resolve(null);
+      } else {
+        // analyze the cause of error
+        response.json()
+          .then((message) => { reject(message); }) // error message in the response body
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+      }
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+  });
+}
+
 
 function deletePage(id) {
   // call  DELETE /api/pages/<id>
@@ -72,16 +95,16 @@ function deleteBlock(id) {
   });
 }
 
-function updateAnswer(answer) {
-  // call  PUT /api/answers/<id>
+function updatePage(page) {
+  // call  PUT /api/page/<id>
   return new Promise((resolve, reject) => {
-    fetch(URL+`/answers/${answer.id}`, {
+    fetch(URL+`/pages/${page.id}`, {
       method: 'PUT',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(Object.assign({}, answer, {date: answer.date.format("YYYY-MM-DD")})),
+      body: JSON.stringify(Object.assign({}, page)),
     }).then((response) => {
       if (response.ok) {
         resolve(null);
@@ -175,8 +198,9 @@ const API = {
     getUserInfo,
     addPage,
     getTitolo,
-    updateAnswer,
+    updatePage,
     deleteBlock,
-    deletePage
+    deletePage,
+    updateTitolo
   };
   export default API;

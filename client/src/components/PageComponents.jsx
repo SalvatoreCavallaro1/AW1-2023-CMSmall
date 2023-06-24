@@ -144,7 +144,7 @@ function MainPages(props) {
             <Col>
                 <Accordion>
                 {sortedPages.map((e) =>
-                  <PageRow e={e}  key={e.id} user={props.user} editAnswer={() =>setObjToEdit(e)}   />)
+                  <PageRow e={e}  key={e.id} user={props.user} editPage={() =>setObjToEdit(e)}   />)
                 }
                 </Accordion>
             </Col>

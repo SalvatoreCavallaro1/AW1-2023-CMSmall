@@ -154,7 +154,7 @@ app.post('/api/pages', [
 
 
 // PUT /api/pages/<id>
-app.put('/api/answers/:id', isLoggedIn, [
+app.put('/api/pages/:id', isLoggedIn, [
   check('autore').isInt(),
   check('titolo').isLength({min: 1}),   
   check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
@@ -234,7 +234,7 @@ app.put('/api/answers/:id', isLoggedIn, [
 // PUT /api/titolo/<id>
 app.put('/api/titolo/:id', isLoggedIn, [
   //check('autore').isInt(),
-  check('titolo').isLength({min: 1}),   
+ // check('titolo').isLength({min: 1}),   
   //check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
   check('id').isInt()
 ], async (req, res) => {

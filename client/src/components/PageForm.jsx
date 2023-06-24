@@ -6,19 +6,79 @@ import { Container,Form,Button,Alert,Col,Image,Figure, FormSelect,Spinner } from
 import { useNavigate, useParams,Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-/*
+
 function TitleForm(props)
 {
+    const {IdTitolo}=useParams();
+    const objToEdit= (props.titolo.id=== parseInt(IdTitolo))? props.titolo :'';
+    const [errorMsg,setErrorMsg]=useState('');
+    const [titolo,setTitolo]=useState(objToEdit? objToEdit.titolo : '');
+    const navigate=useNavigate();
+    
+    console.log("titolo:",titolo);
+    console.log("IdTitolo:",IdTitolo);
+    console.log("objToedit", objToEdit);
+    function handleSubmit(event) {
+        event.preventDefault();
+        //console.log('premuto submit');
+
+        // Form validation
+       // if (datapubblicazione === '')
+       // {
+           // setErrorMsg('Data non valida');
+        /*else if (isNaN(parseInt(score)))
+            setErrorMsg('Score non valido');
+        else if (parseInt(score)<0) {
+            setErrorMsg('Score negativo non valido');*/
+        //}
+        if(titolo==='')
+        {
+            setErrorMsg("Devi inserire il titolo")
+        }
+        
+        
+        else {
+            const e = {
+                id: IdTitolo,
+                titolo: titolo,
+                
+            }
+            props.editTitle(e);
+           // console.log(e);
+
+           navigate('/');
+        }
+    }
+
+
+
     return(
         <>
-            <NavHeader  user={props.user} logout={props.logout}/>
+            <NavHeader  loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
             <Container fluid>
+            {errorMsg? <Alert variant='danger' onClose={()=>setErrorMsg('')} dismissible>{errorMsg}</Alert> : false }
+                <Form onSubmit={handleSubmit}>
+
+                    <Form.Group className='mb-3'>                            
+                                <Form.Label>Titolo</Form.Label>
+                                <Form.Control type="text" name="titolo" value={titolo} onChange={ev => setTitolo(ev.target.value)} />
+                    </Form.Group>
+                   
+                   
+                    <Button type='submit' variant="primary">{objToEdit? 'Salva Modifiche' : 'Aggiungi Titolo'}</Button> 
+                    {/* alternative
+                    <Button className='mx-2' variant='danger' onClick={()=>navigate('/')}>Cancel</Button> */}
+                    <Link to='/'>
+                        <Button className='mx-2' variant='danger'>Annulla</Button>
+                    </Link>
+                </Form>
+
             
 
             </Container>
         </>
     );
-}*/
+}
 
 
 
@@ -723,4 +783,4 @@ function TheForm(props){
 
 
 
-export default PageForm;
+export {PageForm, TitleForm};

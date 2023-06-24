@@ -35,7 +35,7 @@ return (
                 }>
                  <span className="d-inline-block">
                 <Button variant='primary'  className='mx-2' 
-                    ><i className='bi bi-pencil-square' /></Button>
+                    onClick={()=>{navigate(`/titolo/${props.titolo.id}`)}}><i className='bi bi-pencil-square' /></Button>
                     </span>
                     </OverlayTrigger>
                 </>
