@@ -95,7 +95,7 @@ function PageRow(props) {
            
             <Col>
                 {blocchi.map((e) =>
-                  <BodyAccordion e={e}  key={e.idblocco}  />)
+                  <BodyAccordion e={e}  key={e.key}  />)
                 }
             </Col>
             </Accordion.Body>
