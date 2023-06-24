@@ -39,11 +39,11 @@ INSERT INTO "blocchicontenuto" VALUES (1,'header');
 INSERT INTO "blocchicontenuto" VALUES (2,'paragrafo'); 
 INSERT INTO "blocchicontenuto" VALUES (3,'immagine'); 
 INSERT INTO "pagine" VALUES (1,"I miei strumenti musicali",1,'2023-06-09','2023-06-09'); 
-INSERT INTO "blocchipagine" VALUES (1,1,1,"Ecco una foto della batteria",1);
-INSERT INTO "blocchipagine" VALUES (2,1,2,"La marca è una DW",2);
+INSERT INTO "blocchipagine" VALUES (1,1,1,"Ecco una foto della batteria",0);
+INSERT INTO "blocchipagine" VALUES (2,1,2,"La marca è una DW",1);
 INSERT INTO "pagine" VALUES (2,"Torino",2,'2023-07-09','2023-07-09'); 
-INSERT INTO "blocchipagine" VALUES (3,2,1,"Qualche foto di torino",1);
-INSERT INTO "blocchipagine" VALUES (4,2,2,"Torino è una città del nord Italia dove ha sede l'importante Politecnico",2);
+INSERT INTO "blocchipagine" VALUES (3,2,1,"Qualche foto di torino",0);
+INSERT INTO "blocchipagine" VALUES (4,2,2,"Torino è una città del nord Italia dove ha sede l'importante Politecnico",1);
 INSERT INTO "titolo" VALUES (1,"MyCMS");
 
 

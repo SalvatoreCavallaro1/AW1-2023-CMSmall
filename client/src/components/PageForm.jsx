@@ -88,7 +88,7 @@ function PageForm(props){
         <>
             <NavHeader loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
             <Container fluid>
-            <TheForm pageList={props.pageList} user={props.user} addPage={props.addPage} editPage={props.editPage}/>
+            <TheForm handleError={props.handleError} pageList={props.pageList} user={props.user} addPage={props.addPage} editPage={props.editPage}/>
 
             </Container>
         </>
@@ -124,7 +124,7 @@ return(
 
             </div>
             <div>
-                <Button variant="danger" onClick={()=>props.deleteField(props.id-1)} >
+                <Button variant="danger" onClick={()=>props.deleteField(props.id, props.Dbid)} >
                     <i className='bi bi-trash' /></Button>
             </div>
         </div>
@@ -150,7 +150,7 @@ return(
                     variant='primary'
                     className='mx-2'
                     onClick={() => props.moveDown(props)}
-                    disabled={props.priorità === props.formFields.length - 1}
+                    disabled={props.priorità === props.formFields.length-1}
                 >
                     &#8595;
                 </Button>
@@ -160,7 +160,7 @@ return(
                 <Form.Control type="text" name="paragrafo" id={props.id} value={props.contenuto? props.contenuto : ''} onChange={ev => { props.handleBlocco({ id: parseInt(ev.target.id) || 0, name: ev.target.name, contenuto: ev.target.value, priorità: props.priorità })}} as="textarea" rows={3} />
             </div>
             <div>
-                <Button variant="danger" onClick={()=>props.deleteField(props.id-1)}>
+                <Button variant="danger" onClick={()=> props.deleteField(props.id, props.Dbid)}>
                     <i className='bi bi-trash' /></Button>
             </div>
         </div>
@@ -287,7 +287,7 @@ return(
                         />
                         </div>
                         <div>
-                        <Button variant="danger" onClick={()=>props.deleteField(props.id-1)} >
+                        <Button variant="danger" onClick={()=>props.deleteField(props.id, props.Dbid)} >
                         <i className='bi bi-trash' /></Button>
                         </div>
                         </div>
@@ -322,6 +322,7 @@ function TheForm(props){
     const [firstInit,setFirstInit]=useState(true);
     const [nDisplay,setnDisplay]=useState(0)
     const [valorProps,setValOrProps]=useState(true);
+    const [blocksToDelete,setBlockToDelete]=useState([]);
 //{tipo:"Header",priorità:0 ,key:0,contenuto:''},{tipo:"Paragrafo",priorità:1,key:1},{tipo:"Immagini",priorità:2,key:2,contenuto:''}
 
     useEffect(() => {
@@ -538,8 +539,16 @@ function TheForm(props){
             if (objToEdit) {  // decide if this is an edit or an add
                 e.id = objToEdit.id;
                 props.editPage(e);
+                for(let el of blocksToDelete )
+                {
+                API.deleteBlock(el)
+                .then(() => {})
+                .catch((err) => props.handleError(err));
+                }
+                console.log(e);
             } else {
                 props.addPage(e);
+                console.log(e);
             }
 
           /*  props.addPage(e);
@@ -577,19 +586,19 @@ function TheForm(props){
                
 
             return(
-                <TheHeader   contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={blocchi}  key={el.key} idmove={el.key} id={el.key}  handleBlocco={handleBlocco} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
+                <TheHeader Dbid={el.Dbid? el.Dbid : -1 } contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={blocchi}  key={el.key} idmove={el.key} id={el.key}  handleBlocco={handleBlocco} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
                 
 
             );
             }
             else if (el.tipo=="Paragrafo" || el.tipo=="paragrafo")
             return(
-                <Paragrafo  contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={blocchi} key={el.key} idmove={el.key} id={el.key}  handleBlocco={handleBlocco} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/> 
+                <Paragrafo  Dbid={el.Dbid? el.Dbid : -1 }  contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={blocchi} key={el.key} idmove={el.key} id={el.key}  handleBlocco={handleBlocco} moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/> 
 
             );
             else if (el.tipo=="immagine" || el.tipo=="Immagini")
             return(
-                <Immagini  contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={blocchi} key={el.key} idmove={el.key} id={el.key} handleBlocco={handleBlocco}  moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
+                <Immagini  Dbid={el.Dbid? el.Dbid : -1 }  contenuto={el.contenuto? el.contenuto: '' } deleteField={deleteField} formFields={blocchi} key={el.key} idmove={el.key} id={el.key} handleBlocco={handleBlocco}  moveUp={HandleMoveUp} moveDown={HandleMoveDown} priorità={el.priorità}/>
 
             );
             
@@ -695,26 +704,40 @@ function TheForm(props){
 
    }
    
-   function deleteField(id)
+   function deleteField(id,Dbid)
    {
-    //console.log(id)
+    console.log(id)
     //let newFields=[...formFields];
     let newFields=[...blocchi];
+    console.log(newFields)
    // for(let field of newFields ){
+    if(id==newFields.length-1)
+    {
+        newFields.length=newFields.length-1
+        setBlocchi(newFields);
+        for (let j = 0; j < newFields.length; j++) {
+            newFields[j].key = j;
+            
+            
+          }
+    }
+    else
+    {
     for( let i = 0; i < newFields.length; i++){
-        if(newFields[i].key==id)
+        if(newFields[i].key===id)
         {  
             
             newFields.splice(i, 1);
             for (let j = 0; j < newFields.length; j++) {
                 newFields[j].key = j;
                 
+                
               }
-            if(newFields.length>1)
+            /*if(newFields.length>1)
             {
             if (newFields[newFields.length-1].priorità==newFields.length){
                 newFields[newFields.length-1].priorità=newFields[newFields.length-1].priorità-1;
-            }
+            }*/
         }
             setBlocchi(newFields);
             //console.log(formFields);
@@ -722,9 +745,27 @@ function TheForm(props){
             
         }
     }
+    
 
+    if(Dbid!='')
+    {
+        console.log("Dbid", Dbid);
+       /* API.deleteBlock(Dbid)
+       .then(() => {})
+       .catch((err) => props.handleError(err));*/
+       let newBlocks=[...blocksToDelete];
+       newBlocks.push(Dbid);
+       setBlockToDelete(newBlocks);
+    }
   
    }
+
+   /*function deleteDbBlock(id)
+    {
+        API.deleteAnswer(id)
+       .then(() => {})
+       .catch((err) => handleError(err));
+    }*/
 
 
    function setFieldstoEdit(blocchi){

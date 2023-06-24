@@ -182,18 +182,13 @@ app.put('/api/pages/:id', isLoggedIn, [
     const numRowChanges = await dao.updatePage(page, req.user.id);  // It is WRONG to use something different from req.user.id, do not send it from client!
     
     const blocchi=req.body.blocchi;
-    /*const blocchiInDB= dao.getBlocchi()
-    .then(blocks => setTimeout(()=>res.json(blocks), answerDelay))
-    .catch((err) => {console.log(err); res.status(500).end()});*/
     
-    // NB: the query in the DB will check if the answer belongs to the authenticated user and not another, using WHERE respondentId=...
-   // let trovato=0;
     for (let e of blocchi){
       if(e.Dbid)
       {
         let Modblock ={
           id:e.Dbid,
-          //idpagina: e.idpagina,
+          
           idpagina: req.params.id,
           contenuto: e.contenuto,
           priorità: e.priorità
@@ -203,7 +198,7 @@ app.put('/api/pages/:id', isLoggedIn, [
       else
       {
         let block ={
-          //idpagina: e.idpagina,
+          
           idpagina: req.params.id,
           idblocco: e.idblocco,
           contenuto:e.contenuto,
@@ -311,7 +306,7 @@ app.delete('/api/pages/:id', isLoggedIn, async (req, res) => {
     setTimeout(()=>res.json(numRowChanges), answerDelay);
   } catch(err) {
     console.log(err);
-    res.status(503).json({ error: `Database error during the deletion of answer ${req.params.id}.`});
+    res.status(503).json({ error: `Database error during the deletion of the page ${req.params.id}.`});
   }
 });
 
@@ -319,12 +314,12 @@ app.delete('/api/pages/:id', isLoggedIn, async (req, res) => {
 // DELETE /api/answers/<id>
 app.delete('/api/blocks/:id', isLoggedIn, async (req, res) => {
   try {
-    const numRowChanges = await dao.deleteAnswer(req.params.id); // It is WRONG to use something different from req.user.id
+    const numRowChanges = await dao.deleteBlocco(req.params.id); // It is WRONG to use something different from req.user.id
     // number of changed rows is sent to client as an indicator of success
     setTimeout(()=>res.json(numRowChanges), answerDelay);
   } catch(err) {
     console.log(err);
-    res.status(503).json({ error: `Database error during the deletion of answer ${req.params.id}.`});
+    res.status(503).json({ error: `Database error during the deletion of the block ${req.params.id}.`});
   }
 });
 

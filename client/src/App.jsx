@@ -169,9 +169,9 @@ function App() {
           <Route path='/add' element={loggedIn ? <PageForm titolo={titolo} user={user} logout={doLogOut} addPage={addPage} initialLoading={initialLoading} /> : <Navigate replace to='/' />} />
           <Route path='/edit/:PageId' element={loggedIn ? <PageForm titolo={titolo} user={user} logout={doLogOut} initialLoading={initialLoading}
           pageList={pages}
-          addPage={addPage} editPage={editPage} /> :  <Navigate replace to='/' />} /> 
+          addPage={addPage} editPage={editPage} handleError={handleError}/> :  <Navigate replace to='/' />} /> 
           <Route path='/titolo/:IdTitolo' element={loggedIn ? <TitleForm titolo={titolo} user={user} logout={doLogOut} initialLoading={initialLoading}
-          editTitle={editTitle} /> :  <Navigate replace to='/' />}/>
+          editTitle={editTitle} handleError={handleError} /> :  <Navigate replace to='/' />}/>
           <Route path='/*' element={<DefaultRoute />} />
         </Routes>
       </BrowserRouter>
