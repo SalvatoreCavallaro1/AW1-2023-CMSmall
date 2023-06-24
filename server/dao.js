@@ -117,7 +117,7 @@ exports.createPage = (pagina) => {
   exports.updateBlocks = (blocco) => {
     //console.log('updateBlocks: '+JSON.stringify(blocco));
     return new Promise((resolve, reject) => {
-      const sql = 'UPDATE blocchipagine SET contenuto=?, priorità=?, WHERE id = ? AND idpagina=?';  
+      const sql = 'UPDATE blocchipagine SET contenuto=?, priorità=? WHERE id = ? AND idpagina=?';  
       // passo l'userid per controllare che veramente quella pagina appartiene all'utente autenticato
       db.run(sql, [blocco.contenuto, blocco.priorità, blocco.id, blocco.idpagina], function (err) {
         if (err) {

@@ -172,19 +172,22 @@ app.put('/api/pages/:id', isLoggedIn, [
     datapubblicazione: req.body.datapubblicazione,
     //respondentId: req.user.id,    // It is WRONG to use something different from req.user.id, DO NOT SEND it from client!
   };
-  console.log(page);
-  const blocchi=req.body.blocchi;
-  const blocchiInDB= dao.getBlocchi()
-  .then(blocks => setTimeout(()=>res.json(blocks), answerDelay))
-  .catch((err) => {console.log(err); res.status(500).end()});
-  // you can also check here if the id passed in the URL matches with the id in req.body,
+ 
+ 
+//  // you can also check here if the id passed in the URL matches with the id in req.body,
   // and decide which one must prevail, or return an error
   page.id = req.params.id;
 
   try {
     const numRowChanges = await dao.updatePage(page, req.user.id);  // It is WRONG to use something different from req.user.id, do not send it from client!
+    
+    const blocchi=req.body.blocchi;
+    /*const blocchiInDB= dao.getBlocchi()
+    .then(blocks => setTimeout(()=>res.json(blocks), answerDelay))
+    .catch((err) => {console.log(err); res.status(500).end()});*/
+    
     // NB: the query in the DB will check if the answer belongs to the authenticated user and not another, using WHERE respondentId=...
-    let trovato=0;
+   // let trovato=0;
     for (let e of blocchi){
       if(e.Dbid)
       {
@@ -208,6 +211,8 @@ app.put('/api/pages/:id', isLoggedIn, [
         }
         let idBlocco= await dao.createBlocks(block);
       }
+    }
+
      /* for(let e2 of blocchiInDB )
 
     {
@@ -245,11 +250,11 @@ app.put('/api/pages/:id', isLoggedIn, [
 
 
     }*/
-      
-    }
     setTimeout(()=>res.json(numRowChanges), answerDelay);
+  }
+   
     //res.status(200).end();
-  } catch(err) {
+   catch(err) {
     console.log(err);
     res.status(503).json({error: `Database error during the update of answer ${req.params.id}.`});
   }
