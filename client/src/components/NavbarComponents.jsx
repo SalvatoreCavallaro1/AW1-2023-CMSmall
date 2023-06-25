@@ -1,5 +1,5 @@
 import { Navbar, Container, Button,OverlayTrigger,Tooltip } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import API from "../API";
 //import { useState } from 'react';
 
@@ -45,6 +45,43 @@ return (
                 {titolo}
                 </>
                 }
+
+
+                
+                { 
+                  props.appStatus?
+                 <OverlayTrigger  placement="bottom" overlay={  
+                <Tooltip id="tooltip-enabled"> {props.user?.id? "Passa al" : "Effettua l'accesso per accedere al backoffice"}</Tooltip>
+                }>
+                 <span className="d-inline-block">
+                <Button variant='primary'  className='mx-2' 
+                    disabled={ props.user? false : true}
+                    onClick={()=>{props.appStatus=="back"? props.setAppStatus("front") : props.setAppStatus("back")}}> {props.appStatus=="back"? "FrontOffice" : "BackOffice"}</Button>
+                    </span>
+                    </OverlayTrigger>
+                    :
+                    false
+                }
+                
+                {(props.appStatus1 && props.appStatus1=="back")?
+                 <>
+                <Link to='/'>
+                <Button onClick={()=>{props.appStatus1=="back"? props.setAppStatus1("front") : props.setAppStatus1("back")}} className='mx-2' variant='primary'>Passa al FrontOffice</Button>
+                </Link>
+                
+                <Link to='/'>
+                <Button className='mx-2' variant='primary'>Torna Indietro</Button>
+                </Link>
+                </>
+                : (props.appStatus1 && props.appStatus1=="front")?
+                <Link to='/'>
+                <Button className='mx-2' variant='primary'>Torna Indietro</Button>
+                </Link>
+               :false}
+
+               
+            
+                
             </Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">

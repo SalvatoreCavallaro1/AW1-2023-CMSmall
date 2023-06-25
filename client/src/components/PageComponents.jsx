@@ -72,6 +72,7 @@ function PageRow(props) {
     
     
     return (
+      (props.appStatus=="front" && status==2) || props.appStatus=="back"? 
         <Accordion.Item eventKey={e.id}>
             <Accordion.Header>
                 <Row>
@@ -81,6 +82,7 @@ function PageRow(props) {
                     <Col md="auto">
                     <Badge bg="primary">Creato da:  {e.nomeautore}</Badge>
                     </Col>
+                    {props.appStatus=="back"?
                     <Col md="auto">
                     {
                     status===1?
@@ -92,6 +94,7 @@ function PageRow(props) {
 
                     }
                     </Col>
+                     : false}
                 </Row>
                 
                 </Accordion.Header>
@@ -100,31 +103,30 @@ function PageRow(props) {
                 <h6 className='fs-6'>Data Pubblicazione: {isNaN(e.datapubblicazione.$D)? "Data di pubblicazione non ancora scelta" :e.datapubblicazione.format("YYYY-MM-DD")}</h6>
                 </Col>
             
-                <OverlayTrigger  placement="bottom" overlay={(props.user?.id  && props.user?.name===e.nomeautore)?  
+                {props.appStatus=="back"?
+                <OverlayTrigger  placement="bottom" overlay={ 
                 <Tooltip id="tooltip-enabled"> Edita la pagina</Tooltip>
-                : (props.user?.id  && props.user?.name!==e.nomeautore)?
-                <Tooltip id="tooltip-disabled"> La pagina non è di tua proprietà non puoi editarla</Tooltip>
-                :
-                <Tooltip id="tooltip-disabled"> Effettua il login per editare la pagina</Tooltip>
+               
                 }>
                   <span className="d-inline-block">
                 <Button variant='warning' disabled={ (props.user?.id && props.user?.name===e.nomeautore) || props.user?.admin===1? false : true} className='mx-2' 
                     onClick={()=>{navigate(`/edit/${e.id}`)}}><i className='bi bi-pencil-square' /></Button>
                     </span>
                 </OverlayTrigger>
+                :false
+                }
 
-                <OverlayTrigger  placement="bottom" overlay={(props.user?.id  && props.user?.name===e.nomeautore)?
+                {props.appStatus=="back"?
+                <OverlayTrigger  placement="bottom" overlay={
                 <Tooltip id="tooltip-enabled"> Elimina la pagina</Tooltip>
-                : (props.user?.id  && props.user?.name!==e.nomeautore)?
-                <Tooltip id="tooltip-disabled"> La pagina non è di tua proprietà non puoi eliminarla</Tooltip>
-                :
-                <Tooltip id="tooltip-disabled"> Efettua il login per eliminare la pagina</Tooltip>
                 }>
                 <span className="d-inline-block">
-                <Button variant="danger" disabled={(props.user?.id && props.user?.name===e.nomeautore) || props.user?.admin===1 ? false : true} onClick={()=>props.deletePage(e.id)} >
+                <Button variant="danger"  onClick={()=>props.deletePage(e.id)} >
                     <i className='bi bi-trash' /></Button>
                 </span>
                 </OverlayTrigger>
+                :false
+                }
            
             <Col>
                 {blocchi.map((e) =>
@@ -134,6 +136,7 @@ function PageRow(props) {
             </Accordion.Body>
             
         </Accordion.Item>
+        :false
     );
 }
 
@@ -178,22 +181,24 @@ function MainPages(props) {
             <Col>
                 <Accordion>
                 {sortedPages.map((e) =>
-                  <PageRow e={e}  key={e.id} user={props.user} editPage={() =>setObjToEdit(e)}  deletePage={props.deletePage}  />)
+                  <PageRow appStatus={props.appStatus} setAppStatus={props.setAppStatus} e={e}  key={e.id} user={props.user} editPage={() =>setObjToEdit(e)}  deletePage={props.deletePage}  />)
                 }
                 </Accordion>
             </Col>
         </Row>
         
-         <OverlayTrigger  placement="bottom" overlay={props.user?.id?  
+        {props.appStatus=="back"?
+         <OverlayTrigger  placement="bottom" overlay={ 
           <Tooltip id="tooltip-enabled"> Aggiungi una nuova pagina</Tooltip>
-          :
-          <Tooltip id="tooltip-disabled"> Effettua il login per creare una pagina</Tooltip>
+        
           }
           > 
           <span className="d-inline-block">
-          <Button className="btn btn-dark btn-lg fixed-right-bottom" onClick={()=>navigate('/add')} disabled={props.user?.id? false : true} > &#43; </Button>
+          <Button className="btn btn-dark btn-lg fixed-right-bottom" onClick={()=>navigate('/add')}  > &#43; </Button>
           </span>
         </OverlayTrigger>
+        :false
+        }
         
         
       </>

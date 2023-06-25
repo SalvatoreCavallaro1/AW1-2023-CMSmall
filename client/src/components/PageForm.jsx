@@ -54,7 +54,7 @@ function TitleForm(props)
 
     return(
         <>
-            <NavHeader  loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
+            <NavHeader   appStatus1={props.appStatus} setAppStatus1={props.setAppStatus} loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
             <Container fluid>
             {errorMsg? <Alert variant='danger' onClose={()=>setErrorMsg('')} dismissible>{errorMsg}</Alert> : false }
                 <Form onSubmit={handleSubmit}>
@@ -86,7 +86,7 @@ function PageForm(props){
 
     return(
         <>
-            <NavHeader loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
+            <NavHeader appStatus1={props.appStatus} setAppStatus1={props.setAppStatus} loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
             <Container fluid>
             <TheForm autori={props.autori? props.autori : ''} handleError={props.handleError} pageList={props.pageList} user={props.user} addPage={props.addPage} editPage={props.editPage}/>
 

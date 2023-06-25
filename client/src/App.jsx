@@ -29,6 +29,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [titolo, setTitolo] = useState('');
   const [autori,setAutori]=useState([]);
+  const [appStatus,setAppStatus]=useState("front");
 
   function handleError(err) {
     console.log('err: ' + JSON.stringify(err));  // Only for debug
@@ -125,6 +126,7 @@ function App() {
   const doLogOut = async () => {
     await API.logOut();
     setLoggedIn(false);
+    setAppStatus("front");
     setUser(undefined);
     /* set state to empty if appropriate */
   }
@@ -208,14 +210,14 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Pages deletePage={deletePage} titolo={titolo} user={user} logout={doLogOut} pages={pages} errorMsg={errorMsg} resetErrorMsg={() => setErrorMsg('')} initialLoading={initialLoading}
+          <Route path="/" element={<Pages appStatus={appStatus} setAppStatus={setAppStatus} deletePage={deletePage} titolo={titolo} user={user} logout={doLogOut} pages={pages} errorMsg={errorMsg} resetErrorMsg={() => setErrorMsg('')} initialLoading={initialLoading}
           editPage={editPage}/>} />
           <Route path='/login' element={loggedIn ? <Navigate replace to='/' /> : <LoginForm loginSuccessful={loginSuccessful} />} />
-          <Route path='/add' element={loggedIn ? <PageForm titolo={titolo} user={user} logout={doLogOut} addPage={addPage} initialLoading={initialLoading} /> : <Navigate replace to='/' />} />
-          <Route path='/edit/:PageId' element={loggedIn ? <PageForm titolo={titolo} user={user} logout={doLogOut} initialLoading={initialLoading}
+          <Route path='/add' element={loggedIn ? <PageForm appStatus={appStatus} setAppStatus={setAppStatus} titolo={titolo} user={user} logout={doLogOut} addPage={addPage} initialLoading={initialLoading} /> : <Navigate replace to='/' />} />
+          <Route path='/edit/:PageId' element={loggedIn ? <PageForm appStatus={appStatus} setAppStatus={setAppStatus} titolo={titolo} user={user} logout={doLogOut} initialLoading={initialLoading}
           pageList={pages}
           addPage={addPage} editPage={editPage} handleError={handleError} autori={autori}/> :  <Navigate replace to='/' />} /> 
-          <Route path='/titolo/:IdTitolo' element={loggedIn ? <TitleForm titolo={titolo} user={user} logout={doLogOut} initialLoading={initialLoading}
+          <Route path='/titolo/:IdTitolo' element={loggedIn ? <TitleForm appStatus={appStatus} setAppStatus={setAppStatus} titolo={titolo} user={user} logout={doLogOut} initialLoading={initialLoading}
           editTitle={editTitle} handleError={handleError} /> :  <Navigate replace to='/' />}/>
           <Route path='/*' element={<DefaultRoute />} />
         </Routes>

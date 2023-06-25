@@ -14,14 +14,14 @@ function Loading(props) {
 function Pages(props){
     return(
         <>
-            <NavHeader loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
+            <NavHeader appStatus={props.appStatus} setAppStatus={props.setAppStatus} loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
             <Container fluid>
             {props.errorMsg? <Alert variant='danger' dismissible className='my-2' onClose={props.resetErrorMsg}>
             {props.errorMsg}</Alert> : null}
             {props.initialLoading ? <Loading /> : 
             <>
             
-            <MainPages pageList={props.pages} user={props.user} editPage={props.editPage} deletePage={props.deletePage}/>
+            <MainPages appStatus={props.appStatus} setAppStatus={props.setAppStatus} pageList={props.pages} user={props.user} editPage={props.editPage} deletePage={props.deletePage}/>
             </>
             }
             </Container>
