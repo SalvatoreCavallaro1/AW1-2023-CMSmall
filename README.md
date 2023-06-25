@@ -158,6 +158,7 @@ Response body: _None_
 ![Screenshot](./img/backoffice2.png)
 ![Screenshot](./img/frontoffice1.png)
 ![Screenshot](./img/frontoffice2.png)
+![Screenshot](./img/formAdd.png)
 
 ## Users Credentials
 

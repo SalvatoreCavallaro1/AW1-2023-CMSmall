@@ -191,14 +191,14 @@ return(
                                 </Figure.Caption>
                             </Figure>}
                             value="http://localhost:3001/images/baloon.jpg"
-                            name="img"
-                            
+                            data-name="img"
+                            name={props.id}
                             type='radio'
                            
                             id="{`inline-radio-1`}"
                             data-id={props.id}
                             checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/baloon.jpg")? true : false}
-                            onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità})}}
+                            onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.dataset.name,contenuto: ev.target.value,priorità:props.priorità})}}
                         />
                         <Form.Check 
                             label={<Figure>
@@ -216,12 +216,13 @@ return(
                             //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
                             value="http://localhost:3001/images/torino1.jpeg"
                             //name="group1"
-                            name="img"
+                            data-name="img"
+                            name={props.id}
                             type='radio'
                             id={`inline-radio-2`}
                             data-id={props.id}
                             checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/torino1.jpeg")? true : false}
-                            onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità})}}
+                            onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.dataset.name,contenuto: ev.target.value,priorità:props.priorità})}}
                         />
                         <Form.Check
                             label={<Figure>
@@ -239,12 +240,13 @@ return(
                             //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
                             value="http://localhost:3001/images/alpi.jpg"
                             //name="group1"
-                            name="img"
+                            data-name="img"
+                            name={props.id}
                             type='radio'
                             id={props.id}
                             data-id={props.id}
                             checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/alpi.jpg")? true : false}
-                            onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità})}}
+                            onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.dataset.name,contenuto: ev.target.value,priorità:props.priorità})}}
 
                         />
                         <Form.Check
@@ -264,11 +266,12 @@ return(
                             value="http://localhost:3001/images/piazzasancarlo.jpg"
                             //name="group1"
                             type='radio'
-                            name="img"
+                            data-name="img"
+                            name={props.id}
                             id={props.id}
                             data-id={props.id}
                             checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/piazzasancarlo.jpg")? true : false}
-                            onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità})}}
+                            onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.dataset.name,contenuto: ev.target.value,priorità:props.priorità})}}
 
                         />
                         </div>
@@ -368,10 +371,14 @@ function TheForm(props){
 
     function handleSubmit(event) {
         event.preventDefault();
-       
+        let now=dayjs().format('YYYY-MM-DD');
         if(titolo==='')
         {
             setErrorMsg("Devi inserire il titolo")
+        }
+        else if(datapubblicazione<now)
+        {
+            setErrorMsg("La data di pubblicazione non può essere nel passato")
         }
         else if(blocchi.length===0)
         {
