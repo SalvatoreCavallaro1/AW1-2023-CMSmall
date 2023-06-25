@@ -866,16 +866,19 @@ function TheForm(props){
                 <Form onSubmit={handleSubmit}>
 
                     <Form.Group className='mb-3'> 
-                    <Form.Label>Modifica Autore</Form.Label>    
+                       
                     {
                         
                     props.user.admin == 1  && objToEdit? 
-                   
+                    <>
+                    <Form.Label>Modifica Autore</Form.Label> 
                     
                     <Form.Select aria-label="Default select example" onChange={ev => setModAut(ev.target.value)} >
                         <option value={objToEdit.idautore}>{objToEdit.nomeautore}</option>
                         {props.autori.map((e)=>AutoriOptions(e))}
-                    </Form.Select > : false
+                    </Form.Select > 
+                    </>
+                    : false
                     }
                     
                     </Form.Group>
