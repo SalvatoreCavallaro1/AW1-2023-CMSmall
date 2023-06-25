@@ -10,7 +10,7 @@ function Loading(props) {
     )
   }
 
-  //<PageDescription pages={props.pages} />
+ 
 function Pages(props){
     return(
         <>

@@ -7,8 +7,8 @@
 - Route `/`: pagina principale che mostra il frontoffice
 - Route `/login`: pagina per effettuare il login
 - Route `/add`: pagina per aggiungere una nuova pagina
-- Route `/edit/:idPagina`: pagina per editare una pagina esistente
-- Route `/edit/:idTitolo`: pagina per editare il titolo del sito web
+- Route `/edit/:PageId`: pagina per editare una pagina esistente
+- Route `/edit/:IdTitolo`: pagina per editare il titolo del sito web
 - Route `*`: per le pagine che non esistono
 
 
@@ -47,7 +47,7 @@ Response body: _None_
     "name": "Salvo"
   }
   ```
-  ... decidere qui quali informazioni ritornare EVENTUALMENTE oltre alle info dell'utente
+  
 
   -DELETE `/api/session/current`
 
@@ -65,11 +65,11 @@ Response body: _None_
  - GET `/api/pages` : Non autenticata, ritorna la lista delle pagine pubblicate
    (devo stabilire un formato JSON appropriato)
 
-- GET `/api/allpages` : Autenticata, ritorna la lista delle pubblicate e nonz, sia dell'utente autenticato che degli altri utenti.    Parametri: NESSUNO ????????????????
+- GET `/api/titolo` : Non autenticata, ritorna il titolo del sito web    Parametri: NESSUNO ????????????????
 
-- GET `/api/title` : Non autenticata, ritorna il titolo del sito webS    Parametri: NESSUNO ????????????????
+- GET `/api/utenti` : Non autenticata, ritorna la lista di autori presenti nel DB
 
-- POST `/api/pages` : Autenticata, salva la pagina creata (rimpiazza l'eventuale esistente)
+- POST `/api/pages` : Autenticata, salva la pagina creata 
  Request body:
   ```
   {
@@ -82,24 +82,49 @@ Response body: _None_
       {
         "idpagina":3,
         "idblocco":1,
-        "contentuto":"il dell xps 15"
+        "contentuto":"Torino"
         "priorità":1
       },
       {
         "idpagina":3,
         "idblocco":2,
-        "contentuto":"il dell xps 15 è bello"
+        "contentuto":"una città storica"
         "priorità":2
       }
     ]
 
 
   }
+ 
+- PUT `/api/pages/<id>` : Autenticata, salva la pagina modificata
+ Request body:
+  ```
+    id:req.params.id,
+    titolo: req.body.titolo,
+    autore: req.body.autore, //req.user.id
+    datapubblicazione: req.body.datapubblicazione,
+
+
+
+    blocchi=req.body.blocchi
+
+
+      edit blocco
+          idpagina: req.params.id,
+          contenuto: e.contenuto,
+          priorità: e.priorità
+      nuovo blocco
+          idpagina: req.params.id,
+          idblocco: e.idblocco,
+          contenuto:e.contenuto,
+          priorità:e.priorità,
   ```
 
-- DELETE `/api/pages` : Autenticata, cancella la pagina
+- DELETE `/api/pages/<id>` : Autenticata, cancella la pagina
 
+- PUT `/api/titolo/<id>` : Autenticata, salva le modifiche al titolo del sito
 
+- DELETE `/api/blocks/<id>` : Autenticata, cancella i blocchi relativi ad una pagina
 
 
 
@@ -115,14 +140,17 @@ Response body: _None_
 - Table `pagine`: (id,titolo,autore,datacreazione,datapublicazione)
 - Table `blocchicotenuto`: (id,tipo)
 - Table `blocchiapagine`:(id,idpagina,idblocco,contenuto,priorità)
+- Table `blocchicotenuto`: (id,titolo)
 
 ## Main React Components
 
-- `ListOfSomething` (in `List.js`): component purpose and main functionality
-- `GreatButton` (in `GreatButton.js`): component purpose and main functionality
-- ...
+- `LoginForm` (in `LoginComponent.jsx`): componente per gestire il form di login
+- `NavHeader` (in `NavComponents.jsx`): componente per gestire la navbar
+- `MainPages` (in `PageComponents.jsx`): componente per la visualizzazione delle pagina create
+- `TheForm` (in `PageForm.jsx`): componente per gestire il form di aggiunta modifica pagina
+- `TitleForm` (in `PageForm.jsx`): componente per gestire il form di modifica del titolo del sito
 
-(only _main_ components, minor ones may be skipped)
+
 
 ## Screenshot
 

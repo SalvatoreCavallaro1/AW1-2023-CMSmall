@@ -3,7 +3,7 @@ import { Row, Col, Button, Table, Accordion, Badge,OverlayTrigger,Tooltip} from 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-//
+
 function PageDescription(props) {
     return (
         <Row>
@@ -56,19 +56,16 @@ function PageRow(props) {
     else  if(e.datapubblicazione>now)
      
       {
-       // console.log("è una bozza");
+       
         status=1;
       }
     else if(e.datapubblicazione<now)
     {
-    //  console.log("pubblicata");
+   
       status=2;
     }
 
-   // console.log(status);
-    
-    //console.log(blocchi);
-   // console.log(e.datapubblicazione.$D);
+   
     
     
     return (
@@ -145,39 +142,21 @@ function PageRow(props) {
 
 function MainPages(props) {
   
-    //const user=props.user;
+   
     const navigate = useNavigate();
   
-    const [objToEdit, setObjToEdit] = useState(undefined);  // state to keep the info about the object to edit
+    const [objToEdit, setObjToEdit] = useState(undefined);  // stato per salvare informazioni sull'oggetto da editare
   
-    const [sortOrder, setSortOrder] = useState('none');  // local state for visualization only, does not need to change the list in App
-  
-    const sortedPages = [...props.pageList];  // make a shallow copy
-    sortedPages.sort((a,b)=>(a.datapubblicazione!=null && b.datapubblicazione!=null)? a.datapubblicazione.isAfter(b.datapubblicazione) ? 1 : -1 : -1)
-    //console.log(sortedPages);
-    // sort order is recomputed at each re-render: do NOT make a state with the sorted list!
-  //  if (sortOrder === 'asc')
-     //   sortedPagess.sort((a,b) => a.score - b.score);
-   // else if (sortOrder === 'desc')
-    //    sortedPagess.sort((a,b) => b.score - a.score);
     
-   // const sortByScore = () => {
-    //  setSortOrder( (oldSortOrder) => oldSortOrder === 'asc' ? 'desc' : 'asc' );
-   // }
-
-   /*<th>Score
-                    <i className={'mx-1 '+(sortOrder ==='asc' ? 'bi bi-sort-numeric-up' : 'bi bi-sort-numeric-down')} onClick={sortByScore} style={{color: 'black'}}/>
-                  </th> */
-  /*   <PageRow e={e} userId={props.user && props.user.id} key={e.id} increaseScore={() => props.increaseScore(e.id)}
-                    editAnswer={() => { setObjToEdit(e); setShowForm(true); }}
-                    deleteAnswer={() => props.deleteAnswer(e.id)} />) */
-
-                    // {props.pageList.length}
+  
+    const sortedPages = [...props.pageList];  // copia shallow
+    sortedPages.sort((a,b)=>(a.datapubblicazione!=null && b.datapubblicazione!=null)? a.datapubblicazione.isAfter(b.datapubblicazione) ? 1 : -1 : -1)
+   
     return (
       <>
         <Row>
             <Col>
-                <p className='fs-4 text-center fw-bold'>Pagine Pubbliche</p>
+                <p className='fs-4 text-center fw-bold'>{ props.appStatus=="front"? "Front Office: Pagine Pubblicate" : "Back Office: Tutte le pagine" }</p>
             </Col>
         </Row>
         <Row>
@@ -207,83 +186,7 @@ function MainPages(props) {
       </>
     )
   }
-//<Link className="btn btn-primary btn-lg fixed-right-bottom" to="/add" state={{nextpage: location.pathname}}> &#43; </Link>
-//<Button variant='success' onClick={()=>navigate('/add')} disabled={props.user?.id? false : true}>Add answer</Button>
+
 
 export { PageDescription, PageRow,MainPages };
 
-
-/*
-
-//Main
-<Row>
-          <Col>
-            <p className='fw-bold'>Pagine Pubblicate: {props.pageList.length}</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Table hover>
-              {}
-              <thead>
-                <tr>
-                  <th>Data Pubblicazione</th>
-                  <th>Titolo</th>
-                  <th>Autore</th>
-                  
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedPages.map((e) =>
-                  <PageRow e={e}  key={e.id}  />)
-                }
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
-        <Row>
-          <Col>          
-            
-          </Col>
-        </Row>
-
-
-//Row
-<tr>
-            <td>{e.datapubblicazione.format("YYYY-MM-DD")}</td>
-            <td>{e.titolo}</td>
-            <td>{e.nomeautore}</td>
-            <td><Button variant="primary"><i className='bi bi-arrow-up-circle' /></Button>
-                <Button variant='secondary' className='mx-2' 
-                    ><i className='bi bi-pencil-square' /></Button>
-                <Button variant="danger"  >
-                    <i className='bi bi-trash' /></Button></td>
-        </tr>
-
-        */
-
-
-        /*<h4 className="text-start">{e.titolo}</h4> 
-                
-                <h6 className="text-end">Autore: {e.nomeautore}</h6>*/ 
-
-
-
-/*
-{blocchi.map((e) =>{
-                    switch(e.tipo){
-                        case 'header':
-                            <h1>{e.contenuto}</h1>
-                            console.log(e.contenuto);
-                            break;
-                        case 'paragrafo':
-                            <p>{e.contenuto}</p>
-                            console.log(e.contenuto);
-                            break;
-                        default:
-                            break;
-                    }
-                })
-                }
-*/

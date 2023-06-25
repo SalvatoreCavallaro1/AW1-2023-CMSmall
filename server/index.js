@@ -68,8 +68,8 @@ const isLoggedIn = (req, res, next) => {
 
 // set up the della sessione
 app.use(session({
-  // by default, Passport uses a MemoryStore to keep track of the sessions
-  secret: 'ijk8k157lqu84oldip',   //personalize this random string, should be a secret value
+  
+  secret: 'ijk8k157lqu84oldip',   
   resave: false,
   saveUninitialized: false 
 }));
@@ -113,7 +113,7 @@ app.post('/api/pages', [
   check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
   check('blocchi').isArray(),
   check("blocchi.*.contenuto").isLength({min: 1})
-  //check('datapubblicazione').isDate({format: 'YYYY-MM-DD', strictMode: true})
+  
 ]
  ,async (req, res) => {
   const errors = validationResult(req);
@@ -121,26 +121,21 @@ app.post('/api/pages', [
     return res.status(422).json({errors: errors.array()});
   }
 
-  //const questionId = req.body.questionId;
-  //const resultQuestion = await dao.getQuestion(questionId);  // needed to ensure db consistency
-  //if (resultQuestion.error)
-   // res.status(404).json(resultQuestion);   // questionId does not exist, please insert the question before the answer
-  //else {
+ 
     const page = {
       titolo: req.body.titolo,
       autore: req.body.autore, //req.user.id
       datacreazione: req.body.datacreazione,
       datapubblicazione: req.body.datapubblicazione,
-      //respondentId: req.user.id,    // It is WRONG to use something different from req.user.id, DO NOT SEND it from client!
+      
     };
     const blocchi=req.body.blocchi;
-    //console.log("answer to add: "+JSON.stringify(answer));
-//PageId
+  
     try {
       const PageId = await dao.createPage(page);
-     // if(PageId){
+     
         for (const e of blocchi){
-        //let blocco=[...req.body.blocchi[i]];
+       
         let block ={
           idpagina: PageId,
           idblocco: e.idblocco,
@@ -149,9 +144,7 @@ app.post('/api/pages', [
         }
         let idBlocco= await dao.createBlocks(block);
       }
-   // }
-        // Return the newly created id of the page to the caller. 
-      // A more complex object can also be returned (e.g., the original one with the newly created id)
+  
       setTimeout(()=>res.status(201).json(PageId), answerDelay);
     }
       
@@ -159,7 +152,7 @@ app.post('/api/pages', [
       console.log(err);
       res.status(503).json({ error: `Database error during the creation of page ${page.titolo} id ${PageId} by ${page.autore}.` });
     }
-  //}
+ 
 });
 
 
@@ -167,7 +160,6 @@ app.post('/api/pages', [
 app.put('/api/pages/:id', isLoggedIn, [
   check('autore').isInt(),
   check('titolo').isLength({min: 1}),   
-  //check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
   check('id').isInt(),
   check('blocchi').isArray(),
   check("blocchi.*.contenuto").isLength({min: 1})
@@ -182,16 +174,17 @@ app.put('/api/pages/:id', isLoggedIn, [
     titolo: req.body.titolo,
     autore: req.body.autore, //req.user.id
     datapubblicazione: req.body.datapubblicazione,
-    //respondentId: req.user.id,    // It is WRONG to use something different from req.user.id, DO NOT SEND it from client!
+   
   };
  
  
-//  // you can also check here if the id passed in the URL matches with the id in req.body,
-  // and decide which one must prevail, or return an error
   page.id = req.params.id;
 
   try {
-    const numRowChanges = await dao.updatePage(page, req.user.id);  // It is WRONG to use something different from req.user.id, do not send it from client!
+
+    if(req.user.id==1 || req.user.id==3)
+    {
+      const numRowChanges = await dao.updatePageAdmin(page);  
     
     const blocchi=req.body.blocchi;
     
@@ -220,27 +213,30 @@ app.put('/api/pages/:id', isLoggedIn, [
       }
     }
 
-     /* for(let e2 of blocchiInDB )
-
+    setTimeout(()=>res.json(numRowChanges), answerDelay);
+    }
+    else
     {
-      //let blocco=[...req.body.blocchi[i]];
-      if(e.Dbid==e2.id)
+      const numRowChanges = await dao.updatePage(page, req.user.id);  
+    
+    const blocchi=req.body.blocchi;
+    
+    for (let e of blocchi){
+      if(e.Dbid)
       {
-
         let Modblock ={
           id:e.Dbid,
-          //idpagina: e.idpagina,
+          
           idpagina: req.params.id,
           contenuto: e.contenuto,
           priorità: e.priorità
         }
         await dao.updateBlocks(Modblock);
-        
       }
-      else if(!e.Dbid || e.Dbid==null || e.Dbid=='')
+      else
       {
         let block ={
-          //idpagina: e.idpagina,
+          
           idpagina: req.params.id,
           idblocco: e.idblocco,
           contenuto:e.contenuto,
@@ -248,32 +244,25 @@ app.put('/api/pages/:id', isLoggedIn, [
         }
         let idBlocco= await dao.createBlocks(block);
       }
+    }
 
-
-
-      
-      //let idBlocco= await dao.createBlocks(block);
-
-
-
-    }*/
     setTimeout(()=>res.json(numRowChanges), answerDelay);
   }
-   
-    //res.status(200).end();
+}
+    
    catch(err) {
     console.log(err);
     res.status(503).json({error: `Database error during the update of answer ${req.params.id}.`});
-  }
+    }
+    
+  
 
 });
 
 
 // PUT /api/titolo/<id>
 app.put('/api/titolo/:id', isLoggedIn, [
-  //check('autore').isInt(),
   check('titolo').isLength({min: 1}),   
-  //check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
   check('id').isInt()
 ], async (req, res) => {
   const errors = validationResult(req);
@@ -283,21 +272,15 @@ app.put('/api/titolo/:id', isLoggedIn, [
 
   const titolo = {
     id: req.body.id,
-    titolo: req.body.titolo, //req.user.id
-    //datapubblicazione: req.body.datapubblicazione,
-    //respondentId: req.user.id,    // It is WRONG to use something different from req.user.id, DO NOT SEND it from client!
+    titolo: req.body.titolo, 
   };
   
   
-  // you can also check here if the id passed in the URL matches with the id in req.body,
-  // and decide which one must prevail, or return an error
-  //page.id = req.params.id;
 
   try {
-    const numRowChanges = await dao.updateTitolo(titolo);  // It is WRONG to use something different from req.user.id, do not send it from client!
-    // NB: the query in the DB will check if the answer belongs to the authenticated user and not another, using WHERE respondentId=...
+    const numRowChanges = await dao.updateTitolo(titolo);  
     setTimeout(()=>res.json(numRowChanges), answerDelay);
-    //res.status(200).end();
+   
   } catch(err) {
     console.log(err);
     res.status(503).json({error: `Database error during the update of answer ${req.params.id}.`});
@@ -312,7 +295,10 @@ app.put('/api/titolo/:id', isLoggedIn, [
 // DELETE /api/answers/<id>
 app.delete('/api/pages/:id', isLoggedIn, async (req, res) => {
   try {
-    const numRowChanges = await dao.deletePage(req.params.id, req.user.id); // It is WRONG to use something different from req.user.id
+
+    if(req.user.id==1 || req.user.id==2)
+    {
+      const numRowChanges = await dao.deletePageAdmin(req.params.id);
     try
     {
     const numRowChanges2 = await dao.deleteBloccoPagina(req.params.id);
@@ -322,9 +308,29 @@ app.delete('/api/pages/:id', isLoggedIn, async (req, res) => {
       res.status(503).json({ error: `Database error during the deletion of blocks of the page ${req.params.id}.`});
     }
 
-    // number of changed rows is sent to client as an indicator of success
+  
     setTimeout(()=>res.json(numRowChanges), answerDelay);
-  } catch(err) {
+    }
+    else
+    {
+    const numRowChanges = await dao.deletePage(req.params.id, req.user.id); 
+    try
+    {
+    const numRowChanges2 = await dao.deleteBloccoPagina(req.params.id);
+    }catch(err)
+    {
+      console.log(err);
+      res.status(503).json({ error: `Database error during the deletion of blocks of the page ${req.params.id}.`});
+    }
+
+   
+    setTimeout(()=>res.json(numRowChanges), answerDelay);
+  }
+  } 
+  
+  
+  
+  catch(err) {
     console.log(err);
     res.status(503).json({ error: `Database error during the deletion of the page ${req.params.id}.`});
   }
@@ -334,9 +340,7 @@ app.delete('/api/pages/:id', isLoggedIn, async (req, res) => {
 // DELETE /api/answers/<id>
 app.delete('/api/blocks/:id', isLoggedIn, async (req, res) => {
   try {
-    const numRowChanges = await dao.deleteBlocco(req.params.id); // It is WRONG to use something different from req.user.id
-    // number of changed rows is sent to client as an indicator of success
-    
+    const numRowChanges = await dao.deleteBlocco(req.params.id); 
     setTimeout(()=>res.json(numRowChanges), answerDelay);
   } catch(err) {
     console.log(err);
@@ -366,21 +370,13 @@ app.post('/api/sessions', function(req, res, next) {
         if (err)
           return next(err);
         
-        // req.user contains the authenticated user, we send all the user info back
-        // this is coming from userDao.getUser()
+        
         return res.json(req.user);
       });
   })(req, res, next);
 });
 
-// ALTERNATIVE: if we are not interested in sending error messages...
-/*
-app.post('/api/sessions', passport.authenticate('local'), (req,res) => {
-  // If this function gets called, authentication was successful.
-  // `req.user` contains the authenticated user.
-  res.json(req.user);
-});
-*/
+
 
 // DELETE /sessions/current 
 // logout
@@ -389,7 +385,7 @@ app.delete('/api/sessions/current', (req, res) => {
 });
 
 // GET /sessions/current
-// check whether the user is logged in or not
+// check se l'utente è loggato oppure no
 app.get('/api/sessions/current', (req, res) => {  if(req.isAuthenticated()) {
     res.status(200).json(req.user);}
   else
@@ -397,7 +393,7 @@ app.get('/api/sessions/current', (req, res) => {  if(req.isAuthenticated()) {
 });
 
 
-// activate the server
+// attivazione porta server
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });

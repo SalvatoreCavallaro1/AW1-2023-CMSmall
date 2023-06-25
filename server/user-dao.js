@@ -17,7 +17,7 @@ return new Promise((resolve, reject) => {
         else if (row === undefined)
         resolve({error: 'Utente non trovato'});
         else {
-        // by default, the local strategy looks for "username": not to create confusion in server.js, we can create an object with that property
+        
         const user = {id: row.id, username: row.email, name: row.nome, admin: row.admin}
         resolve(user);
         }

@@ -32,7 +32,7 @@ function App() {
   const [appStatus,setAppStatus]=useState("front");
 
   function handleError(err) {
-    console.log('err: ' + JSON.stringify(err));  // Only for debug
+    //console.log('err: ' + JSON.stringify(err));  // Only for debug
     let errMsg = 'Unkwnown error';
     if (err.errors) {
       if (err.errors[0])
@@ -43,7 +43,7 @@ function App() {
     }
 
     setErrorMsg(errMsg);
-    setTimeout(() => setDirty(true), 2000);  // Fetch correct version from server, after a while
+    setTimeout(() => setDirty(true), 2000);  // Fetch versione corretta dal server dopo un pò
   }
 
   useEffect(() => {
@@ -66,14 +66,12 @@ function App() {
       API.getTitolo()
         .then((t) => {
           setTitolo(t)
-          //setDirty(false);
-          //if(pages)
-          //setInitialLoading(false)
+         
           API.getAllPages()
             .then((q) => {
               setPages(q)
               setDirty(false);
-              // if(titolo)
+              
               setInitialLoading(false)
             })
             .catch((err) => handleError(err));
@@ -91,11 +89,7 @@ function App() {
     {
     API.getUtenti()
             .then((u) => {
-              //console.log(u);
               setAutori(u)
-              //setDirty(false);
-              // if(titolo)
-             // setInitialLoading(false)
             })
             .catch((err) => handleError(err))
           }
@@ -104,57 +98,24 @@ function App() {
 
   },[dirty])
 
-  /*useEffect(() => {
-    if (dirty) {
-      API.getAllPages()
-        .then((q) => {
-          setPages(q)
-          setDirty(false);
-          // if(titolo)
-          setInitialLoading(false)
-        })
-        .catch((err) => handleError(err));
-    }
-  }, [dirty]);*/
-
-
-  
-
-
-
-
+ 
   const doLogOut = async () => {
     await API.logOut();
     setLoggedIn(false);
     setAppStatus("front");
     setUser(undefined);
-    /* set state to empty if appropriate */
+    
   }
 
 
   const loginSuccessful = (user) => {
     setUser(user);
     setLoggedIn(true);
-    setDirty(true);  // load latest version of data, if appropriate
+    setDirty(true);  
   }
 
   const addPage = (e) => {
-    // REMEMBER to add questionId
-    // e.questionId = question.id;
-    //e.respondent = user.name;   // respondentId will be taken by server from the session
-
-    // setAnswerList((oldList) => {
-    // Create a new temporary id, waiting for a truly unique id that can only be supplied by the server
-    // This temporary id will be replaced when the server will provide its id.
-
-    // NB: Math.max: do not forget ... (spread), max does not take an array as parameter
-    // const newTempId = Math.max(...oldList.map((e) => e.id)) + 1;
-    // e.id = newTempId;
-    // e.status = 'added';
-    //return [...oldList, e];
-    //}
-    //);
-    //console.log(e);
+  
     API.addPage(e)
       .then(() => setDirty(true))
       .catch((err) => handleError(err));
@@ -188,23 +149,7 @@ function App() {
     .then(() => { setDirty(true); })
     .catch(e => handleError(e)); 
   }
-  /*
-  const getAutori=()=>{
-
-    (props.user && props.user.admin)==1?
-    API.getUtenti()
-            .then((u) => {
-              setAutori(u)
-              //setDirty(false);
-              // if(titolo)
-             // setInitialLoading(false)
-            })
-            .catch((err) => handleError(err))
-            :
-            setAutori([]);
-  }*/
-
-
+ 
 
   return (
     <>

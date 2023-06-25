@@ -59,12 +59,12 @@ function updateTitolo(titolo) {
       if (response.ok) {
         resolve(null);
       } else {
-        // analyze the cause of error
+        // analizzo la causa dell'errore
         response.json()
-          .then((message) => { reject(message); }) // error message in the response body
-          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+          .then((message) => { reject(message); }) // messaggi d'errore nel response body
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); 
       }
-    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // errori di connessione
   });
 }
 
@@ -79,12 +79,12 @@ function deletePage(id) {
       if (response.ok) {
         resolve(null);
       } else {
-        // analyze the cause of error
+        
         response.json()
-          .then((message) => { reject(message); }) // error message in the response body
-          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+          .then((message) => { reject(message); }) 
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); 
       }
-    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); 
   });
 }
 
@@ -98,12 +98,12 @@ function deleteBlock(id) {
       if (response.ok) {
         resolve(null);
       } else {
-        // analyze the cause of error
+       
         response.json()
-          .then((message) => { reject(message); }) // error message in the response body
-          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+          .then((message) => { reject(message); }) 
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); 
       }
-    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); 
   });
 }
 
@@ -121,12 +121,12 @@ function updatePage(page) {
       if (response.ok) {
         resolve(null);
       } else {
-        // analyze the cause of error
+      
         response.json()
-          .then((message) => { reject(message); }) // error message in the response body
-          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+          .then((message) => { reject(message); }) 
+          .catch(() => { reject({ error: "Cannot parse server response." }) }); 
       }
-    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); 
   });
 }
 
@@ -140,7 +140,7 @@ function addPage(page) {
       headers: {
         'Content-Type': 'application/json',
       },
-     // body: JSON.stringify(Object.assign({}, page, {datacreazione: page.datacreazione.format("YYYY-MM-DD"),datapubblicazione: (page.datapubblicazione)? page.datapubblicazione.format("YYYY-MM-DD") : null})),   
+       
         body: JSON.stringify(Object.assign({}, page, {datacreazione: page.datacreazione,datapubblicazione: (page.datapubblicazione)? page.datapubblicazione: null})),   
 
     }).then((response) => {
@@ -149,12 +149,12 @@ function addPage(page) {
           .then((id) => resolve(id))
           .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
       } else {
-        // analyze the cause of error
+       
         response.json()
-          .then((message) => { reject(message); }) // error message in the response body
-          .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+          .then((message) => { reject(message); }) 
+          .catch(() => { reject({ error: "Cannot parse server response." }) });
       }
-    }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+    }).catch(() => { reject({ error: "Cannot communicate with the server." }) });
   });
 }
 
@@ -194,7 +194,7 @@ async function getUserInfo() {
   if (response.ok) {
     return userInfo;
   } else {
-    throw userInfo;  // an object with the error coming from the server
+    throw userInfo;  // oggeto con errore ritornato dal server
   }
 }
 

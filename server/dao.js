@@ -68,7 +68,7 @@ exports.updateTitolo = (titolo)=> {
   });
 };
 
-// add a new page
+// aggiungi nuova pagina 
 exports.createPage = (pagina) => {
     return new Promise((resolve, reject) => {
       const sql = 'INSERT INTO pagine(titolo,autore,datacreazione,datapubblicazione) VALUES(?, ?, DATE(?), DATE(?))';
@@ -101,9 +101,24 @@ exports.createPage = (pagina) => {
   exports.updatePage = (pagina,userId) => {
     //console.log('updatePage: '+JSON.stringify(page));
     return new Promise((resolve, reject) => {
-      const sql = 'UPDATE pagine SET titolo=?, autore=?,datapubblicazione=DATE(?) WHERE id = ? AND autore = ?';  
+      const sql = 'UPDATE pagine SET titolo=?, autore=?,datapubblicazione=DATE(?) WHERE id = ? AND autore = ? )';  
       // passo l'userid per controllare che veramente quella pagina appartiene all'utente autenticato
       db.run(sql, [pagina.titolo, pagina.autore, pagina.datapubblicazione,pagina.id,userId], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(this.changes);
+      });
+    });
+  };
+
+  exports.updatePageAdmin = (pagina) => {
+    //console.log('updatePage: '+JSON.stringify(page));
+    return new Promise((resolve, reject) => {
+      const sql = 'UPDATE pagine SET titolo=?, autore=?,datapubblicazione=DATE(?) WHERE id = ?';  
+     
+      db.run(sql, [pagina.titolo, pagina.autore, pagina.datapubblicazione,pagina.id], function (err) {
         if (err) {
           reject(err);
           return;
@@ -121,7 +136,7 @@ exports.createPage = (pagina) => {
           reject(err);
           return;
         } else
-          resolve(this.changes);  // return the number of affected rows
+          resolve(this.changes);  // ritorna il numeo di righe
       });
     });
   }
@@ -136,6 +151,20 @@ exports.createPage = (pagina) => {
           return;
         } else
           resolve(this.changes);  // return the number of affected rows
+      });
+    });
+  }
+
+  exports.deletePageAdmin = (id, userId) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'DELETE FROM pagine WHERE id = ?';  
+      console.log(db.run(sql, [id]));
+      db.run(sql, [id, userId], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        } else
+          resolve(this.changes);  
       });
     });
   }
@@ -160,7 +189,7 @@ exports.createPage = (pagina) => {
     //console.log('updateBlocks: '+JSON.stringify(blocco));
     return new Promise((resolve, reject) => {
       const sql = 'UPDATE blocchipagine SET contenuto=?, priorità=? WHERE id = ? AND idpagina=?';  
-      // passo l'userid per controllare che veramente quella pagina appartiene all'utente autenticato
+      
       db.run(sql, [blocco.contenuto, blocco.priorità, blocco.id, blocco.idpagina], function (err) {
         if (err) {
           reject(err);
@@ -179,7 +208,7 @@ exports.createPage = (pagina) => {
           reject(err);
           return;
         } else
-          resolve(this.changes);  // return the number of affected rows
+          resolve(this.changes);  
       });
     });
   }

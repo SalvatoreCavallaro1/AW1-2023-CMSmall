@@ -1,21 +1,14 @@
 import { Navbar, Container, Button,OverlayTrigger,Tooltip } from "react-bootstrap";
 import { useNavigate,Link } from "react-router-dom";
 import API from "../API";
-//import { useState } from 'react';
-
 
 function NavHeader(props) {
     const navigate = useNavigate();
-    //console.log(props.titolo[0].titolo);
-    //console.log(API.getTitolo());
-   // 
-
-   //const name = props.user && props.user.name;
+    
 const name=props.user && props.user.name;
 const titolo=props.loading? "Loading.." : props.titolo?.titolo;
 const admin=(props.user && props.user.admin)==1? " (admin)" : "";
-//console.log(props.titolo.titolo);
-//props.loading? props.spinner : props.titolo?.titolo
+
 return (
     <Navbar bg="dark" variant="dark">
         <Container fluid>

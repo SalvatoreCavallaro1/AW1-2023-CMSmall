@@ -14,23 +14,10 @@ function TitleForm(props)
     const [errorMsg,setErrorMsg]=useState('');
     const [titolo,setTitolo]=useState(objToEdit? objToEdit.titolo : '');
     const navigate=useNavigate();
-    
-   /* console.log("titolo:",titolo);
-    console.log("IdTitolo:",IdTitolo);
-    console.log("objToedit", objToEdit);*/
+   
     function handleSubmit(event) {
         event.preventDefault();
-        //console.log('premuto submit');
-
-        // Form validation
-       // if (datapubblicazione === '')
-       // {
-           // setErrorMsg('Data non valida');
-        /*else if (isNaN(parseInt(score)))
-            setErrorMsg('Score non valido');
-        else if (parseInt(score)<0) {
-            setErrorMsg('Score negativo non valido');*/
-        //}
+       
         if(titolo==='')
         {
             setErrorMsg("Devi inserire il titolo")
@@ -44,7 +31,7 @@ function TitleForm(props)
                 
             }
             props.editTitle(e);
-           // console.log(e);
+           
 
            navigate('/');
         }
@@ -66,8 +53,7 @@ function TitleForm(props)
                    
                    
                     <Button type='submit' variant="primary">{objToEdit? 'Salva Modifiche' : 'Aggiungi Titolo'}</Button> 
-                    {/* alternative
-                    <Button className='mx-2' variant='danger' onClick={()=>navigate('/')}>Cancel</Button> */}
+                    
                     <Link to='/'>
                         <Button className='mx-2' variant='danger'>Annulla</Button>
                     </Link>
@@ -208,7 +194,7 @@ return(
                             name="img"
                             
                             type='radio'
-                            //idTemporary={(idTemp===0)? idTemp : idTemp+1}
+                           
                             id="{`inline-radio-1`}"
                             data-id={props.id}
                             checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/baloon.jpg")? true : false}
@@ -298,88 +284,58 @@ return(
 function TheForm(props){
     const navigate=useNavigate();
     const {PageId}=useParams();
-    //console.log("PageId:",PageId);
-    //console.log(props.pageList);
-    //console.log(props.pageList);
-    //console.log(props.autori);
+    
     const objToEdit= PageId && props.pageList.find(e => e.id === parseInt(PageId));
-   // console.log(objToEdit);
-   //console.log(objToEdit);
-    //console.log('objToEdit: '+JSON.stringify(objToEdit));
-    const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.datapubblicazione?.format('YYYY-MM-DD'): -1);  //string: dayjs object is created only on submit
-    const [datacreazione,setDatacreazione]=useState(objToEdit ? objToEdit.datacreazione/*?.format('YYYY-MM-DD') */: dayjs().format('YYYY-MM-DD'));
+  
+    const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.datapubblicazione?.format('YYYY-MM-DD'): -1); 
+    const [datacreazione,setDatacreazione]=useState(objToEdit ? objToEdit.datacreazione: dayjs().format('YYYY-MM-DD'));
     const [titolo, setTitolo] = useState(objToEdit ? objToEdit.titolo : '');
-    const [header, setHeader] = useState('');
-    const [paragrafo, setParagrafo] = useState('');
-    const [image, setImage] = useState('');
+   
     const [blocchi,setBlocchi]=useState(objToEdit? objToEdit.blocchi :[]);
     const [autore, setAutore] = useState(objToEdit ? objToEdit.idautore : props.user.id);
-    //const [score, setScore] = useState(objToEdit ? objToEdit.score : 0); 
+   
     const [errorMsg,setErrorMsg]=useState('');
-   // const [idTemp,setIdTemp]=useState(1);
-   //const [formFields,setFormFields]=useState(objToEdit? [] : []);
-    // const [fieldKey,setFieldKey]=useState(formFields?.length);
-    const [firstInit,setFirstInit]=useState(true);
-    const [nDisplay,setnDisplay]=useState(0)
-    const [valorProps,setValOrProps]=useState(true);
+  
+    
     const [blocksToDelete,setBlockToDelete]=useState([]);
     const [modAut,setModAut]=useState();
-    //console.log(modAut);
-//{tipo:"Header",priorità:0 ,key:0,contenuto:''},{tipo:"Paragrafo",priorità:1,key:1},{tipo:"Immagini",priorità:2,key:2,contenuto:''}
+   
 
     useEffect(() => {
     {
     if(objToEdit)
     setFieldstoEdit(blocchi);
-    //setFirstInit(false);
+  
     }
     },[]);
 
-    /*useEffect(() => {
-        if (formFields===[] && objToEdit && firstInit) {
-            setFieldstoEdit(blocchi)
-    }
-            console.log(formFields);
-            setFirstInit(false)
-      },[formFields,objToEdit,blocchi]);*/
-      /*useEffect(() => {
-        
-            if(objToEdit)
-            {
-            setFormFields(formFields=>{
-               return[blocchi,...formFields]
-            })   
-            }
-            console.log(formFields);
-        
-      },[]);*/
+    
 
     function handleBlocco(blocco){
-        //console.log(blocco);
-        //console.log(blocchi);
+        
         let arrayblocchi=[...blocchi]
-        //console.log(blocco);
+        
         let newblocco={}
         let idblocco=0;
         switch(blocco.name)
         {
             case "header":
                 idblocco=1;
-               // setHeader(blocco.contenuto);
+               
                 break;
             case "paragrafo":
                 idblocco=2;
-               // setParagrafo(blocco.contenuto)
+              
                 break;
             case "img":
                 idblocco=3;
-               //setImage(blocco.img);
+             
                 break;
             default:
                 break;
         }
 
-        //console.log(blocco)
+        
         let el= arrayblocchi.find(block=>block.key==blocco.id);
         
         //console.log(el);
@@ -387,31 +343,23 @@ function TheForm(props){
         if(el)
         {
             let index=arrayblocchi.indexOf(el)
-            //console.log(index);
-           // console.log("si"); ///?????
-          // el.contenuto=blocco.contenuto;
+           
             arrayblocchi[index].contenuto=blocco.contenuto;
             setBlocchi(arrayblocchi);
-            //console.log(blocchi);
+            
 
         }
         else
         {
-           //let newblocco={...blocco} ;
-            /*Object.assign(
-                newblocco,
-                {Tempid:blocco.id,idblocco:1,contenuto: blocco.contenuto,priorità:blocco.priorità}
-            );*/
+           
             newblocco={Tempid:blocco.id,idblocco:idblocco,contenuto: blocco.contenuto,priorità:blocco.priorità};
-            //let arrayblocchi=[...blocchi]
+           
             arrayblocchi.push(newblocco);
             setBlocchi(arrayblocchi);
-            //console.log(blocchi);
-            //setIdTemp(idTemp+1);
-            //let newblocco={Tempid:blocco.id,idblocco:idblocco,contenuto: blocco.contenuto,priorità:blocco.priorità};
+            
         }
 
-           // return id.Tempid;
+          
         
         
 
@@ -420,17 +368,7 @@ function TheForm(props){
 
     function handleSubmit(event) {
         event.preventDefault();
-        //console.log('premuto submit');
-
-        // Form validation
-       // if (datapubblicazione === '')
-       // {
-           // setErrorMsg('Data non valida');
-        /*else if (isNaN(parseInt(score)))
-            setErrorMsg('Score non valido');
-        else if (parseInt(score)<0) {
-            setErrorMsg('Score negativo non valido');*/
-        //}
+       
         if(titolo==='')
         {
             setErrorMsg("Devi inserire il titolo")
@@ -451,70 +389,7 @@ function TheForm(props){
                 setErrorMsg("Devi inserire almeno un Header")
             }
         }
-        /*else if (blocchi.length>1)
-        {
-            for(let  el of blocchi )
-            {
-                if(el.contenuto=="")
-                {
-                setErrorMsg("Devi riempire tuti i campi")
-                break;
-            }
-            }
-        }*/
-        //else if(header)
-        //controllare se c'è del testo negli header e nei parafrafi e se l'immagine e selezionata
-        /*else if(blocchi.length===0)
-        {
-            setErrorMsg("Devi riempire il contenuto di tutti i campi");
-        }*/
-       /* else if (blocchi.length>0)
-        {
-           // console.log(blocchi);
-        for(let el of blocchi)
-        {
-            console.log(el)
-            if(el.contentuto===''){
-                setErrorMsg("devi riempire tutti i campi che hai inserito e seleionare l'immagine se presente");
-                
-            }
-        }
-        }*/
-
-
-
-        ///VALIDAZIONE CAMPI VUOTI 
-        /*
-        else if (header==='' && paragrafo==='' && image==='')
-        {
-            setErrorMsg('devi rimepire tutti i campi header, paragrafo e immagine')
-        }
-        else if (header==='' && paragrafo==='')
-        {
-            setErrorMsg('devi rimepire tutti i campi header e i campi paragrafo')
-        }
-        else if (header==='' && image==='')
-        {
-            setErrorMsg('devi rimepire tutti i campi header e i campi immagine')
-        }
-        else if (paragrafo==='' && image==='')
-        {
-            setErrorMsg('devi rimepire tutti i campi paragrafo e i campi immagine')
-        }
-        else if (header==='')
-        {
-            setErrorMsg("devi riempire tutti i campi header");
-        }
-        else if (paragrafo==='')
-        {
-            setErrorMsg("devi rimepire tutti i campi paragrafo");
-        }
-        else if(image==='')
-        {
-            setErrorMsg("devi riempire tutti i campi immagine");
-        }*/
-        
-        
+      
         
         else {
             let campi=1;
@@ -541,33 +416,12 @@ function TheForm(props){
                 datacreazione: objToEdit? datacreazione: datacreazione,
                 datapubblicazione: datapubblicazione=== -1 ? undefined : dayjs(datapubblicazione),
                 blocchi:blocchi
-               /* blocchi: [
-                    (header) ?
-                        {
-                            idblocco: header.idblocco,
-                            contenuto: header.contenuto,
-                            priorità: header.priorità
-                        } : null,
-                    (paragrafo) ?
-                        {
-                            idblocco: paragrafo.idblocco,
-                            contenuto: paragrafo.contenuto,
-                            priorità: paragrafo.priorità
-                        } : null,
-                    (image) ?
-                        {
-                            idblocco: image.idblocco,
-                            contenuto: image.contenuto,
-                            priorità: image.priorità
-                        } : null
 
-                ]*/
-                //score: parseInt(score),
 
             }
 
 
-            if (objToEdit) {  // decide if this is an edit or an add
+            if (objToEdit) {  
                 e.id = objToEdit.id;
                 props.editPage(e);
                 for(let el of blocksToDelete )
@@ -582,15 +436,6 @@ function TheForm(props){
                 console.log(e);
             }
 
-          /*  props.addPage(e);
-            console.log(e);*/
-
-          /*  if (objToEdit) {  // decide if this is an edit or an add
-                e.id = objToEdit.id;
-                props.editAnswer(e);
-            } else {
-                props.addAnswer(e);
-            }*/
             
            navigate('/');
         }
@@ -601,20 +446,7 @@ function TheForm(props){
 
     function displayEl(el)
     {
-       // console.log(formFields);
-     //   for(let el of formFields){
-          /* if(nDisplay<formFields.length)
-            {
-               
-                setnDisplay(nDisplay+1);
-                console.log(nDisplay);
-               if(nDisplay==formFields.length)
-                {
-                    setValOrProps(false);
-                }
-
-
-            }*/
+      
             
             if (el.tipo=="Header" || el.tipo=="header" )
             {
@@ -644,8 +476,7 @@ function TheForm(props){
 
     function AutoriOptions(e)
     {
-        //console.log(e);
-        //console.log(objToEdit);
+      
         return(
             objToEdit.idautore!=e.id?
             <option value={e.id} key={e.key}>{e.autore}</option>
@@ -657,12 +488,11 @@ function TheForm(props){
     }
     function HandleMoveUp(props){
         if (props.priorità > 0) {
-           // const newformFields = [...formFields];
+         
            const newformFields = [...blocchi];
 
             let el = newformFields.find(field => field.key == props.idmove);
-            //console.log(el);
-
+           
             if (el) {
                 let index = newformFields.indexOf(el)
                
@@ -670,25 +500,25 @@ function TheForm(props){
                 //if(index>0)
                 newformFields[index-1].priorità = newformFields[index].priorità+1;
                 
-                //console.log(blocchi);
+               
 
             }
             let sortedFields = newformFields.sort((f1, f2) => (f1.priorità> f2.priorità) ? 1 : (f1.priorità < f2.priorità) ? -1 : 0);
-            //setFormFields(sortedFields);
+           
             setBlocchi(sortedFields);
-            //console.log(blocchi);
+           
           }
 
     }
 
     function HandleMoveDown(props){
-       // if (props.priorità < formFields.length) {
+      
           if (props.priorità < blocchi.length) {
-           // const newformFields = [...formFields];
+          
            const newformFields = [...blocchi];
 
             let el = newformFields.find(field => field.key == props.idmove);
-            //console.log(el);
+           
 
             if (el) {
                 let index = newformFields.indexOf(el)
@@ -697,54 +527,44 @@ function TheForm(props){
                 //if(index<newformFields.length)
                 newformFields[index+1].priorità = newformFields[index].priorità-1;
                 
-                //console.log(blocchi);
+              
 
             }
             let sortedFields = newformFields.sort((f1, f2) => (f1.priorità > f2.priorità) ? 1 : (f1.priorità < f2.priorità) ? -1 : 0);
-            //setFormFields(sortedFields);
+           
             setBlocchi(sortedFields);
-            //console.log(blocchi);
+           
           }
 
     }
 
    function addField(n){
     let newField={};
-    //let newFields=[...formFields];
+   
     let newFields=[...blocchi];
-    //let keySorted=[...blocchi];
+   
     let keySorted = newFields!=[]?  newFields.sort((f1, f2) => (f1.key > f2.key) ? 1 : (f1.key < f2.key) ? -1 : 0) :[];
     let newKey= (newFields.length>0)? keySorted[keySorted.length-1].key+1 : 1;
     
-    /*if(blocchi && objToEdit)
-    {
-        //let newKeySort=1
-        let keySorted = newFields.sort((f1, f2) => (f1.key > f2.key) ? 1 : (f1.key < f2.key) ? -1 : 0);
-        let newKeySort=keySorted[keySorted.length-1].key+1;
-    }*/
     
     let lastpriorità=newFields.length
-    //let key=newFields.length+1
+   
 
     switch (n){
         case 1:
             newField={tipo:"Header",priorità: lastpriorità ,key:newKey,contenuto:'',idblocco:1};
             newFields.push(newField);
             setBlocchi(newFields);
-            //setHeader('')
             break;
         case 2:
             newField={tipo:"Paragrafo",priorità: lastpriorità ,key:newKey,contenuto:'',idblocco:2};
             newFields.push(newField);
-            //setFormFields(newFields);
             setBlocchi(newFields);
-            //setParagrafo('')
             break;
         case 3:
             newField={tipo:"Immagini",priorità: lastpriorità ,key:newKey,contenuto:'',idblocco:3};
             newFields.push(newField);
             setBlocchi(newFields);
-            //setImage('')
             break;
     default:
         break;
@@ -754,15 +574,10 @@ function TheForm(props){
    
    function deleteField(id,Dbid)
    {
-    //console.log(id)
-    //let newFields=[...formFields];
     let newFields=[...blocchi];
-    //console.log("priima",newFields);
-   // for(let field of newFields ){
     if(id==newFields.length || id==newFields.length-1)
     {
         newFields.length=newFields.length-1
-        //console.log("dopofine",newFields);
         setBlocchi(newFields);
         for (let j = 0; j < newFields.length; j++) {
             newFields[j].key = j;
@@ -772,10 +587,7 @@ function TheForm(props){
     }
     else
     {
-        //console.log(newFields.length);
     for( let i = 0; i < newFields.length; i++){
-        //console.log("i:",i);
-        //console.log("key:",newFields[i].key);
         if(newFields[i].key==id)
         {  
             
@@ -786,29 +598,19 @@ function TheForm(props){
                 
                 
               }
-            /*if(newFields.length>1)
-            {
-            if (newFields[newFields.length-1].priorità==newFields.length){
-                newFields[newFields.length-1].priorità=newFields[newFields.length-1].priorità-1;
-            }*/
+          
             setBlocchi(newFields);
-            //console.log("dopo",newFields);
+           
             break;
         }
-            
-            //console.log(formFields);
-           
-            
+                
         }
     }
     
 
     if(Dbid!='')
     {
-        //console.log("Dbid", Dbid);
-       /* API.deleteBlock(Dbid)
-       .then(() => {})
-       .catch((err) => props.handleError(err));*/
+       
        let newBlocks=[...blocksToDelete];
        newBlocks.push(Dbid);
        setBlockToDelete(newBlocks);
@@ -816,21 +618,11 @@ function TheForm(props){
   
    }
 
-   /*function deleteDbBlock(id)
-    {
-        API.deleteAnswer(id)
-       .then(() => {})
-       .catch((err) => handleError(err));
-    }*/
-
-
    function setFieldstoEdit(blocchi){
     const fieldsToEdit=[];
     let i=0;
-    //console.log(blocchi)
     for(let el of blocchi)
     {
-        //console.log(el);
         if(el.idblocco==1)
         {
         let newField={Dbid:el.key, tipo:"Header",priorità: el.priorita ,key:i,contenuto:el.contenuto, idblocco:el.idblocco};
@@ -848,25 +640,13 @@ function TheForm(props){
         }
         i++;
     }
-    /*setFormFields(formFields=>{
-        return[fieldsToEdit,...formFields]
-     
- })*/
-    //setFormFields(fieldsToEdit);
     setBlocchi(fieldsToEdit);
-    //setFormFields(fieldsToEdit);
-   /* let newField={tipo:"Header",priorità: lastpriorità ,key:key};
-    newFields.push(newField);*/
-
 }
 
         return(
             <>
                 {errorMsg? <Alert variant='danger' onClose={()=>setErrorMsg('')} dismissible>{errorMsg}</Alert> : false }
                 <Form onSubmit={handleSubmit}>
-
-                    
-
                     <Form.Group className='mb-3'> 
                        
                     {
@@ -919,8 +699,7 @@ function TheForm(props){
                     
                     
                     <Button type='submit' variant="primary">{objToEdit? 'Salva Modifiche' : 'Aggiungi Pagina'}</Button> 
-                    {/* alternative
-                    <Button className='mx-2' variant='danger' onClick={()=>navigate('/')}>Cancel</Button> */}
+                    
                     <Link to='/'>
                         <Button className='mx-2' variant='danger'>Annulla</Button>
                     </Link>
