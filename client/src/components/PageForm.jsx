@@ -255,7 +255,7 @@ return(
                             //name="group1"
                             name="img"
                             type='radio'
-                            id={`inline-radio-3`}
+                            id={props.id}
                             data-id={props.id}
                             checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/baloon.jpg")? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità})}}
@@ -279,7 +279,7 @@ return(
                             //name="group1"
                             type='radio'
                             name="img"
-                            id={`inline-radio-4`}
+                            id={props.id}
                             data-id={props.id}
                             checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/baloon.jpg")? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità})}}
@@ -623,7 +623,7 @@ function TheForm(props){
            const newformFields = [...blocchi];
 
             let el = newformFields.find(field => field.key == props.idmove);
-            console.log(el);
+            //console.log(el);
 
             if (el) {
                 let index = newformFields.indexOf(el)
@@ -638,7 +638,7 @@ function TheForm(props){
             let sortedFields = newformFields.sort((f1, f2) => (f1.priorità> f2.priorità) ? 1 : (f1.priorità < f2.priorità) ? -1 : 0);
             //setFormFields(sortedFields);
             setBlocchi(sortedFields);
-            console.log(blocchi);
+            //console.log(blocchi);
           }
 
     }
@@ -650,7 +650,7 @@ function TheForm(props){
            const newformFields = [...blocchi];
 
             let el = newformFields.find(field => field.key == props.idmove);
-            console.log(el);
+            //console.log(el);
 
             if (el) {
                 let index = newformFields.indexOf(el)
@@ -665,7 +665,7 @@ function TheForm(props){
             let sortedFields = newformFields.sort((f1, f2) => (f1.priorità > f2.priorità) ? 1 : (f1.priorità < f2.priorità) ? -1 : 0);
             //setFormFields(sortedFields);
             setBlocchi(sortedFields);
-            console.log(blocchi);
+            //console.log(blocchi);
           }
 
     }
@@ -716,30 +716,35 @@ function TheForm(props){
    
    function deleteField(id,Dbid)
    {
-    console.log(id)
+    //console.log(id)
     //let newFields=[...formFields];
     let newFields=[...blocchi];
-    console.log(newFields)
+    //console.log("priima",newFields);
    // for(let field of newFields ){
-    if(id==newFields.length-1)
+    if(id==newFields.length || id==newFields.length-1)
     {
         newFields.length=newFields.length-1
+        //console.log("dopofine",newFields);
         setBlocchi(newFields);
         for (let j = 0; j < newFields.length; j++) {
             newFields[j].key = j;
-            
+            newFields[j].priorità = j;
             
           }
     }
     else
     {
+        //console.log(newFields.length);
     for( let i = 0; i < newFields.length; i++){
-        if(newFields[i].key===id)
+        //console.log("i:",i);
+        //console.log("key:",newFields[i].key);
+        if(newFields[i].key==id)
         {  
             
             newFields.splice(i, 1);
             for (let j = 0; j < newFields.length; j++) {
                 newFields[j].key = j;
+                newFields[j].priorità = j;
                 
                 
               }
@@ -748,10 +753,13 @@ function TheForm(props){
             if (newFields[newFields.length-1].priorità==newFields.length){
                 newFields[newFields.length-1].priorità=newFields[newFields.length-1].priorità-1;
             }*/
-        }
             setBlocchi(newFields);
-            //console.log(formFields);
+            //console.log("dopo",newFields);
             break;
+        }
+            
+            //console.log(formFields);
+           
             
         }
     }
@@ -759,7 +767,7 @@ function TheForm(props){
 
     if(Dbid!='')
     {
-        console.log("Dbid", Dbid);
+        //console.log("Dbid", Dbid);
        /* API.deleteBlock(Dbid)
        .then(() => {})
        .catch((err) => props.handleError(err));*/

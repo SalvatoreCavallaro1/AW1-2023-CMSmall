@@ -50,22 +50,22 @@ function PageRow(props) {
     let now = dayjs()
     let status=0;
     if (isNaN(e.datapubblicazione.$D)){
-      console.log("No Date");
+     // console.log("No Date");
 
     }
     else  if(e.datapubblicazione>now)
      
       {
-        console.log("è una bozza");
+       // console.log("è una bozza");
         status=1;
       }
     else if(e.datapubblicazione<now)
     {
-      console.log("pubblicata");
+    //  console.log("pubblicata");
       status=2;
     }
 
-    console.log(status);
+   // console.log(status);
     
     //console.log(blocchi);
    // console.log(e.datapubblicazione.$D);
@@ -151,7 +151,7 @@ function MainPages(props) {
   
     const sortedPages = [...props.pageList];  // make a shallow copy
     sortedPages.sort((a,b)=>(a.datapubblicazione!=null && b.datapubblicazione!=null)? a.datapubblicazione.isAfter(b.datapubblicazione) ? 1 : -1 : -1)
-    console.log(sortedPages);
+    //console.log(sortedPages);
     // sort order is recomputed at each re-render: do NOT make a state with the sorted list!
   //  if (sortOrder === 'asc')
      //   sortedPagess.sort((a,b) => a.score - b.score);
