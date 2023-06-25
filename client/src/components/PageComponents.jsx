@@ -121,7 +121,7 @@ function PageRow(props) {
                 <Tooltip id="tooltip-enabled"> Elimina la pagina</Tooltip>
                 }>
                 <span className="d-inline-block">
-                <Button variant="danger"  onClick={()=>props.deletePage(e.id)} >
+                <Button variant="danger"  disabled={ (props.user?.id && props.user?.name===e.nomeautore) || props.user?.admin===1? false : true} onClick={()=>props.deletePage(e.id)} >
                     <i className='bi bi-trash' /></Button>
                 </span>
                 </OverlayTrigger>

@@ -243,21 +243,21 @@ return(
                                     width={171}
                                     height={180}
                                     alt="171x180"
-                                    src="http://localhost:3001/images/baloon.jpg"
+                                    src="http://localhost:3001/images/alpi.jpg"
                                     rounded
                                 />
                                 <Figure.Caption>
-                                    Il gran Baloon.
+                                    Le Alpi.
                                 </Figure.Caption>
                             </Figure>}
                             //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
-                            value="http://localhost:3001/images/baloon.jpg"
+                            value="http://localhost:3001/images/alpi.jpg"
                             //name="group1"
                             name="img"
                             type='radio'
                             id={props.id}
                             data-id={props.id}
-                            checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/baloon.jpg")? true : false}
+                            checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/alpi.jpg")? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità})}}
 
                         />
@@ -267,7 +267,7 @@ return(
                                     width={171}
                                     height={180}
                                     alt="171x180"
-                                    src="http://localhost:3001/images/baloon.jpg"
+                                    src="http://localhost:3001/images/piazzasancarlo.jpg"
                                     rounded
                                 />
                                 <Figure.Caption>
@@ -275,13 +275,13 @@ return(
                                 </Figure.Caption>
                             </Figure>}
                             //onChange={(ev) =>setImage({idblocco:3,contenuto: ev.target.value,priorità:3})}
-                            value="http://localhost:3001/images/baloon.jpg"
+                            value="http://localhost:3001/images/piazzasancarlo.jpg"
                             //name="group1"
                             type='radio'
                             name="img"
                             id={props.id}
                             data-id={props.id}
-                            checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/baloon.jpg")? true : false}
+                            checked={(props.contenuto && props.contenuto=="http://localhost:3001/images/piazzasancarlo.jpg")? true : false}
                             onChange={(ev) =>{props.handleBlocco({id:parseInt(ev.target.dataset.id) || 0,name:ev.target.name,contenuto: ev.target.value,priorità:props.priorità})}}
 
                         />
@@ -446,17 +446,28 @@ function TheForm(props){
             {
                 setErrorMsg("Devi inserire almeno un Paragrafo o un Immagine")
             }
-            else if(blocchi[0].tipo==="Paragrafo" || blocchi[0].tipo==="Immagine")
+            else if(blocchi[0].tipo==="Paragrafo" || blocchi[0].tipo==="Immagini" || blocchi[0].tipo==="Immagini")
             {
                 setErrorMsg("Devi inserire almeno un Header")
             }
         }
+        else if (blocchi.length>1)
+        {
+            for(let  el of blocchi )
+            {
+                if(el.contenuto=="")
+                {
+                setErrorMsg("Devi riempire tuti i campi")
+                break;
+            }
+            }
+        }
         //else if(header)
         //controllare se c'è del testo negli header e nei parafrafi e se l'immagine e selezionata
-        else if(blocchi.length===0)
+        /*else if(blocchi.length===0)
         {
-            setErrorMsg("Devi riempire il contenuto di ogni campo");
-        }
+            setErrorMsg("Devi riempire il contenuto di tutti i campi");
+        }*/
        /* else if (blocchi.length>0)
         {
            // console.log(blocchi);
