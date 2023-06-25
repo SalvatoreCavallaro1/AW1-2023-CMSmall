@@ -65,7 +65,7 @@ Response body: _None_
  - GET `/api/pages` : Non autenticata, ritorna la lista delle pagine pubblicate
    (devo stabilire un formato JSON appropriato)
 
-- GET `/api/titolo` : Non autenticata, ritorna il titolo del sito web    Parametri: NESSUNO ????????????????
+- GET `/api/titolo` : Non autenticata, ritorna il titolo del sito web   
 
 - GET `/api/utenti` : Non autenticata, ritorna la lista di autori presenti nel DB
 
@@ -121,18 +121,16 @@ Response body: _None_
   ```
 
 - DELETE `/api/pages/<id>` : Autenticata, cancella la pagina
+    Request body:
+  ```
+    id:req.params.id,
+    titolo: req.body.titolo,
 
 - PUT `/api/titolo/<id>` : Autenticata, salva le modifiche al titolo del sito
 
 - DELETE `/api/blocks/<id>` : Autenticata, cancella i blocchi relativi ad una pagina
 
 
-
-
-- POST `/api/something`
-  - request parameters and request body content
-  - response body content
-- ...
 
 ## Database Tables
 
