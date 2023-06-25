@@ -306,7 +306,7 @@ function TheForm(props){
    // console.log(objToEdit);
    //console.log(objToEdit);
     //console.log('objToEdit: '+JSON.stringify(objToEdit));
-    const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.datapubblicazione?.format('YYYY-MM-DD'): '');  //string: dayjs object is created only on submit
+    const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.datapubblicazione?.format('YYYY-MM-DD'): -1);  //string: dayjs object is created only on submit
     const [datacreazione,setDatacreazione]=useState(objToEdit ? objToEdit.datacreazione?.format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD'));
     const [titolo, setTitolo] = useState(objToEdit ? objToEdit.titolo : '');
     const [header, setHeader] = useState('');
@@ -510,7 +510,7 @@ function TheForm(props){
                 titolo: titolo,
                 autore: modAut? modAut : autore,
                 datacreazione: datacreazione,
-                datapubblicazione: dayjs(datapubblicazione),
+                datapubblicazione: datapubblicazione=== -1 ? undefined : dayjs(datapubblicazione),
                 blocchi:blocchi
                /* blocchi: [
                     (header) ?

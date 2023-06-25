@@ -2,7 +2,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Row, Col, Button, Table, Accordion, Badge,OverlayTrigger,Tooltip} from 'react-bootstrap';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+import dayjs from 'dayjs';
 //
 function PageDescription(props) {
     return (
@@ -47,24 +47,57 @@ function PageRow(props) {
     const { e } = props;
     const blocchi=[...e.blocchi];
     blocchi.sort((a,b) => a.priorita - b.priorita);
+    let now = dayjs()
+    let status=0;
+    if (isNaN(e.datapubblicazione.$D)){
+      console.log("No Date");
+
+    }
+    else  if(e.datapubblicazione>now)
+     
+      {
+        console.log("è una bozza");
+        status=1;
+      }
+    else if(e.datapubblicazione<now)
+    {
+      console.log("pubblicata");
+      status=2;
+    }
+
+    console.log(status);
+    
     //console.log(blocchi);
+   // console.log(e.datapubblicazione.$D);
+    
     
     return (
         <Accordion.Item eventKey={e.id}>
             <Accordion.Header>
                 <Row>
-                    <Col xs={9}>
+                    <Col md="auto">
                         <h5 className='fs-4'>{e.titolo}</h5>
                     </Col>
-                    <Col xs={3}>
+                    <Col md="auto">
                     <Badge bg="primary">Creato da:  {e.nomeautore}</Badge>
+                    </Col>
+                    <Col md="auto">
+                    {
+                    status===1?
+                    <Badge bg="info">Programmata</Badge>
+                    : status==2?
+                    <Badge bg="success">Pubblicata</Badge>
+                    : 
+                    <Badge bg="warning">Draft</Badge>
+
+                    }
                     </Col>
                 </Row>
                 
                 </Accordion.Header>
             <Accordion.Body>
                 <Col xs={3}>
-                <h6 className='fs-6'>Data Pubblicazione: {e.datapubblicazione.format("YYYY-MM-DD")}</h6>
+                <h6 className='fs-6'>Data Pubblicazione: {isNaN(e.datapubblicazione.$D)? "Data di pubblicazione non ancora scelta" :e.datapubblicazione.format("YYYY-MM-DD")}</h6>
                 </Col>
             
                 <OverlayTrigger  placement="bottom" overlay={(props.user?.id  && props.user?.name===e.nomeautore)?  
@@ -114,7 +147,8 @@ function MainPages(props) {
     const [sortOrder, setSortOrder] = useState('none');  // local state for visualization only, does not need to change the list in App
   
     const sortedPages = [...props.pageList];  // make a shallow copy
-    sortedPages.sort((a,b)=>(a.datapubblicazione!=undefined && b.datapubblicazione!=undefined)? a.datapubblicazione.isAfter(b.datapubblicazione) ? 1 : -1 : -1)
+    sortedPages.sort((a,b)=>(a.datapubblicazione!=null && b.datapubblicazione!=null)? a.datapubblicazione.isAfter(b.datapubblicazione) ? 1 : -1 : -1)
+    console.log(sortedPages);
     // sort order is recomputed at each re-render: do NOT make a state with the sorted list!
   //  if (sortOrder === 'asc')
      //   sortedPagess.sort((a,b) => a.score - b.score);
