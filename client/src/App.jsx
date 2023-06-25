@@ -181,6 +181,11 @@ function App() {
       .catch((err)=>handleError(err));
   }
 
+  const deletePage=(pageId)=>{
+    API.deletePage(pageId)
+    .then(() => { setDirty(true); })
+    .catch(e => handleError(e)); 
+  }
   /*
   const getAutori=()=>{
 
@@ -203,7 +208,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Pages titolo={titolo} user={user} logout={doLogOut} pages={pages} errorMsg={errorMsg} resetErrorMsg={() => setErrorMsg('')} initialLoading={initialLoading}
+          <Route path="/" element={<Pages deletePage={deletePage} titolo={titolo} user={user} logout={doLogOut} pages={pages} errorMsg={errorMsg} resetErrorMsg={() => setErrorMsg('')} initialLoading={initialLoading}
           editPage={editPage}/>} />
           <Route path='/login' element={loggedIn ? <Navigate replace to='/' /> : <LoginForm loginSuccessful={loginSuccessful} />} />
           <Route path='/add' element={loggedIn ? <PageForm titolo={titolo} user={user} logout={doLogOut} addPage={addPage} initialLoading={initialLoading} /> : <Navigate replace to='/' />} />

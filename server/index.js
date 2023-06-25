@@ -155,7 +155,7 @@ app.post('/api/pages', [
       
      catch (err) {
       console.log(err);
-      res.status(503).json({ error: `Database error during the creation of page ${page.titolo} by ${page.autore}.` });
+      res.status(503).json({ error: `Database error during the creation of page ${page.titolo} id ${PageId} by ${page.autore}.` });
     }
   //}
 });
@@ -292,7 +292,6 @@ app.put('/api/titolo/:id', isLoggedIn, [
   try {
     const numRowChanges = await dao.updateTitolo(titolo);  // It is WRONG to use something different from req.user.id, do not send it from client!
     // NB: the query in the DB will check if the answer belongs to the authenticated user and not another, using WHERE respondentId=...
-    
     setTimeout(()=>res.json(numRowChanges), answerDelay);
     //res.status(200).end();
   } catch(err) {
@@ -310,6 +309,15 @@ app.put('/api/titolo/:id', isLoggedIn, [
 app.delete('/api/pages/:id', isLoggedIn, async (req, res) => {
   try {
     const numRowChanges = await dao.deletePage(req.params.id, req.user.id); // It is WRONG to use something different from req.user.id
+    try
+    {
+    const numRowChanges2 = await dao.deleteBloccoPagina(req.params.id);
+    }catch(err)
+    {
+      console.log(err);
+      res.status(503).json({ error: `Database error during the deletion of blocks of the page ${req.params.id}.`});
+    }
+
     // number of changed rows is sent to client as an indicator of success
     setTimeout(()=>res.json(numRowChanges), answerDelay);
   } catch(err) {
@@ -324,6 +332,7 @@ app.delete('/api/blocks/:id', isLoggedIn, async (req, res) => {
   try {
     const numRowChanges = await dao.deleteBlocco(req.params.id); // It is WRONG to use something different from req.user.id
     // number of changed rows is sent to client as an indicator of success
+    
     setTimeout(()=>res.json(numRowChanges), answerDelay);
   } catch(err) {
     console.log(err);

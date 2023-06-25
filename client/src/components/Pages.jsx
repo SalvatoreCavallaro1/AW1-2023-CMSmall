@@ -21,7 +21,7 @@ function Pages(props){
             {props.initialLoading ? <Loading /> : 
             <>
             
-            <MainPages pageList={props.pages} user={props.user} editPage={props.editPage}/>
+            <MainPages pageList={props.pages} user={props.user} editPage={props.editPage} deletePage={props.deletePage}/>
             </>
             }
             </Container>

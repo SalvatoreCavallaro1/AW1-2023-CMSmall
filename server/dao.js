@@ -113,6 +113,34 @@ exports.createPage = (pagina) => {
     });
   };
 
+  exports.deleteBloccoPagina= (id) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'DELETE FROM blocchipagine WHERE idpagina = ?';  
+      db.run(sql, [id], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        } else
+          resolve(this.changes);  // return the number of affected rows
+      });
+    });
+  }
+
+  exports.deletePage = (id, userId) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'DELETE FROM pagine WHERE id = ? AND autore = ?';  // Double-check that the answer belongs to the userId
+      console.log(db.run(sql, [id, userId]));
+      db.run(sql, [id, userId], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        } else
+          resolve(this.changes);  // return the number of affected rows
+      });
+    });
+  }
+  
+
   exports.getBlocchi=()=>{
     return new Promise( (resolve,reject)=>{
         const sql = `SELECT * FROM blocchipagine`;
@@ -156,17 +184,5 @@ exports.createPage = (pagina) => {
     });
   }
 
-  exports.deletePage = (id, userId) => {
-    return new Promise((resolve, reject) => {
-      const sql = 'DELETE FROM pagine WHERE id = ? AND autore = ?';  // Double-check that the answer belongs to the userId
-      db.run(sql, [id, userId], function (err) {
-        if (err) {
-          reject(err);
-          return;
-        } else
-          resolve(this.changes);  // return the number of affected rows
-      });
-    });
-  }
-  
+
 

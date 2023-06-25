@@ -88,7 +88,7 @@ function PageRow(props) {
                 <Tooltip id="tooltip-disabled"> Efettua il login per eliminare la pagina</Tooltip>
                 }>
                 <span className="d-inline-block">
-                <Button variant="danger" disabled={(props.user?.id && props.user?.name===e.nomeautore) || props.user?.admin===1 ? false : true} >
+                <Button variant="danger" disabled={(props.user?.id && props.user?.name===e.nomeautore) || props.user?.admin===1 ? false : true} onClick={()=>props.deletePage(e.id)} >
                     <i className='bi bi-trash' /></Button>
                 </span>
                 </OverlayTrigger>
@@ -144,7 +144,7 @@ function MainPages(props) {
             <Col>
                 <Accordion>
                 {sortedPages.map((e) =>
-                  <PageRow e={e}  key={e.id} user={props.user} editPage={() =>setObjToEdit(e)}   />)
+                  <PageRow e={e}  key={e.id} user={props.user} editPage={() =>setObjToEdit(e)}  deletePage={props.deletePage}  />)
                 }
                 </Accordion>
             </Col>
