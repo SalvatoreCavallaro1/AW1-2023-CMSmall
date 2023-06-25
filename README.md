@@ -154,7 +154,10 @@ Response body: _None_
 
 ## Screenshot
 
-![Screenshot](./img/screenshot.jpg)
+![Screenshot](./img/backoffice1.png)
+![Screenshot](./img/backoffice2.png)
+![Screenshot](./img/frontoffice1.png)
+![Screenshot](./img/frontoffice2.png)
 
 ## Users Credentials
 
