@@ -283,7 +283,7 @@ app.put('/api/titolo/:id', isLoggedIn, [
    
   } catch(err) {
     console.log(err);
-    res.status(503).json({error: `Database error during the update of answer ${req.params.id}.`});
+    res.status(503).json({error: `Database error during the update of title ${req.params.id}.`});
   }
 
 });
@@ -292,7 +292,7 @@ app.put('/api/titolo/:id', isLoggedIn, [
 
 
 
-// DELETE /api/answers/<id>
+// DELETE /api/pages/<id>
 app.delete('/api/pages/:id', isLoggedIn, async (req, res) => {
   try {
 
@@ -337,7 +337,7 @@ app.delete('/api/pages/:id', isLoggedIn, async (req, res) => {
 });
 
 
-// DELETE /api/answers/<id>
+// DELETE /api/blocks/<id>
 app.delete('/api/blocks/:id', isLoggedIn, async (req, res) => {
   try {
     const numRowChanges = await dao.deleteBlocco(req.params.id); 
