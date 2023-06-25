@@ -106,11 +106,13 @@ app.get('/api/utenti', (req, res) => {
 
 
 //, isLoggedIn,
-// POST /api/answers
+// POST /api/pages
 app.post('/api/pages', [
   check('autore').isInt(),
   check('titolo').isLength({min: 1}),   
-  check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true})
+  check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
+  check('blocchi').isArray(),
+  check("blocchi.*.contenuto").isLength({min: 1})
   //check('datapubblicazione').isDate({format: 'YYYY-MM-DD', strictMode: true})
 ]
  ,async (req, res) => {
@@ -166,7 +168,9 @@ app.put('/api/pages/:id', isLoggedIn, [
   check('autore').isInt(),
   check('titolo').isLength({min: 1}),   
   //check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
-  check('id').isInt()
+  check('id').isInt(),
+  check('blocchi').isArray(),
+  check("blocchi.*.contenuto").isLength({min: 1})
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -268,7 +272,7 @@ app.put('/api/pages/:id', isLoggedIn, [
 // PUT /api/titolo/<id>
 app.put('/api/titolo/:id', isLoggedIn, [
   //check('autore').isInt(),
- // check('titolo').isLength({min: 1}),   
+  check('titolo').isLength({min: 1}),   
   //check('datacreazione').isDate({format: 'YYYY-MM-DD', strictMode: true}),
   check('id').isInt()
 ], async (req, res) => {

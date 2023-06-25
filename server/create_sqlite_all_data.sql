@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS "titolo" (
 
 INSERT INTO "utenti" VALUES (1,'salvo@test.com','Salvo',1,'123348dusd437840', 'bddfdc9b092918a7f65297b4ba534dfe306ed4d5d72708349ddadb99b1c526fb'); /* password='pwd' */
 INSERT INTO "utenti" VALUES (2,'giuseppe@test.com','Giuseppe',0,'7732qweydg3sd637', '498a8d846eb4efebffc56fc0de16d18905714cf12edf548b8ed7a4afca0f7c1c');
+INSERT INTO "utenti" VALUES (3,'riccardo@test.com','Riccardo',1,'sasadsdf', '75dc4db2af95b867785e3451783602b30a8a0c905d66035c1743624c792fc01f'); 
+INSERT INTO "utenti" VALUES (4,'ilenia@test.com','Ilenia',0,'ngngnfgn', 'fa98bfeebed2c8d4bb66a829f8eb57c49ad42aca508eef3bd27b7ca5f08c9279');
 INSERT INTO "blocchicontenuto" VALUES (1,'header'); 
 INSERT INTO "blocchicontenuto" VALUES (2,'paragrafo'); 
 INSERT INTO "blocchicontenuto" VALUES (3,'immagine'); 

@@ -102,6 +102,9 @@ function PageRow(props) {
                 <Col xs={3}>
                 <h6 className='fs-6'>Data Pubblicazione: {isNaN(e.datapubblicazione.$D)? "Data di pubblicazione non ancora scelta" :e.datapubblicazione.format("YYYY-MM-DD")}</h6>
                 </Col>
+                <Col xs={3}>
+                <h6 className='fs-6'>Data Creazione: {e.datacreazione.format("YYYY-MM-DD")}</h6>
+                </Col>
             
                 {props.appStatus=="back"?
                 <OverlayTrigger  placement="bottom" overlay={ 

@@ -307,7 +307,7 @@ function TheForm(props){
    //console.log(objToEdit);
     //console.log('objToEdit: '+JSON.stringify(objToEdit));
     const [datapubblicazione, setDatapubblicazione] = useState(objToEdit ? objToEdit.datapubblicazione?.format('YYYY-MM-DD'): -1);  //string: dayjs object is created only on submit
-    const [datacreazione,setDatacreazione]=useState(objToEdit ? objToEdit.datacreazione?.format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD'));
+    const [datacreazione,setDatacreazione]=useState(objToEdit ? objToEdit.datacreazione/*?.format('YYYY-MM-DD') */: dayjs().format('YYYY-MM-DD'));
     const [titolo, setTitolo] = useState(objToEdit ? objToEdit.titolo : '');
     const [header, setHeader] = useState('');
     const [paragrafo, setParagrafo] = useState('');
@@ -317,8 +317,8 @@ function TheForm(props){
     //const [score, setScore] = useState(objToEdit ? objToEdit.score : 0); 
     const [errorMsg,setErrorMsg]=useState('');
    // const [idTemp,setIdTemp]=useState(1);
-    const [formFields,setFormFields]=useState(objToEdit? [] : []);
-    const [fieldKey,setFieldKey]=useState(formFields?.length);
+   //const [formFields,setFormFields]=useState(objToEdit? [] : []);
+    // const [fieldKey,setFieldKey]=useState(formFields?.length);
     const [firstInit,setFirstInit]=useState(true);
     const [nDisplay,setnDisplay]=useState(0)
     const [valorProps,setValOrProps]=useState(true);
@@ -451,7 +451,7 @@ function TheForm(props){
                 setErrorMsg("Devi inserire almeno un Header")
             }
         }
-        else if (blocchi.length>1)
+        /*else if (blocchi.length>1)
         {
             for(let  el of blocchi )
             {
@@ -461,7 +461,7 @@ function TheForm(props){
                 break;
             }
             }
-        }
+        }*/
         //else if(header)
         //controllare se c'è del testo negli header e nei parafrafi e se l'immagine e selezionata
         /*else if(blocchi.length===0)
@@ -517,10 +517,28 @@ function TheForm(props){
         
         
         else {
+            let campi=1;
+            for(let  el of blocchi )
+            {
+                if(el.contenuto!="")
+                {
+                    campi=1;
+                }
+                else{
+                    campi=0;
+                    setErrorMsg("Devi riempire tuti i campi")
+                    break;
+                }
+
+                
+            }
+
+            if(campi==1)
+            {
             const e = {
                 titolo: titolo,
                 autore: modAut? modAut : autore,
-                datacreazione: datacreazione,
+                datacreazione: objToEdit? datacreazione: datacreazione,
                 datapubblicazione: datapubblicazione=== -1 ? undefined : dayjs(datapubblicazione),
                 blocchi:blocchi
                /* blocchi: [
@@ -573,8 +591,12 @@ function TheForm(props){
             } else {
                 props.addAnswer(e);
             }*/
+            
            navigate('/');
         }
+        }
+
+
     }
 
     function displayEl(el)
@@ -622,9 +644,14 @@ function TheForm(props){
 
     function AutoriOptions(e)
     {
-        ///console.log(e);
+        //console.log(e);
+        //console.log(objToEdit);
         return(
-        <option value={e.id}>{e.autore}</option>
+            objToEdit.idautore!=e.id?
+            <option value={e.id} key={e.key}>{e.autore}</option>
+            :
+            false
+        
         );
 
     }
@@ -838,14 +865,18 @@ function TheForm(props){
                 {errorMsg? <Alert variant='danger' onClose={()=>setErrorMsg('')} dismissible>{errorMsg}</Alert> : false }
                 <Form onSubmit={handleSubmit}>
 
-                    <Form.Group className='mb-3'>     
-                    {props.user.admin == 1  && objToEdit? 
+                    <Form.Group className='mb-3'> 
+                    <Form.Label>Modifica Autore</Form.Label>    
+                    {
+                        
+                    props.user.admin == 1  && objToEdit? 
                    
                     
-                    <Form.Select aria-label="Default select example" onChange={ev => setModAut(ev.target.value)}>
-                        <option>Modifica Autore</option>
+                    <Form.Select aria-label="Default select example" onChange={ev => setModAut(ev.target.value)} >
+                        <option value={objToEdit.idautore}>{objToEdit.nomeautore}</option>
                         {props.autori.map((e)=>AutoriOptions(e))}
-                    </Form.Select > : false}
+                    </Form.Select > : false
+                    }
                     
                     </Form.Group>
 
