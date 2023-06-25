@@ -33,6 +33,18 @@ async function getTitolo() {
   }
 }
 
+async function getUtenti() {
+  // call  /api/titolo
+  const response = await fetch(URL+'/utenti');
+  const utenti = await response.json();
+  //console.log(titolo);
+  if (response.ok) {
+    return utenti.map((e) => ({id:e.id, autore: e.autore, key:e.id}) )
+  } else {
+    throw utenti;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+  }
+}
+
 function updateTitolo(titolo) {
   // call  PUT /api/titolo/<id>
   return new Promise((resolve, reject) => {
@@ -201,6 +213,7 @@ const API = {
     updatePage,
     deleteBlock,
     deletePage,
-    updateTitolo
+    updateTitolo,
+    getUtenti
   };
   export default API;

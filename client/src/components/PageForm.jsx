@@ -88,7 +88,7 @@ function PageForm(props){
         <>
             <NavHeader loading={props.initialLoading} titolo={props.titolo} user={props.user} logout={props.logout}/>
             <Container fluid>
-            <TheForm handleError={props.handleError} pageList={props.pageList} user={props.user} addPage={props.addPage} editPage={props.editPage}/>
+            <TheForm autori={props.autori? props.autori : ''} handleError={props.handleError} pageList={props.pageList} user={props.user} addPage={props.addPage} editPage={props.editPage}/>
 
             </Container>
         </>
@@ -301,7 +301,7 @@ function TheForm(props){
     //console.log("PageId:",PageId);
     //console.log(props.pageList);
     //console.log(props.pageList);
-    
+    //console.log(props.autori);
     const objToEdit= PageId && props.pageList.find(e => e.id === parseInt(PageId));
    // console.log(objToEdit);
    //console.log(objToEdit);
@@ -323,6 +323,8 @@ function TheForm(props){
     const [nDisplay,setnDisplay]=useState(0)
     const [valorProps,setValOrProps]=useState(true);
     const [blocksToDelete,setBlockToDelete]=useState([]);
+    const [modAut,setModAut]=useState();
+    //console.log(modAut);
 //{tipo:"Header",priorità:0 ,key:0,contenuto:''},{tipo:"Paragrafo",priorità:1,key:1},{tipo:"Immagini",priorità:2,key:2,contenuto:''}
 
     useEffect(() => {
@@ -506,8 +508,8 @@ function TheForm(props){
         else {
             const e = {
                 titolo: titolo,
-                autore: autore,
-                datacreazione: dayjs(datacreazione),
+                autore: modAut? modAut : autore,
+                datacreazione: datacreazione,
                 datapubblicazione: dayjs(datapubblicazione),
                 blocchi:blocchi
                /* blocchi: [
@@ -607,6 +609,14 @@ function TheForm(props){
     
     }
 
+    function AutoriOptions(e)
+    {
+        ///console.log(e);
+        return(
+        <option value={e.id}>{e.autore}</option>
+        );
+
+    }
     function HandleMoveUp(props){
         if (props.priorità > 0) {
            // const newformFields = [...formFields];
@@ -808,6 +818,17 @@ function TheForm(props){
             <>
                 {errorMsg? <Alert variant='danger' onClose={()=>setErrorMsg('')} dismissible>{errorMsg}</Alert> : false }
                 <Form onSubmit={handleSubmit}>
+
+                    <Form.Group className='mb-3'>     
+                    {props.user.admin == 1  && objToEdit? 
+                   
+                    
+                    <Form.Select aria-label="Default select example" onChange={ev => setModAut(ev.target.value)}>
+                        <option>Modifica Autore</option>
+                        {props.autori.map((e)=>AutoriOptions(e))}
+                    </Form.Select > : false}
+                    
+                    </Form.Group>
 
                     <Form.Group className='mb-3'>                            
                                 <Form.Label>Titolo</Form.Label>

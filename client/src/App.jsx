@@ -28,7 +28,7 @@ function App() {
   const [user, setUser] = useState(undefined);
   const [loggedIn, setLoggedIn] = useState(false);
   const [titolo, setTitolo] = useState('');
-
+  const [autori,setAutori]=useState([]);
 
   function handleError(err) {
     console.log('err: ' + JSON.stringify(err));  // Only for debug
@@ -61,7 +61,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (dirty) {
+    if (dirty ) {
       API.getTitolo()
         .then((t) => {
           setTitolo(t)
@@ -83,6 +83,26 @@ function App() {
     }
   }, [dirty]);
 
+  useEffect(()=>
+  {
+  
+    if(dirty && user?.admin==1)
+    {
+    API.getUtenti()
+            .then((u) => {
+              //console.log(u);
+              setAutori(u)
+              //setDirty(false);
+              // if(titolo)
+             // setInitialLoading(false)
+            })
+            .catch((err) => handleError(err))
+          }
+            
+
+
+  },[dirty])
+
   /*useEffect(() => {
     if (dirty) {
       API.getAllPages()
@@ -95,6 +115,9 @@ function App() {
         .catch((err) => handleError(err));
     }
   }, [dirty]);*/
+
+
+  
 
 
 
@@ -158,6 +181,23 @@ function App() {
       .catch((err)=>handleError(err));
   }
 
+  /*
+  const getAutori=()=>{
+
+    (props.user && props.user.admin)==1?
+    API.getUtenti()
+            .then((u) => {
+              setAutori(u)
+              //setDirty(false);
+              // if(titolo)
+             // setInitialLoading(false)
+            })
+            .catch((err) => handleError(err))
+            :
+            setAutori([]);
+  }*/
+
+
 
   return (
     <>
@@ -169,7 +209,7 @@ function App() {
           <Route path='/add' element={loggedIn ? <PageForm titolo={titolo} user={user} logout={doLogOut} addPage={addPage} initialLoading={initialLoading} /> : <Navigate replace to='/' />} />
           <Route path='/edit/:PageId' element={loggedIn ? <PageForm titolo={titolo} user={user} logout={doLogOut} initialLoading={initialLoading}
           pageList={pages}
-          addPage={addPage} editPage={editPage} handleError={handleError}/> :  <Navigate replace to='/' />} /> 
+          addPage={addPage} editPage={editPage} handleError={handleError} autori={autori}/> :  <Navigate replace to='/' />} /> 
           <Route path='/titolo/:IdTitolo' element={loggedIn ? <TitleForm titolo={titolo} user={user} logout={doLogOut} initialLoading={initialLoading}
           editTitle={editTitle} handleError={handleError} /> :  <Navigate replace to='/' />}/>
           <Route path='/*' element={<DefaultRoute />} />

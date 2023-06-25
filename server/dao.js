@@ -39,6 +39,20 @@ exports.getTitolo=()=>{
   });
 };
 
+exports.getAutori=()=>{
+  return new Promise( (resolve,reject)=>{
+      const sql = `SELECT * FROM utenti`;
+      db.all(sql,[],(err,rows)=>{
+          if(err){
+              reject(err);
+              return;
+          }
+          const titolo=rows.map((e)=>({id:e.id, autore: e.nome}));
+          resolve(titolo);
+      });
+  });
+};
+
 exports.updateTitolo = (titolo)=> {
   //console.log('updatePage: '+JSON.stringify(page));
   return new Promise((resolve, reject) => {

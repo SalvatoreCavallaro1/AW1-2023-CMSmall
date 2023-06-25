@@ -89,10 +89,18 @@ app.get('/api/pages', (req, res) => {
 });
 
 
-// GET /api/pages
+// GET /api/titolo
 app.get('/api/titolo', (req, res) => {
   dao.getTitolo()
     .then(titolo => setTimeout(()=>res.json(titolo),answerDelay))
+    .catch((err) => {console.log(err); res.status(500).end()});
+});
+
+
+// GET /api/utenti
+app.get('/api/utenti', (req, res) => {
+  dao.getAutori()
+    .then(utente => setTimeout(()=>res.json(utente),answerDelay))
     .catch((err) => {console.log(err); res.status(500).end()});
 });
 

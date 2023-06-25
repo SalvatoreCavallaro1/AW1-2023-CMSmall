@@ -13,6 +13,7 @@ function NavHeader(props) {
    //const name = props.user && props.user.name;
 const name=props.user && props.user.name;
 const titolo=props.loading? "Loading.." : props.titolo?.titolo;
+const admin=(props.user && props.user.admin)==1? " (admin)" : "";
 //console.log(props.titolo.titolo);
 //props.loading? props.spinner : props.titolo?.titolo
 return (
@@ -49,7 +50,8 @@ return (
             <Navbar.Collapse className="justify-content-end">
                 { name? <>
                 <Navbar.Text className='fs-5'>
-                    {"Signed in as: "+name}
+                    {"Signed in as: "+name + admin}
+                    
                 </Navbar.Text>
                 <Button className='mx-2' variant='danger' onClick={props.logout}>Logout</Button>
                 </> : 
