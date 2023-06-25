@@ -101,7 +101,7 @@ exports.createPage = (pagina) => {
   exports.updatePage = (pagina,userId) => {
     //console.log('updatePage: '+JSON.stringify(page));
     return new Promise((resolve, reject) => {
-      const sql = 'UPDATE pagine SET titolo=?, autore=?,datapubblicazione=DATE(?) WHERE id = ? AND autore = ? )';  
+      const sql = 'UPDATE pagine SET titolo=?, autore=?,datapubblicazione=DATE(?) WHERE id = ? AND autore = ?';  
       // passo l'userid per controllare che veramente quella pagina appartiene all'utente autenticato
       db.run(sql, [pagina.titolo, pagina.autore, pagina.datapubblicazione,pagina.id,userId], function (err) {
         if (err) {

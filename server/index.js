@@ -252,7 +252,7 @@ app.put('/api/pages/:id', isLoggedIn, [
     
    catch(err) {
     console.log(err);
-    res.status(503).json({error: `Database error during the update of answer ${req.params.id}.`});
+    res.status(503).json({error: `Database error during the update of page ${req.params.id}.`});
     }
     
   
